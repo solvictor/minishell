@@ -6,18 +6,45 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 10:37:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/05 18:15:01 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/05 20:27:07 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// !!! Work only on NULL terminating arrays
+static int	arr_size(char **arr)
+{
+	int	size;
+
+	if (!arr)
+		return (-1);
+	size = 0;
+	while (arr[size])
+		size++;
+	return (size);
+}
+
 int	builtin_cd(t_msh *msh, char **args)
 {
-	// just testing the chdir function, not at all final behavior
-	//if (chdir(path) != 0)
-	//	printf("chdir failed.\n");
+	const int	size = arr_size(args);
+	char		*new_path;
+
+	printf("Detected\n");
 	(void) msh;
-	(void) args;
+	if (size > 2)
+	{
+		printf("bash: cd: too many arguments\n"); // Wrong message?
+		return (-1);
+	}
+	new_path = "~"; // No path = go home
+	if (args[1])
+		new_path = args[1];
+	// just testing the chdir function, not at all final behavior
+	if (chdir(new_path) != 0)
+	{
+		printf("%s\n", strerror(errno));
+		return (-1);
+	}
 	return (0);
 }
