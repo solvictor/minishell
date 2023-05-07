@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 10:37:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/05 20:27:07 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/07 20:02:14 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	builtin_cd(t_msh *msh, char **args)
 	const int	size = arr_size(args);
 	char		*new_path;
 
-	printf("Detected\n");
 	(void) msh;
 	if (size > 2)
 	{
