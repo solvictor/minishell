@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 16:11:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/05 19:09:40 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/08 01:06:22 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,12 +126,10 @@ void	test_pathfinding(t_msh *msh)
 	if (cmd.args == NULL)
 		return (destroy_tokenlist(&msh->tokens), clear_strarr(paths), (void)printf("Failed to allocate args for command\n"));
 
+	// TODO Check (valeur de retour du builtin et free si le builtin est exit)
 	builtin = get_builtin(&cmd);
 	if (builtin)
-	{
-		builtin(msh, cmd.args);
-		return ;
-	}
+		return (builtin(msh, cmd.args), destroy_tokenlist(&msh->tokens), clear_strarr(paths), free(cmd.args), (void) 0);
 
 	if (find_cmd(paths, &cmd) == -1)
 		return (destroy_tokenlist(&msh->tokens), clear_strarr(paths), free(cmd.args), (void)printf("Failed to find command\n"));
