@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nlegrand <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 06:26:22 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/04/30 03:32:31 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/05/08 00:25:19 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	msh_terminate(t_msh *msh)
 {
-	(void)msh; // nothing to free yet
+	rl_clear_history();
 	destroy_env_list(&msh->env);
 }
 
