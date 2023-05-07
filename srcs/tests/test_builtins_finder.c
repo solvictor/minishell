@@ -6,17 +6,17 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 18:43:41 by vegret            #+#    #+#             */
-/*   Updated: 2023/05/07 20:00:29 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/07 22:03:28 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#define NB_BUILTINS 2
+#define NB_BUILTINS 3
 
 t_builtin	get_builtin(t_cmd *cmd)
 {
-	const char		*names[] = {"cd", "pwd"};
-	const t_builtin	funcs[] = {builtin_cd, builtin_pwd};
+	const char		*names[] = {"cd", "pwd", "exit"};
+	const t_builtin	funcs[] = {builtin_cd, builtin_pwd, builtin_exit};
 	int				index;
 	int				len;
 

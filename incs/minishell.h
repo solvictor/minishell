@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/05 19:48:24 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/07 20:21:10 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,8 @@ t_builtin	get_builtin(t_cmd *cmd);
 int	builtin_pwd(t_msh *msh, char **args);
 // cd
 int	builtin_cd(t_msh *msh, char **args);
+// exit
+int	builtin_exit(t_msh *msh, char **args);
 // -------- //
 //          //
 // -------- //
