@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setup.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nlegrand <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 06:25:47 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/04/27 14:29:51 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/05/08 16:14:04 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static void	msh_init_vars(t_msh *msh)
 	msh->input = NULL;
 	msh->tokens = NULL; // won't have to be in here later
 	msh->ret_prev = 0;
+	msh->ret = EXIT_SUCCESS;
+	msh->exit = 0;
 	//msh->cmd.path = NULL; // remove later
 	//msh->cmd.args = NULL; // remove later
 }

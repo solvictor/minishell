@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:00:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/05 17:34:35 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/08 16:16:01 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // Unimportant function :]
 int	main(int ac, char **av, char **envp)
 {
-	(void)av;
+	(void) av;
 	t_msh	msh;
 
 	if (msh_setup(&msh, ac, envp) == -1)
@@ -24,7 +24,7 @@ int	main(int ac, char **av, char **envp)
 		printf("Minishell input loop exited with -1, don't forget to free stuff\n");
 	// free stuff?
 	msh_terminate(&msh);
-	return (0);
+	return (msh.ret);
 }
 
 // Input loop
@@ -32,7 +32,7 @@ int	main(int ac, char **av, char **envp)
 int	msh_loop(t_msh *msh, char **envp)
 {
 	(void)envp;
-	while (1)
+	while (!msh->exit)
 	{
 		msh->input = readline(MSH_PROMPT);
 		if (msh->input == NULL) // readline manual says NULL is returned when EOF encountered on an empty line so this should handle ctrl+d properly (maybe)

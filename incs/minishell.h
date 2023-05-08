@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/07 20:21:10 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/08 16:12:59 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ struct s_msh
 	t_tokenlist	*tokens; // restructure later so that it's a local variable
 	//t_cmd	cmd; // will have to replace with pipeline or some other new big struct that will contain the whole parsed thing
 	int		ret_prev;
+	int		exit;
+	int		ret;
 };
 
 // minishell.c
