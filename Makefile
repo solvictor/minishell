@@ -35,6 +35,7 @@ SRCS	:=	minishell.c \
 			tests/test_parsing.c \
 			tests/test_tokenizer.c \
 			tests/test_builtins_finder.c \
+			tests/test_signals.c \
 			tests/test_pathfinding.c
 OBJS	:=	$(SRCS:.c=.o)
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRCS))

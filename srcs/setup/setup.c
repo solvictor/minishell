@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 06:25:47 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/08 16:14:04 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/08 16:36:37 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int	msh_setup(t_msh *msh, int ac, char **envp)
 	if (ac != 1)
 		return (printf(MSH_ERROR ME_AC), -1);
 	msh_init_vars(msh);
+	if (setup_signals() != 0)
+		return (printf(MSH_ERROR ME_ENV), -1);
 	if (make_env(msh, envp) != 0)
 		return (printf(MSH_ERROR ME_ENV), -1);
 	//set_signal_handlers(msh);

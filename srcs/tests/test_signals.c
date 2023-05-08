@@ -1,32 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   test_signals.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/12 06:26:22 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/08 16:40:03 by vegret           ###   ########.fr       */
+/*   Created: 2023/05/08 16:33:20 by vegret            #+#    #+#             */
+/*   Updated: 2023/05/08 17:57:47 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Called 2 times when CTRL-D?
-void	msh_terminate(t_msh *msh)
+static void	handler(int sig)
 {
-	rl_clear_history();
-	destroy_env_list(&msh->env);
+	if (sig == SIGINT)
+	{
+		
+		return ;
+	}
+	else if (sig == SIGQUIT)
+		return ;
 }
 
-void	clear_strarr(char **arr)
+int	setup_signals()
 {
-	int	i;
+	struct sigaction	sa;
 
-	i = 0;
-	while (arr[i])
-		free(arr[i++]);
-	free(arr);
+	sa.sa_handler = &handler;
+	sa.sa_flags = 0;
+	if (sigemptyset(&sa.sa_mask) != 0)
+		return (-1);
+	if (sigaction(SIGQUIT, &sa, NULL) == -1)
+		return (-1);
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+		return (-1);
+	return (0);
 }
-
-// env to char arr

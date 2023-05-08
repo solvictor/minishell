@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/08 16:12:59 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/08 16:38:57 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # define ME_SPLIT_ARGS	"Failed to split command arguments\n"
 # define ME_EXEC_CMD	"Failed to exec command\n"
 # define ME_BAD_FORMAT	"Bad format command\n"
+# define ME_SIGNALS		"Failed to bind signals (sigaction)\n"
 
 typedef struct s_parse_stack	t_parse_stack; // remoooooooooooooooooooooooooove later
 struct s_parse_stack
@@ -121,6 +122,11 @@ int	builtin_exit(t_msh *msh, char **args);
 // -------- //
 //          //
 // -------- //
+
+// -------- //
+//  SIGNALS //
+// -------- //
+int	setup_signals();
 
 // tests folder // remooooooooooooooooooooooooooooooooooooooooooooooooooooooooove later
 //void	test_parentheses(const char *line, int left);
