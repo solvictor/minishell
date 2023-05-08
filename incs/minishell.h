@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/08 16:38:57 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/08 22:20:43 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <readline/history.h>
 # include <sys/wait.h>
 
-# define MSH_PROMPT "\e[38;2;255;0;255mminishell>\e[0m " // lame... make it better
+# define MSH_PROMPT		"\e[38;2;255;0;255mminishell>\e[0m " // lame... make it better
 
 // ERROR MESSAGES
 # define MSH_ERROR		"\e[31;7;1m[MINISHELL ERROR]\e[0m "
@@ -33,7 +33,7 @@
 # define ME_SPLIT_ARGS	"Failed to split command arguments\n"
 # define ME_EXEC_CMD	"Failed to exec command\n"
 # define ME_BAD_FORMAT	"Bad format command\n"
-# define ME_SIGNALS		"Failed to bind signals (sigaction)\n"
+# define ME_SIGNALS		"Failed to bind signals\n"
 
 typedef struct s_parse_stack	t_parse_stack; // remoooooooooooooooooooooooooove later
 struct s_parse_stack
