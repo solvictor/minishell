@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 10:37:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/07 20:09:30 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/08 23:21:59 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int	builtin_cd(t_msh *msh, char **args)
 	//new_path = "~"; // No path = go home
 	//if (args[1])
 	//	new_path = args[1];
-	
 	if (chdir(args[1]) != 0)
 	{
 		printf("%s\n", strerror(errno));

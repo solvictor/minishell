@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/08 22:20:43 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/08 23:05:58 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,8 @@ int	builtin_pwd(t_msh *msh, char **args);
 int	builtin_cd(t_msh *msh, char **args);
 // exit
 int	builtin_exit(t_msh *msh, char **args);
+// echo
+int	builtin_echo(t_msh *msh, char **args);
 // -------- //
 //          //
 // -------- //
