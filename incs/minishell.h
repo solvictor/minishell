@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/08 23:05:58 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/09 19:51:18 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,9 @@ void	msh_terminate(t_msh *msh);
 void	clear_strarr(char **arr);
 // utils_env.c
 t_env	*env_new(char *var);
-void	destroy_env_list(t_env **env);
 char	**env_to_arr(t_env *env);
+void	destroy_env_list(t_env **env);
+char	*get_val(t_env *env, char *key);
 
 // -------- //
 // BUILTINS //

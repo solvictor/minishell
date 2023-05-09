@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 13:39:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/04/29 17:44:46 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/05/09 19:50:28 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,20 @@ char	**env_to_arr(t_env *env)
 	}
 	envarr[i] = NULL;
 	return (envarr);
+}
+
+char	*get_val(t_env *env, char *key)
+{
+	int	len_key;
+
+	if (!key)
+		return (NULL);
+	len_key = ft_strlen(key);
+	while (env)
+	{
+		if (ft_strncmp(key, env->var, len_key) == 0 && env->var[len_key] == '=')
+			return (env->var + len_key + 1);
+		env = env->next;
+	}
+	return (NULL);
 }

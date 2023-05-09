@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 10:37:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/08 23:21:59 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/09 19:50:23 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,23 @@ static int	arr_size(char **arr)
 int	builtin_cd(t_msh *msh, char **args)
 {
 	const int	size = arr_size(args);
-	//char		*new_path;
+	char		*path;
 
-	(void) msh;
 	if (size > 2)
 	{
 		printf("bash: cd: too many arguments\n"); // Wrong message?
 		return (-1);
 	}
 	// TODO See if we must handle '~' paths
-	//new_path = "~"; // No path = go home
-	//if (args[1])
-	//	new_path = args[1];
-	if (chdir(args[1]) != 0)
+	path = get_val(msh->env, "HOME");
+	if (args[1])
+		path = args[1];
+	if (!path)
+	{
+		printf("No path to go\n");
+		return (-1);
+	}
+	if (path[0] && chdir(path) != 0)
 	{
 		printf("%s\n", strerror(errno));
 		return (-1);
