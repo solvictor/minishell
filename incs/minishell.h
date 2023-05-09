@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/09 19:51:18 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/09 22:36:26 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@
 # define ME_EXEC_CMD	"Failed to exec command\n"
 # define ME_BAD_FORMAT	"Bad format command\n"
 # define ME_SIGNALS		"Failed to bind signals\n"
+# define ME_LOOP		"Minishell input loop exited with -1, \
+						don't forget to free stuff\n"
 
 typedef struct s_parse_stack	t_parse_stack; // remoooooooooooooooooooooooooove later
 struct s_parse_stack
@@ -88,7 +90,6 @@ struct s_msh
 	char		*input;
 	t_tokenlist	*tokens; // restructure later so that it's a local variable
 	//t_cmd	cmd; // will have to replace with pipeline or some other new big struct that will contain the whole parsed thing
-	int		ret_prev;
 	int		exit;
 	int		ret;
 };

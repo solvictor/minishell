@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 13:39:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/09 19:50:28 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/09 22:28:39 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_env	*env_new(char *var)
 // Destroy entire list of environment variables
 void	destroy_env_list(t_env **env)
 {
-	t_env *next;
+	t_env	*next;
 
 	while (*env)
 	{
