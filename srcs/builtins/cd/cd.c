@@ -6,31 +6,17 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 10:37:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/10 16:19:01 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/10 19:01:37 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// !!! Work only on NULL terminating arrays
-static int	arr_size(char **arr)
-{
-	int	size;
-
-	if (!arr)
-		return (-1);
-	size = 0;
-	while (arr[size])
-		size++;
-	return (size);
-}
-
 int	builtin_cd(t_msh *msh, char **args)
 {
-	const int	size = arr_size(args);
-	char		*path;
+	char	*path;
 
-	if (size > 2)
+	if (args[1] && args[2])
 	{
 		printf("bash: cd: too many arguments\n"); // Wrong message?
 		return (-1);

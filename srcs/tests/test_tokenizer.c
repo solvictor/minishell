@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test_tokenizer.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 16:25:37 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/04/22 17:21:07 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/05/10 19:23:12 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,12 +141,12 @@ static void	reverse_tokens(t_tokenlist **begin)
 
 int	tokenize(t_msh *msh, const char *input, t_tokenlist **tokens)
 {
-	(void)msh;
 	//t_tokenlist	*tokenlist; // can be replaced with t_list from libft and turned into an array of tokenlist later
 	char		*tmp;
 	int			i;
 	int			len;
 
+	(void) msh;
 	*tokens = NULL;
 	i = 0;
 	while (input[i])

@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 13:39:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/09 22:28:39 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/10 18:57:28 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,5 +81,5 @@ char	*get_val(t_env *env, char *key)
 			return (env->var + len_key + 1);
 		env = env->next;
 	}
-	return (NULL);
+	return ("");
 }
