@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 16:33:20 by vegret            #+#    #+#             */
-/*   Updated: 2023/05/08 23:03:23 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/10 17:42:32 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	handler(int sig)
 		printf("\b\b  \b\b");
 }
 
-int	setup_signals()
+int	setup_signals(void)
 {
 	struct sigaction	sa;
 

@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:00:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/09 23:19:37 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/10 17:41:33 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	main(int ac, char **av, char **envp)
 	(void) av;
 	if (msh_setup(&msh, ac, envp) == -1)
 		return (1); // check if anything is allocated
-	if (msh_loop(&msh, envp) == -1)
+	if (msh_loop(&msh) == -1)
 		printf(ME_LOOP);
 	// free stuff?
 	msh_terminate(&msh);
@@ -29,9 +29,8 @@ int	main(int ac, char **av, char **envp)
 
 // Input loop
 // Parses inputs, executes commands and updates history
-int	msh_loop(t_msh *msh, char **envp)
+int	msh_loop(t_msh *msh)
 {
-	(void) envp;
 	while (!msh->exit)
 	{
 		msh->input = readline(MSH_PROMPT);

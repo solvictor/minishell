@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/09 22:36:26 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/10 17:42:39 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ struct s_msh
 };
 
 // minishell.c
-int	msh_loop(t_msh *msh, char **envp);
+int	msh_loop(t_msh *msh);
 
 // setup.c
 int	msh_setup(t_msh	*msh, int ac, char **envp);
@@ -130,7 +130,7 @@ int	builtin_echo(t_msh *msh, char **args);
 // -------- //
 //  SIGNALS //
 // -------- //
-int	setup_signals();
+int	setup_signals(void);
 
 // tests folder // remooooooooooooooooooooooooooooooooooooooooooooooooooooooooove later
 //void	test_parentheses(const char *line, int left);
