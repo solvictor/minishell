@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:00:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/10 17:41:33 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/11 15:54:56 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	main(int ac, char **av, char **envp)
 	t_msh	msh;
 
 	(void) av;
+	if (ac != 1)
+		return (42);
 	if (msh_setup(&msh, ac, envp) == -1)
 		return (1); // check if anything is allocated
 	if (msh_loop(&msh) == -1)

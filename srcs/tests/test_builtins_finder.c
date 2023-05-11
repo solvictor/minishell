@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 18:43:41 by vegret            #+#    #+#             */
-/*   Updated: 2023/05/10 17:43:15 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/11 19:10:00 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 t_builtin	get_builtin(t_cmd *cmd)
 {
-	const char		*names[] = {"cd", "pwd", "exit", "echo", NULL};
+	const char		*names[] = {"cd", "pwd", "exit",
+		"echo", "export", "unset", NULL};
 	const t_builtin	funcs[] = {builtin_cd, builtin_pwd, builtin_exit,
-		builtin_echo};
+		builtin_echo, builtin_export, builtin_unset};
 	int				index;
 	int				size;
 

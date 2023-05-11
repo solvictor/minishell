@@ -32,6 +32,8 @@ SRCS	:=	minishell.c \
 			builtins/cd/cd.c \
 			builtins/exit/exit.c \
 			builtins/echo/echo.c \
+			builtins/export/export.c \
+			builtins/unset/unset.c \
 			tests/test_parenthesis.c \
 			tests/test_parsing.c \
 			tests/test_tokenizer.c \
@@ -63,6 +65,8 @@ $(OBJDIR):
 	mkdir -p $(OBJDIR)/builtins/cd
 	mkdir -p $(OBJDIR)/builtins/exit
 	mkdir -p $(OBJDIR)/builtins/echo
+	mkdir -p $(OBJDIR)/builtins/export
+	mkdir -p $(OBJDIR)/builtins/unset
 	mkdir -p $(OBJDIR)/setup
 	mkdir -p $(OBJDIR)/utils
 	mkdir -p $(OBJDIR)/tests # REMOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOVE later

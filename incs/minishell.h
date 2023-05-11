@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/10 17:42:39 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/11 19:06:08 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ t_env	*env_new(char *var);
 char	**env_to_arr(t_env *env);
 void	destroy_env_list(t_env **env);
 char	*get_val(t_env *env, char *key);
+t_env	*get_env(t_env *env, char *key);
 
 // -------- //
 // BUILTINS //
@@ -123,6 +124,10 @@ int	builtin_cd(t_msh *msh, char **args);
 int	builtin_exit(t_msh *msh, char **args);
 // echo
 int	builtin_echo(t_msh *msh, char **args);
+// export
+int	builtin_export(t_msh *msh, char **args);
+// unset
+int	builtin_unset(t_msh *msh, char **args);
 // -------- //
 //          //
 // -------- //

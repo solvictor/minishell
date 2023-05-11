@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 13:39:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/10 18:57:28 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/11 17:01:29 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,27 @@ char	**env_to_arr(t_env *env)
 	return (envarr);
 }
 
+t_env	*get_env(t_env *env, char *key)
+{
+	int	len_key;
+
+	if (!env || !key)
+		return (NULL);
+	len_key = ft_strlen(key);
+	while (env)
+	{
+		if (ft_strncmp(key, env->var, len_key) == 0 && env->var[len_key] == '=')
+			return (env);
+		env = env->next;
+	}
+	return (NULL);
+}
+
 char	*get_val(t_env *env, char *key)
 {
 	int	len_key;
 
-	if (!key)
+	if (!env || !key)
 		return (NULL);
 	len_key = ft_strlen(key);
 	while (env)
