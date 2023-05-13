@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/11 19:06:08 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/13 21:25:04 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ struct s_cmd
 };
 struct	s_env
 {
+	t_env	*prec;
 	char	*var;
 	t_env	*next;
 };

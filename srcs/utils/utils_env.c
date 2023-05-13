@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 13:39:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/11 17:01:29 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/13 21:25:58 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_env	*env_new(char *var)
 	if (tmp->var == NULL)
 		return (free(tmp), NULL);
 	tmp->next = NULL;
+	tmp->prec = NULL;
 	return (tmp);
 }
 
