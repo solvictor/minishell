@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 06:26:22 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/08 18:30:14 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/15 19:21:47 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,3 @@ void	clear_strarr(char **arr)
 	free(arr);
 }
 
-// env to char arr

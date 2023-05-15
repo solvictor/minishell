@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 16:11:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/08 18:26:26 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/15 19:21:28 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ void	test_pathfinding(t_msh *msh)
 	ret = tokenize(msh, msh->input, &msh->tokens);
 	if (ret < 0)
 		return ((void)printf(MSH_ERROR ME_TOKEN_CMD));
+	//display_tokens(msh->tokens);
 
 	paths = get_paths(msh->env);
 	if (paths == NULL)

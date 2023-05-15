@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 16:25:37 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/10 19:23:12 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/15 18:59:00 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,7 +286,7 @@ static void	display_token_type(t_tokenlist *token)
 		printf("UNKNOWN\n");
 }
 
-static void	display_tokens(t_tokenlist *begin)
+void	display_tokens(t_tokenlist *begin)
 {
 	t_tokenlist	*curr;
 	int			i;

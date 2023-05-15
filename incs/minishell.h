@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/15 17:08:10 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/15 18:59:20 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,5 +147,6 @@ void	test_tokenizer(t_msh *msh);
 void	destroy_tokenlist(t_tokenlist **begin);
 int		tokenize(t_msh *msh, const char *input, t_tokenlist **tokens);
 void	test_pathfinding(t_msh *msh);
+void	display_tokens(t_tokenlist *begin);
 
 #endif
