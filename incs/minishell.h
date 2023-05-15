@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/13 21:25:04 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/15 17:08:10 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 # define ME_SIGNALS		"Failed to bind signals\n"
 # define ME_LOOP		"Minishell input loop exited with -1, \
 						don't forget to free stuff\n"
+# define ME_USAGE		"Incorrect usage\n"
 
 typedef struct s_parse_stack	t_parse_stack; // remoooooooooooooooooooooooooove later
 struct s_parse_stack
