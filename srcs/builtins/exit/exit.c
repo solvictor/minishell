@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 20:14:11 by vegret            #+#    #+#             */
-/*   Updated: 2023/05/15 17:45:49 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/15 18:12:42 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	is_numeric(char *str, int *dst)
 			return (0);
 		str++;
 	}
-	*dst = (unsigned char) (sign * num);
+	*dst = (unsigned char)(sign * num);
 	return (1);
 }
 
