@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 16:25:37 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/15 18:59:00 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/16 17:00:09 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ static int	get_str_unquoted(const char *str, char **dst)
 
 	*dst = NULL;
 	len = 0;
-	while (str[len] && (!is_whitespace(str[len]) && !is_metachar(str[len])))
+	while (str[len] && (!is_whitespace(str[len]) && !is_metachar(str[len])
+		&& str[len] != '\'' && str[len] != '"'))
 		++len;
 	*dst = malloc(sizeof(char) * (len + 1));
 	if (*dst == NULL)
@@ -98,29 +99,6 @@ void	destroy_tokenlist(t_tokenlist **begin)
 	}
 }
 
-//static char	**transfer_tokens(t_tokenlist **begin)
-//{
-//	int				count;
-//	char			**tmp;
-//	t_tokenlist	*curr;
-//
-//	count = 0;
-//	curr = *begin;
-//	while (curr && ++count)
-//		curr = curr->next;
-//	tmp = malloc(sizeof(char *) * (count + 1));
-//	if (tmp == NULL)
-//		return (NULL);
-//	tmp[count] = NULL;
-//	while (*begin)
-//	{
-//		tmp[--count] = (*begin)->data;
-//		curr = *begin;
-//		*begin = (*begin)->next;
-//		free(curr);
-//	}
-//	return (tmp);
-//}
 static void	reverse_tokens(t_tokenlist **begin)
 {
 	t_tokenlist *curr;
@@ -139,12 +117,112 @@ static void	reverse_tokens(t_tokenlist **begin)
 	*begin = prev;
 }
 
+//static void	copy_str(const char *str, char *dst)
+//{
+//	int	i;
+//}
+
+static int	strlen_quoted(const char *str)
+{
+
+	const char	limiter = *str;
+	int			len;
+
+	++str;
+	len = 0;
+	while (str[len] && str[len] != limiter)
+		++len;
+	if (str[len] != limiter)
+		return (-1);
+	return (len);
+}
+static int	strlen_unquoted(const char *str)
+{
+	int	len;
+
+	len = 0;
+	while (str[len] && (!is_whitespace(str[len]) && !is_metachar(str[len])
+		&& str[len] != '\'' && str[len] != '"'))
+		++len;
+	return (len);
+}
+
+static int	get_strlen(const char *str)
+{
+	int	i;
+	int	len;
+	int	ret;
+
+	i = 0;
+	len = 0;
+	while (str[i] && !is_metachar(str[i]) && !is_whitespace(str[i]))
+	{
+		if (str[i] == '\'' || str[i] == '"')
+		{
+			ret = strlen_quoted(str + i);
+			if (ret == -1)
+				return (-1);
+			len += ret;
+			i += ret + 2;
+		}
+		else
+		{
+			ret = strlen_unquoted(str + i);
+			len += ret;
+			i += ret;
+		}
+	}
+	return (len);
+}
+
+static int	copy_str(const char *str, char *dst)
+{
+	int	i;
+	int	len;
+	int	ret;
+
+	i = 0;
+	len = 0;
+	while (str[i] && !is_metachar(str[i]) && !is_whitespace(str[i]))
+	{
+		if (str[i] == '\'' || str[i] == '"')
+		{
+			ret = strlen_quoted(str + i);
+			ft_memcpy(dst + len, str + i + 1, ret);
+			len += ret;
+			i += ret + 2;
+		}
+		else
+		{
+			ret = strlen_unquoted(str + i);
+			ft_memcpy(dst + len, str + i, ret);
+			len += ret;
+			i += ret;
+		}
+	}
+	dst[len] = '\0';
+	return (i);
+}
+
+static int	get_str(const char *str, char **dst)
+{
+	int	len;
+
+	len = get_strlen(str);
+	if (len == -1)
+		return (-2);
+	*dst = malloc(sizeof(char) * (len + 1));
+	if (*dst == NULL)
+		return (-1);
+	return (copy_str(str, *dst));
+}
+
 int	tokenize(t_msh *msh, const char *input, t_tokenlist **tokens)
 {
 	//t_tokenlist	*tokenlist; // can be replaced with t_list from libft and turned into an array of tokenlist later
 	char		*tmp;
 	int			i;
-	int			len;
+	int			ret;
 
 	(void) msh;
 	*tokens = NULL;
@@ -153,31 +231,20 @@ int	tokenize(t_msh *msh, const char *input, t_tokenlist **tokens)
 	{
 		while (input[i] && is_whitespace(input[i]))
 			++i;
-		if (input[i] == '\'' || input[i] == '"')
+		//if (input[i] && !is_metachar(input[i]) &&
+		//	(input[i] == '\'' || input[i] == '"'))
+		if (input[i] && !is_metachar(input[i]))
 		{
-			// concat loop here maybe? // NO, can be done after with a struct and a flag to concat the next string // or maybe yes idk we'll see
-			len = get_str_quoted(input + i, &tmp);
-			if (len == -1)
+			ret = get_str(input + i, &tmp);
+			if (ret == -1)
 				return (printf("malloc error get_str_quoted\n"), -1);
-			else if (len == -2)
+			else if (ret == -2)
 				return (printf("unmatch quotation\n"), -1);
 			if (token_add_front(tokens, tmp) == NULL)
-				return (printf("malloc error token_add_front\n"), -1);
-			if (input[i] == '\'')
-				(*tokens)->type = SINGLE_QUOTED_STR;
-			else
-				(*tokens)->type = DOUBLE_QUOTED_STR;
-			i += len + 2;
-		}
-		else if (input[i] && !is_metachar(input[i]))
-		{
-			len = get_str_unquoted(input + i, &tmp);
-			if (len == -1)
-				return (printf("malloc error get_str_unquoted\n"), -1);
-			if (token_add_front(tokens, tmp) == NULL)
-				return (printf("malloc error token_add_front\n"), -1);
-			(*tokens)->type = UNQUOTED_STR;
-			i += len;
+				return (free(tmp), printf("malloc error token_add_front\n"),
+					-1);
+			(*tokens)->type = STR;
+			i += ret;
 		}
 		else if (input[i] && is_metachar(input[i]))
 		{
@@ -258,12 +325,8 @@ int	tokenize(t_msh *msh, const char *input, t_tokenlist **tokens)
 static void	display_token_type(t_tokenlist *token)
 {
 	printf("token type -> ");
-	if (token->type == SINGLE_QUOTED_STR)
-		printf("SINGLE_QUOTED_STR\n");
-	else if (token->type == DOUBLE_QUOTED_STR)
-		printf("DOUBLE_QUOTED_STR\n");
-	else if (token->type == UNQUOTED_STR)
-		printf("UNQUOTED_STR\n");
+	if (token->type == STR)
+		printf("STR\n");
 	else if (token->type == PIPE)
 		printf("PIPE\n");
 	else if (token->type == LOGIC_OR)
@@ -306,24 +369,8 @@ void	display_tokens(t_tokenlist *begin)
 
 void	test_tokenizer(t_msh *msh)
 {
-	//int		i;
 	int		ret;
-	//char	**tokens;
 	t_tokenlist	*tokens; // can be made into an ArrayList
-
-	//if (msh->input[0] != '\'' && msh->input[0] != '"')
-	//	return ((void)printf("Wrong input, fool!\n"));
-	//(void)msh;
-	//char	*test;
-	//int	ret;
-	////ret = get_str_unquoted(msh->input, &test);
-	//ret = get_str_quoted(msh->input, &test);
-	//if (ret == -1)
-	//	return ((vo\nid)printf("Malloc error\n"));
-	////else if (ret == -2)
-	////	return ((void)printf("Unmatched quotation\n"));
-	//printf("'%s'\nlen = %d\n", test, ret);
-	//free(test);
 
 	ret = tokenize(msh, msh->input, &tokens);
 	if (ret < 0)
