@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:00:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/15 19:21:43 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/16 16:36:11 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	main(int ac, char **av, char **envp)
 // Parses inputs, executes commands and updates history
 int	msh_loop(t_msh *msh)
 {
+
 	while (!msh->exit)
 	{
 		msh->input = readline(MSH_PROMPT);
@@ -41,6 +42,7 @@ int	msh_loop(t_msh *msh)
 		//if (msh.cmdline && *(msh.cmdline))
 		if (msh->input[0]) // probably no need for msh.cmdline check because there's a return before
 		{
+			printf("%s\n", make_expansion(msh->env, msh->input));
 			add_history(msh->input); // careful about history with heredoc
 //			test_parentheses(msh->cmdline, 0);
 //			test_parsing(msh, msh->input);
