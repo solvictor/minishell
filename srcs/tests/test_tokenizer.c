@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 16:25:37 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/16 17:00:09 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/05/22 17:41:49 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -367,6 +367,31 @@ void	display_tokens(t_tokenlist *begin)
 	}
 }
 
+typedef struct s_tree t_tree;
+
+struct s_tree {
+	t_tokenlist *cmd;
+	t_tree *left;
+	t_tree *right;
+};
+
+
+t_tree *create_tree(t_tokenlist *tokens)
+{
+	t_tree *tree = NULL;
+	t_tokenlist *current = tokens;
+
+	while (current)
+	{
+		if (current->type == L_BRACKET)
+		{
+			
+		}
+		current = current->next;
+	}
+	return tree;
+}
+
 void	test_tokenizer(t_msh *msh)
 {
 	int		ret;
@@ -376,5 +401,6 @@ void	test_tokenizer(t_msh *msh)
 	if (ret < 0)
 		return (destroy_tokenlist(&tokens), (void)printf(MSH_ERROR ME_TOKEN_CMD));
 	display_tokens(tokens);
+	t_tree *t = create_tree(tokens);
 	destroy_tokenlist(&tokens);
 }
