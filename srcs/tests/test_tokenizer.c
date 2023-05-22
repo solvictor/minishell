@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 16:25:37 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/22 17:41:49 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/22 19:18:14 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -370,10 +370,21 @@ void	display_tokens(t_tokenlist *begin)
 typedef struct s_tree t_tree;
 
 struct s_tree {
-	t_tokenlist *cmd;
-	t_tree *left;
-	t_tree *right;
+	t_tokenlist	*cmd;
+	t_tree		*left;
+	t_tree		*right;
 };
+
+t_tree	*new_tree(void)
+{
+	t_tree	*new;
+
+	new = malloc(sizeof(t_tree));
+	new->cmd = NULL;
+	new->left = NULL;
+	new->right = NULL;
+	return (new);
+}
 
 
 t_tree *create_tree(t_tokenlist *tokens)

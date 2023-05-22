@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:00:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/16 17:24:30 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/22 19:11:08 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	main(int ac, char **av, char **envp)
 // Parses inputs, executes commands and updates history
 int	msh_loop(t_msh *msh)
 {
-
 	while (!msh->exit)
 	{
 		msh->input = readline(MSH_PROMPT);
