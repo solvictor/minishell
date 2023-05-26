@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 16:25:37 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/26 16:09:11 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/05/26 16:40:31 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ static int	is_whitespace(char c)
 // Returns 1 if one given character is a bash metacharacter
 static int	is_metachar(char c)
 {
-	return (c == '|' || c == '&' || c == '(' || c == ')' || c == '<' ||
-		c == '>');
+	return (c == '|' || c == '&' || c == '(' || c == ')' || c == '<'
+		|| c == '>');
 }
 
 static int	get_str_quoted(const char *str, char **dst)
@@ -48,17 +48,18 @@ static int	get_str_quoted(const char *str, char **dst)
 		++i;
 	}
 	(*dst)[i] = '\0';
-	return (len + 2); // could be useful for storing length of token in struct later // added +2 check if ok
+	return (len + 2);
 }
+
 static int	get_str_unquoted(const char *str, char **dst)
 {
-	int			len;
-	int			i;
+	int	len;
+	int	i;
 
 	*dst = NULL;
 	len = 0;
 	while (str[len] && (!is_whitespace(str[len]) && !is_metachar(str[len])
-		&& str[len] != '\'' && str[len] != '"'))
+			&& str[len] != '\'' && str[len] != '"'))
 		++len;
 	*dst = malloc(sizeof(char) * (len + 1));
 	if (*dst == NULL)
@@ -70,7 +71,7 @@ static int	get_str_unquoted(const char *str, char **dst)
 		++i;
 	}
 	(*dst)[i] = '\0';
-	return (len); // could be useful for storing length of token in struct later
+	return (len);
 }
 
 static	t_tokenlist	*token_add_front(t_tokenlist **begin, char *data)
@@ -88,7 +89,7 @@ static	t_tokenlist	*token_add_front(t_tokenlist **begin, char *data)
 
 void	destroy_tokenlist(t_tokenlist **begin)
 {
-	t_tokenlist *tmp;
+	t_tokenlist	*tmp;
 
 	while (*begin)
 	{
@@ -101,9 +102,9 @@ void	destroy_tokenlist(t_tokenlist **begin)
 
 static void	reverse_tokens(t_tokenlist **begin)
 {
-	t_tokenlist *curr;
-	t_tokenlist *prev;
-	t_tokenlist *next;
+	t_tokenlist	*curr;
+	t_tokenlist	*prev;
+	t_tokenlist	*next;
 
 	curr = *begin;
 	prev = NULL;
@@ -270,18 +271,6 @@ int	tokenize(t_msh *msh, const char *input, t_tokenlist **tokens)
 			if (push_str_token(tokens, input, &i) == -1)
 				return (destroy_tokenlist(tokens), -1);
 		}
-		//{
-		//	ret = get_str(input + i, &tmp);
-		//	if (ret == -1)
-		//		return (printf("malloc error get_str_quoted\n"), -1);
-		//	else if (ret == -2)
-		//		return (printf("unmatch quotation\n"), -1);
-		//	if (token_add_front(tokens, tmp) == NULL)
-		//		return (free(tmp), printf("malloc error token_add_front\n"),
-		//			-1);
-		//	(*tokens)->type = STR;
-		//	i += ret;
-		//}
 		else if (input[i])
 			if (push_metachar_token(tokens, input, &i) == -1)
 				return (destroy_tokenlist(tokens), -1);
@@ -344,7 +333,7 @@ void	display_tokens(t_tokenlist *begin)
 
 void	test_tokenizer(t_msh *msh)
 {
-	int		ret;
+	int			ret;
 	t_tokenlist	*tokens; // can be made into an ArrayList
 
 	ret = tokenize(msh, msh->input, &tokens);
