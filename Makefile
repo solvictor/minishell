@@ -39,8 +39,9 @@ SRCS	:=	minishell.c \
 			tests/test_tokenizer.c \
 			tests/test_builtins_finder.c \
 			tests/test_expansion.c \
-			tests/test_signals.c \
-			tests/test_pathfinding.c
+			tests/test_signals.c
+#			tests/test_pathfinding.c
+#			tests/test_pipeline.c
 OBJS	:=	$(SRCS:.c=.o)
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRCS))
 OBJS	:=	$(addprefix $(OBJDIR)/, $(OBJS))
@@ -74,7 +75,7 @@ $(OBJDIR):
 
 clean:
 	make clean -C $(LIBDIR)/$(LIBFT)
-	$(RM) $(OBJS)
+	$(RM) $(OBJDIR)
 
 fclean: clean
 	$(RM) $(LIBDIR)/$(LIBFT)/libft.a
@@ -106,4 +107,4 @@ norm:
 	@echo -e " $(COL_BACK)               $(COL_RESET)"
 	@norminette $(INCDIR) | awk '{if ($$NF == "OK!") { print "$(COL_OK)"$$0"$(COL_RESET)" } else if ($$NF == "Error!") { print "$(COL_ERR)"$$0"$(COL_RESET)" } else { print }}'
 
-.PHONY: all bonus clean fclean re rebonus norm $(OBJDIR)
+.PHONY: all bonus clean fclean re rebonus norm

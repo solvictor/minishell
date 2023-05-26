@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 16:25:37 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/16 17:00:09 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/05/26 16:09:11 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	get_str_quoted(const char *str, char **dst)
 		++i;
 	}
 	(*dst)[i] = '\0';
-	return (len); // could be useful for storing length of token in struct later
+	return (len + 2); // could be useful for storing length of token in struct later // added +2 check if ok
 }
 static int	get_str_unquoted(const char *str, char **dst)
 {
@@ -117,207 +117,175 @@ static void	reverse_tokens(t_tokenlist **begin)
 	*begin = prev;
 }
 
-//static void	copy_str(const char *str, char *dst)
+//static int	strlen_quoted(const char *str)
 //{
-//	int	i;
+//
+//	const char	limiter = *str;
+//	int			len;
+//
+//	++str;
+//	len = 0;
+//	while (str[len] && str[len] != limiter)
+//		++len;
+//	if (str[len] != limiter)
+//		return (-1);
+//	return (len);
+//}
+//static int	strlen_unquoted(const char *str)
+//{
+//	int	len;
+//
+//	len = 0;
+//	while (str[len] && (!is_whitespace(str[len]) && !is_metachar(str[len])
+//		&& str[len] != '\'' && str[len] != '"'))
+//		++len;
+//	return (len);
 //}
 
-static int	strlen_quoted(const char *str)
+//static int	copy_str(const char *str, char *dst)
+//{
+//	int	i;
+//	int	len;
+//	int	ret;
+//
+//	i = 0;
+//	len = 0;
+//	while (str[i] && !is_metachar(str[i]) && !is_whitespace(str[i]))
+//	{
+//		if (str[i] == '\'' || str[i] == '"')
+//		{
+//			ret = strlen_quoted(str + i);
+//			ft_memcpy(dst + len, str + i + 1, ret);
+//			len += ret;
+//			i += ret + 2;
+//		}
+//		else
+//		{
+//			ret = strlen_unquoted(str + i);
+//			ft_memcpy(dst + len, str + i, ret);
+//			len += ret;
+//			i += ret;
+//		}
+//	}
+//	dst[len] = '\0';
+//	return (i);
+//}
+
+//static int	get_str(const char *str, char **dst)
+//{
+//	int	len;
+//
+//	len = get_strlen(str);
+//	if (len == -1)
+//		return (-2);
+//	*dst = malloc(sizeof(char) * (len + 1));
+//	if (*dst == NULL)
+//		return (-1);
+//	return (copy_str(str, *dst));
+//}
+
+static t_tokentype	get_metachar_tokentype(const char *input, int *i)
 {
-
-	const char	limiter = *str;
-	int			len;
-
-	++str;
-	len = 0;
-	while (str[len] && str[len] != limiter)
-		++len;
-	if (str[len] != limiter)
-		return (-1);
-	return (len);
-}
-static int	strlen_unquoted(const char *str)
-{
-	int	len;
-
-	len = 0;
-	while (str[len] && (!is_whitespace(str[len]) && !is_metachar(str[len])
-		&& str[len] != '\'' && str[len] != '"'))
-		++len;
-	return (len);
-}
-
-static int	get_strlen(const char *str)
-{
-	int	i;
-	int	len;
-	int	ret;
-
-	i = 0;
-	len = 0;
-	while (str[i] && !is_metachar(str[i]) && !is_whitespace(str[i]))
-	{
-		if (str[i] == '\'' || str[i] == '"')
-		{
-			ret = strlen_quoted(str + i);
-			if (ret == -1)
-				return (-1);
-			len += ret;
-			i += ret + 2;
-		}
-		else
-		{
-			ret = strlen_unquoted(str + i);
-			len += ret;
-			i += ret;
-		}
-	}
-	return (len);
-}
-
-static int	copy_str(const char *str, char *dst)
-{
-	int	i;
-	int	len;
-	int	ret;
-
-	i = 0;
-	len = 0;
-	while (str[i] && !is_metachar(str[i]) && !is_whitespace(str[i]))
-	{
-		if (str[i] == '\'' || str[i] == '"')
-		{
-			ret = strlen_quoted(str + i);
-			ft_memcpy(dst + len, str + i + 1, ret);
-			len += ret;
-			i += ret + 2;
-		}
-		else
-		{
-			ret = strlen_unquoted(str + i);
-			ft_memcpy(dst + len, str + i, ret);
-			len += ret;
-			i += ret;
-		}
-	}
-	dst[len] = '\0';
-	return (i);
+	if (input[*i] == '(')
+		return (++(*i), L_BRACKET);
+	else if (input[*i] == ')')
+		return (++(*i), R_BRACKET);
+	else if (input[*i] == '|' && input[*i + 1] != '|')
+		return (++(*i), PIPE);
+	else if (input[*i] == '|' && input[*i + 1] == '|')
+		return (((*i) += 2), LOGIC_OR);
+	else if (input[*i] == '&' && input[*i + 1] == '&')
+		return (((*i) += 2), LOGIC_AND);
+	else if (input[*i] == '<' && input[*i + 1] != '<')
+		return (++(*i), L_REDIR_TRUNC);
+	else if (input[*i] == '>' && input[*i + 1] != '>')
+		return (++(*i), R_REDIR_TRUNC);
+	else if (input[*i] == '<' && input[*i + 1] == '<')
+		return (((*i) += 2), L_REDIR_APPEND);
+	else if (input[*i] == '>' && input[*i + 1] == '>')
+		return (((*i) += 2), R_REDIR_APPEND);
+	else
+		return (++(*i), UNKNOWN); // what the fuck do i do in this case??
 }
 
-static int	get_str(const char *str, char **dst)
+static int	push_metachar_token(t_tokenlist **tokens, const char *input, int *i)
 {
-	int	len;
+	if (token_add_front(tokens, NULL) == NULL)
+		return (printf("malloc error token_add_front\n"), -1);
+	(*tokens)->type = get_metachar_tokentype(input, i);
+	(*tokens)->concat_next = 0;
+	return (0);
+}
 
-	len = get_strlen(str);
-	if (len == -1)
-		return (-2);
-	*dst = malloc(sizeof(char) * (len + 1));
-	if (*dst == NULL)
-		return (-1);
-	return (copy_str(str, *dst));
+static char	*get_str_token(const char *input, int *i)
+{
+	int		ret;
+	char	*tmp;
+
+	if (input[*i] == '"' || input[*i] == '\'')
+		ret = get_str_quoted(input + *i, &tmp);
+	else
+		ret = get_str_unquoted(input + *i, &tmp);
+	if (ret == -1)
+		return (printf("malloc error in get_str_token\n"), NULL);
+	else if (ret == -2)
+		return (printf("Unmatch quotation\n"), NULL);
+	*i += ret;
+	return (tmp);
+}
+
+static int	push_str_token(t_tokenlist **tokens, const char *input, int *i)
+{
+	if (token_add_front(tokens, NULL) == NULL)
+		return (printf("malloc error token_add_front\n"), -1);
+	if (input[*i] == '"')
+		(*tokens)->type = DOUBLE_QUOTED_STR;
+	else if (input[*i] == '\'')
+		(*tokens)->type = SINGLE_QUOTED_STR;
+	else
+		(*tokens)->type = UNQUOTED_STR;
+	(*tokens)->data = get_str_token(input, i);
+	if ((*tokens)->data == NULL)
+		return (printf("malloc error get_str_token\n"), -1);
+	if (input[*i] && !is_metachar(input[*i]) && !is_whitespace(input[*i]))
+		(*tokens)->concat_next = 1;
+	else
+		(*tokens)->concat_next = 0;
+	return (0);
 }
 
 int	tokenize(t_msh *msh, const char *input, t_tokenlist **tokens)
 {
-	//t_tokenlist	*tokenlist; // can be replaced with t_list from libft and turned into an array of tokenlist later
-	char		*tmp;
 	int			i;
-	int			ret;
 
-	(void) msh;
+	(void)msh;
 	*tokens = NULL;
 	i = 0;
 	while (input[i])
 	{
 		while (input[i] && is_whitespace(input[i]))
 			++i;
-		//if (input[i] && !is_metachar(input[i]) &&
-		//	(input[i] == '\'' || input[i] == '"'))
 		if (input[i] && !is_metachar(input[i]))
 		{
-			ret = get_str(input + i, &tmp);
-			if (ret == -1)
-				return (printf("malloc error get_str_quoted\n"), -1);
-			else if (ret == -2)
-				return (printf("unmatch quotation\n"), -1);
-			if (token_add_front(tokens, tmp) == NULL)
-				return (free(tmp), printf("malloc error token_add_front\n"),
-					-1);
-			(*tokens)->type = STR;
-			i += ret;
+			if (push_str_token(tokens, input, &i) == -1)
+				return (destroy_tokenlist(tokens), -1);
 		}
-		else if (input[i] && is_metachar(input[i]))
-		{
-			if (token_add_front(tokens, NULL) == NULL)
-				return (printf("malloc error token_add_front\n"), -1);
-			if (input[i] == '(')
-			{
-				(*tokens)->type = L_BRACKET;
-				++i;
-			}
-			else if (input[i] == ')')
-			{
-				(*tokens)->type = R_BRACKET;
-				++i;
-			}
-			else if (input[i] == '|' && input[i + 1] != '|')
-			{
-				(*tokens)->type = PIPE;
-				++i;
-			}
-			else if (input[i] == '|' && input[i + 1] == '|')
-			{
-				(*tokens)->type = LOGIC_OR;
-				i += 2;
-			}
-			else if (input[i] == '&' && input[i + 1] == '&')
-			{
-				(*tokens)->type = LOGIC_AND;
-				i += 2;
-			}
-			else if (input[i] == '<' && input[i + 1] != '<')
-			{
-				(*tokens)->type = L_REDIR_TRUNC;
-				++i;
-			}
-			else if (input[i] == '>' && input[i + 1] != '>')
-			{
-				(*tokens)->type = R_REDIR_TRUNC;
-				++i;
-			}
-			else if (input[i] == '<' && input[i + 1] == '<')
-			{
-				(*tokens)->type = L_REDIR_APPEND;
-				i += 2;
-			}
-			else if (input[i] == '>' && input[i + 1] == '>')
-			{
-				(*tokens)->type = R_REDIR_APPEND;
-				i += 2;
-			}
-			else
-			{
-				// not sure what to do here but something NEEDS to be done // saw some people interpret this as string but maybe i should just send back an error message? like "unknown operand" or something
-				(*tokens)->type = UNKNOWN; // send error message in this case
-				++i;
-			}
-			// no alloc needed for string of token so set to NULL
-			(*tokens)->data = NULL;
-		}
-		else
-		{
-			//printf("untreated character -> '%c'\n", input[i]);
-			++i;
-		}
-		//else
 		//{
-		//	if (is_metachar(input[i]))
-		//		get_meta_component(input + i, &tmp);
+		//	ret = get_str(input + i, &tmp);
+		//	if (ret == -1)
+		//		return (printf("malloc error get_str_quoted\n"), -1);
+		//	else if (ret == -2)
+		//		return (printf("unmatch quotation\n"), -1);
+		//	if (token_add_front(tokens, tmp) == NULL)
+		//		return (free(tmp), printf("malloc error token_add_front\n"),
+		//			-1);
+		//	(*tokens)->type = STR;
+		//	i += ret;
 		//}
+		else if (input[i])
+			if (push_metachar_token(tokens, input, &i) == -1)
+				return (destroy_tokenlist(tokens), -1);
 	}
-	//*tokens = reverse_tokens(&tokenlist);
-	//if (*tokens == NULL)
-	//	return (destroy_tokenlist(&tokenlist), -1);
 	reverse_tokens(tokens);
 	return (0);
 }
@@ -325,8 +293,12 @@ int	tokenize(t_msh *msh, const char *input, t_tokenlist **tokens)
 static void	display_token_type(t_tokenlist *token)
 {
 	printf("token type -> ");
-	if (token->type == STR)
-		printf("STR\n");
+	if (token->type == UNQUOTED_STR)
+		printf("UNQUOTED_STR\n");
+	else if (token->type == DOUBLE_QUOTED_STR)
+		printf("DOUBLE_QUOTED_STR\n");
+	else if (token->type == SINGLE_QUOTED_STR)
+		printf("SINGLE_QUOTED_STR\n");
 	else if (token->type == PIPE)
 		printf("PIPE\n");
 	else if (token->type == LOGIC_OR)
@@ -359,7 +331,10 @@ void	display_tokens(t_tokenlist *begin)
 	while (curr)
 	{
 		printf("TOKEN #%d\n", i);
-		printf("token data -> %s\n", curr->data);
+		printf("token data -> %s", curr->data);
+		if (curr->concat_next)
+			printf(" --->");
+		printf("\n");
 		display_token_type(curr);
 		printf("\n");
 		curr = curr->next;
@@ -374,7 +349,7 @@ void	test_tokenizer(t_msh *msh)
 
 	ret = tokenize(msh, msh->input, &tokens);
 	if (ret < 0)
-		return (destroy_tokenlist(&tokens), (void)printf(MSH_ERROR ME_TOKEN_CMD));
+		return ((void)printf(MSH_ERROR ME_TOKEN_CMD));
 	display_tokens(tokens);
 	destroy_tokenlist(&tokens);
 }

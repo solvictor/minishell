@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/16 17:23:49 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/26 14:19:51 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,10 @@ typedef int					(*t_builtin)(t_msh *, char **);
 
 enum e_tokentype
 {
-	STR,
+	//STR,
+	UNQUOTED_STR,
+	DOUBLE_QUOTED_STR,
+	SINGLE_QUOTED_STR,
 	PIPE,
 	LOGIC_OR,
 	LOGIC_AND,
@@ -71,12 +74,14 @@ struct s_tokenlist
 {
 	char		*data;
 	t_tokentype	type;
+	int			concat_next;
 	t_tokenlist	*next;
 };
 struct s_cmd
 {
-	char	*path;
-	char	**args;
+	char		*path;
+	char		**args;
+	t_tokenlist	*start_token;
 };
 struct	s_env
 {
