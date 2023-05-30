@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:18:21 by vegret            #+#    #+#             */
-/*   Updated: 2023/05/16 17:56:03 by vegret           ###   ########.fr       */
+/*   Updated: 2023/05/30 13:56:29 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static int	get_expanded_size(t_env *env, char *str)
 {
-	int		size;
 	int		j;
+	int		size;
 	char	old;
 	char	*content;
 
@@ -41,7 +41,7 @@ static int	get_expanded_size(t_env *env, char *str)
 	return (size);
 }
 
-static void expand(t_env *env, char *str, char *dst)
+static void	expand(t_env *env, char *str, char *dst)
 {
 	int		j;
 	char	old;
@@ -70,8 +70,8 @@ static void expand(t_env *env, char *str, char *dst)
 
 char	*make_expansion(t_env *env, char *str)
 {
-	char	*expanded;
 	int		size;
+	char	*expanded;
 
 	size = get_expanded_size(env, str) + 1;
 	expanded = malloc(size * sizeof(char));
