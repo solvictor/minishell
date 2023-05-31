@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/26 14:19:51 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/05/29 17:20:51 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ struct s_parse_stack
 };
 
 typedef enum e_tokentype	t_tokentype;
+typedef enum e_nodetype		t_nodetype;
 typedef struct s_tokenlist	t_tokenlist;
 typedef struct s_cmd		t_cmd;
 typedef struct s_env		t_env;
@@ -54,7 +55,6 @@ typedef int					(*t_builtin)(t_msh *, char **);
 
 enum e_tokentype
 {
-	//STR,
 	UNQUOTED_STR,
 	DOUBLE_QUOTED_STR,
 	SINGLE_QUOTED_STR,
@@ -67,9 +67,24 @@ enum e_tokentype
 	R_REDIR_APPEND,
 	L_BRACKET,
 	R_BRACKET,
+	NONE,
 	UNKNOWN
 };
+enum e_nodetype
+{
+	COMMAND,
+	PIPELINE,
+	CHILD_NODE
+}
 
+struct s_astnode
+{
+	void		*left;
+	void		*right;
+	t_nodetype	left_type;
+	t_nodetype	right_type;
+	t_tokentype	operand;
+}
 struct s_tokenlist
 {
 	char		*data;
@@ -82,6 +97,7 @@ struct s_cmd
 	char		*path;
 	char		**args;
 	t_tokenlist	*start_token;
+
 };
 struct	s_env
 {
