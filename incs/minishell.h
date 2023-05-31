@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/26 14:19:51 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/05/31 17:26:02 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@
 # include <errno.h>
 # include <signal.h>
 # include <unistd.h>
+# include <stdbool.h>
+# include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <sys/wait.h>
 
 # define MSH_PROMPT		"\e[38;2;255;0;255mminishell>\e[0m " // lame... make it better
 
