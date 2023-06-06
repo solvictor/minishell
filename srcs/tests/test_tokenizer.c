@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 16:25:37 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/26 16:40:31 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/06 22:01:17 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,13 +198,13 @@ static t_tokentype	get_metachar_tokentype(const char *input, int *i)
 	else if (input[*i] == '&' && input[*i + 1] == '&')
 		return (((*i) += 2), LOGIC_AND);
 	else if (input[*i] == '<' && input[*i + 1] != '<')
-		return (++(*i), L_REDIR_TRUNC);
+		return (++(*i), L_ARROW_SINGLE);
 	else if (input[*i] == '>' && input[*i + 1] != '>')
-		return (++(*i), R_REDIR_TRUNC);
+		return (++(*i), R_ARROW_SINGLE);
 	else if (input[*i] == '<' && input[*i + 1] == '<')
-		return (((*i) += 2), L_REDIR_APPEND);
+		return (((*i) += 2), L_ARROW_DOUBLE);
 	else if (input[*i] == '>' && input[*i + 1] == '>')
-		return (((*i) += 2), R_REDIR_APPEND);
+		return (((*i) += 2), R_ARROW_DOUBLE);
 	else
 		return (++(*i), UNKNOWN); // what the fuck do i do in this case??
 }
@@ -294,18 +294,20 @@ static void	display_token_type(t_tokenlist *token)
 		printf("LOGIC_OR\n");
 	else if (token->type == LOGIC_AND)
 		printf("LOGIC_AND\n");
-	else if (token->type == L_REDIR_TRUNC)
-		printf("L_REDIR_TRUNC\n");
-	else if (token->type == R_REDIR_TRUNC)
-		printf("R_REDIR_TRUNC\n");
-	else if (token->type == L_REDIR_APPEND)
-		printf("L_REDIR_APPEND\n");
-	else if (token->type == R_REDIR_APPEND)
-		printf("R_REDIR_APPEND\n");
+	else if (token->type == L_ARROW_SINGLE)
+		printf("L_ARROW_SINGLE\n");
+	else if (token->type == R_ARROW_SINGLE)
+		printf("R_ARROW_SINGLE\n");
+	else if (token->type == L_ARROW_DOUBLE)
+		printf("L_ARROW_DOUBLE\n");
+	else if (token->type == R_ARROW_DOUBLE)
+		printf("R_ARROW_DOUBLE\n");
 	else if (token->type == L_BRACKET)
 		printf("L_BRACKET\n");
 	else if (token->type == R_BRACKET)
 		printf("R_BRACKET\n");
+	else if (token->type == HEREDOC)
+		printf("HEREDOC\n");
 	else
 		printf("UNKNOWN\n");
 }
@@ -338,7 +340,7 @@ void	test_tokenizer(t_msh *msh)
 
 	ret = tokenize(msh, msh->input, &tokens);
 	if (ret < 0)
-		return ((void)printf(MSH_ERROR ME_TOKEN_CMD));
+		return ((void)printf(MSH_ERROR ME_TOKENIZE));
 	display_tokens(tokens);
 	destroy_tokenlist(&tokens);
 }
