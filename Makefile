@@ -8,7 +8,7 @@ LIBFT	=	libft
 
 # Compiler options
 CC		=	cc
-CWARNS	=	-Wall -Wextra -MD
+CWARNS	=	-Wall -Wextra -Werror -MD
 CLIBS	=	-L./$(LIBDIR) -lft -lreadline
 CINCS	=	-I./$(INCDIR) -I./$(LIBFT)
 
@@ -40,8 +40,8 @@ SRCS	:=	minishell.c \
 			tests/test_builtins_finder.c \
 			tests/test_expansion.c \
 			tests/test_signals.c \
-			tests/test_pathfinding.c \
-			tests/test_pipeline.c
+			tests/test_pathfinding.c
+#			tests/test_pipeline.c
 OBJS	:=	$(SRCS:.c=.o)
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRCS))
 OBJS	:=	$(addprefix $(OBJDIR)/, $(OBJS))

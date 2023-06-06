@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:00:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/26 18:09:24 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/06 22:00:06 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,11 @@ int	msh_loop(t_msh *msh)
 			//printf("%s\n", make_expansion(msh->env, msh->input));
 			add_history(msh->input); // careful about history with heredoc
 //			test_parentheses(msh->cmdline, 0);
-//			test_parsing(msh, msh->input);
+			test_parsing(msh);
 //			test_quotes(msh, msh->input);
 //			test_tokenizer(msh);
 //			test_pathfinding(msh);
-			test_pipeline(msh);
+//			test_pipeline(msh);
 		}
 		free(msh->input);
 	}

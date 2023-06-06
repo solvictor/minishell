@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/29 17:20:51 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/06 21:59:45 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # define MSH_ERROR		"\e[31;7;1m[MINISHELL ERROR]\e[0m "
 # define ME_AC			"Minishell takes no arguments\n"
 # define ME_ENV			"Failed to create minishell environment\n"
-# define ME_TOKEN_CMD	"Failed to tokenize command\n"
+# define ME_TOKENIZE	"Failed to tokenize\n"
 # define ME_PARSE_CMD	"Failed to parse command\n"
 # define ME_SPLIT_ARGS	"Failed to split command arguments\n"
 # define ME_EXEC_CMD	"Failed to exec command\n"
@@ -61,30 +61,31 @@ enum e_tokentype
 	PIPE,
 	LOGIC_OR,
 	LOGIC_AND,
-	L_REDIR_TRUNC,
-	R_REDIR_TRUNC,
-	L_REDIR_APPEND,
-	R_REDIR_APPEND,
+	L_ARROW_SINGLE,
+	R_ARROW_SINGLE,
+	L_ARROW_DOUBLE,
+	R_ARROW_DOUBLE,
 	L_BRACKET,
 	R_BRACKET,
+	HEREDOC,
 	NONE,
 	UNKNOWN
 };
-enum e_nodetype
+enum e_nodetype // DONT FORGET TO LASKDFJLAKSDJFLAKSDJFLAKFJKLAJFASKDLJFALSFJAKLSJFAKLSD
 {
 	COMMAND,
 	PIPELINE,
 	CHILD_NODE
-}
+};
 
-struct s_astnode
-{
-	void		*left;
-	void		*right;
-	t_nodetype	left_type;
-	t_nodetype	right_type;
-	t_tokentype	operand;
-}
+//struct s_astnode
+//{
+//	void		*left;
+//	void		*right;
+//	t_nodetype	left_type;
+//	t_nodetype	right_type;
+//	t_tokentype	operand;
+//}
 struct s_tokenlist
 {
 	char		*data;
@@ -161,7 +162,7 @@ int	setup_signals(void);
 
 // tests folder // remooooooooooooooooooooooooooooooooooooooooooooooooooooooooove later
 //void	test_parentheses(const char *line, int left);
-//void	test_parsing(const char *line);
+void	test_parsing(t_msh *msh);
 //void	test_quotes(t_msh *msh, const char *line);
 void	test_tokenizer(t_msh *msh);
 void	destroy_tokenlist(t_tokenlist **begin);
