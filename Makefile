@@ -35,7 +35,7 @@ SRCS	:=	minishell.c \
 			builtins/export/export.c \
 			builtins/unset/unset.c \
 			tests/test_parenthesis.c \
-			tests/test_parsing.c \
+			tests/test_command.c \
 			tests/test_tokenizer.c \
 			tests/test_builtins_finder.c \
 			tests/test_expansion.c \

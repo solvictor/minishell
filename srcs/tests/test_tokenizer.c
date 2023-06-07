@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 16:25:37 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/06 22:01:17 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/07 22:57:35 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,13 +198,13 @@ static t_tokentype	get_metachar_tokentype(const char *input, int *i)
 	else if (input[*i] == '&' && input[*i + 1] == '&')
 		return (((*i) += 2), LOGIC_AND);
 	else if (input[*i] == '<' && input[*i + 1] != '<')
-		return (++(*i), L_ARROW_SINGLE);
+		return (++(*i), INPUTFILE);
 	else if (input[*i] == '>' && input[*i + 1] != '>')
-		return (++(*i), R_ARROW_SINGLE);
+		return (++(*i), OUTPUT_TRUNC);
 	else if (input[*i] == '<' && input[*i + 1] == '<')
-		return (((*i) += 2), L_ARROW_DOUBLE);
+		return (((*i) += 2), HEREDOC);
 	else if (input[*i] == '>' && input[*i + 1] == '>')
-		return (((*i) += 2), R_ARROW_DOUBLE);
+		return (((*i) += 2), OUTPUT_APPEND);
 	else
 		return (++(*i), UNKNOWN); // what the fuck do i do in this case??
 }
@@ -290,24 +290,30 @@ static void	display_token_type(t_tokenlist *token)
 		printf("SINGLE_QUOTED_STR\n");
 	else if (token->type == PIPE)
 		printf("PIPE\n");
-	else if (token->type == LOGIC_OR)
-		printf("LOGIC_OR\n");
-	else if (token->type == LOGIC_AND)
-		printf("LOGIC_AND\n");
-	else if (token->type == L_ARROW_SINGLE)
-		printf("L_ARROW_SINGLE\n");
-	else if (token->type == R_ARROW_SINGLE)
-		printf("R_ARROW_SINGLE\n");
-	else if (token->type == L_ARROW_DOUBLE)
-		printf("L_ARROW_DOUBLE\n");
-	else if (token->type == R_ARROW_DOUBLE)
-		printf("R_ARROW_DOUBLE\n");
+	//else if (token->type == L_ARROW_SINGLE)
+	//	printf("L_ARROW_SINGLE\n");
+	//else if (token->type == R_ARROW_SINGLE)
+	//	printf("R_ARROW_SINGLE\n");
+	//else if (token->type == L_ARROW_DOUBLE)
+	//	printf("L_ARROW_DOUBLE\n");
+	//else if (token->type == R_ARROW_DOUBLE)
+	//	printf("R_ARROW_DOUBLE\n");
+	else if (token->type == HEREDOC)
+		printf("HEREDOC\n");
+	else if (token->type == INPUTFILE)
+		printf("INPUTFILE\n");
+	else if (token->type == OUTPUT_TRUNC)
+		printf("OUTPUT_TRUNC\n");
+	else if (token->type == OUTPUT_APPEND)
+		printf("OUTPUT_APPEND\n");
 	else if (token->type == L_BRACKET)
 		printf("L_BRACKET\n");
 	else if (token->type == R_BRACKET)
 		printf("R_BRACKET\n");
-	else if (token->type == HEREDOC)
-		printf("HEREDOC\n");
+	else if (token->type == LOGIC_OR)
+		printf("LOGIC_OR\n");
+	else if (token->type == LOGIC_AND)
+		printf("LOGIC_AND\n");
 	else
 		printf("UNKNOWN\n");
 }

@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/06 22:14:34 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/07 23:00:39 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,19 @@ enum e_tokentype
 	UNQUOTED_STR,
 	DOUBLE_QUOTED_STR,
 	SINGLE_QUOTED_STR,
+	HEREDOC,
+	INPUTFILE,
+	OUTPUT_TRUNC,
+	OUTPUT_APPEND,
 	PIPE,
-	LOGIC_OR,
-	LOGIC_AND,
-	L_ARROW_SINGLE,
-	R_ARROW_SINGLE,
-	L_ARROW_DOUBLE,
-	R_ARROW_DOUBLE,
+	//L_ARROW_SINGLE,
+	//R_ARROW_SINGLE,
+	//L_ARROW_DOUBLE,
+	//R_ARROW_DOUBLE,
 	L_BRACKET,
 	R_BRACKET,
-	HEREDOC,
-	NONE,
+	LOGIC_OR,
+	LOGIC_AND,
 	UNKNOWN
 };
 enum e_nodetype // DONT FORGET TO LASKDFJLAKSDJFLAKSDJFLAKFJKLAJFASKDLJFALSFJAKLSJFAKLSD
@@ -163,7 +165,8 @@ int	setup_signals(void);
 
 // tests folder // remooooooooooooooooooooooooooooooooooooooooooooooooooooooooove later
 //void	test_parentheses(const char *line, int left);
-void	test_parsing(t_msh *msh);
+//void	test_parsing(t_msh *msh);
+void	test_command(t_msh *msh);
 //void	test_quotes(t_msh *msh, const char *line);
 void	test_tokenizer(t_msh *msh);
 void	destroy_tokenlist(t_tokenlist **begin);
