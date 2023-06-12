@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:00:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/07 23:00:17 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/12 16:43:19 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,12 @@ int	main(int ac, char **av, char **envp)
 // Parses inputs, executes commands and updates history
 int	msh_loop(t_msh *msh)
 {
-
 	while (!msh->exit)
 	{
-		msh->input = readline(MSH_PROMPT);
+		if (isatty(0))
+			msh->input = readline(MSH_PROMPT);
+		else
+			msh->input = readline(NULL);
 		if (msh->input == NULL) // readline manual says NULL is returned when EOF encountered on an empty line so this should handle ctrl+d properly (maybe)
 			return (0);
 		//if (msh.cmdline && *(msh.cmdline))

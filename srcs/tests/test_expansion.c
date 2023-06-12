@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:18:21 by vegret            #+#    #+#             */
-/*   Updated: 2023/05/30 13:56:29 by vegret           ###   ########.fr       */
+/*   Updated: 2023/06/09 17:30:28 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	get_expanded_size(t_env *env, char *str)
 				j++;
 			old = str[j];
 			str[j] = '\0';
-			content = get_val(env, str);
+			content = get_env_val(env, str);
 			str[j] = old;
 			if (content)
 				size += ft_strlen(content);
@@ -56,7 +56,7 @@ static void	expand(t_env *env, char *str, char *dst)
 				j++;
 			old = str[j];
 			str[j] = '\0';
-			content = get_val(env, str + 1);
+			content = get_env_val(env, str + 1);
 			str[j] = old;
 			if (content)
 				while (*content)

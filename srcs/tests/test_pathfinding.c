@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 16:11:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/06 21:07:47 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/10 18:37:21 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static char	**get_args(t_msh *msh)
 	return (tmp);
 }
 
-static char	**get_paths(t_env *env)
+char	**get_paths(t_env *env)
 {
 	char	**paths;
 	t_env	*curr;

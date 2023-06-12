@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 19:05:35 by vegret            #+#    #+#             */
-/*   Updated: 2023/05/13 21:42:55 by vegret           ###   ########.fr       */
+/*   Updated: 2023/06/09 17:05:11 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ static int	unset(t_msh *msh, char *var)
 	if (target == msh->env)
 	{
 		msh->env = msh->env->next;
-		msh->env->prec = NULL;
+		msh->env->prev = NULL;
 	}
 	else
 	{
-		target->prec->next = target->next;
-		target->next->prec = target->prec;
+		target->prev->next = target->next;
+		target->next->prev = target->prev;
 	}
 	free(target->var);
 	free(target);

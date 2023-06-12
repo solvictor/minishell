@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 10:37:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/31 17:32:54 by vegret           ###   ########.fr       */
+/*   Updated: 2023/06/09 19:54:04 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	builtin_cd(t_msh *msh, char **args)
 		ft_dprintf(STDERR_FILENO, "bash: cd: too many arguments\n");
 		return (1);
 	}
-	path = get_val(msh->env, "HOME");
+	path = get_env_val(msh->env, "HOME");
 	if (!path)
 	{
 		ft_dprintf(STDERR_FILENO, "bash: cd: HOME not set\n");

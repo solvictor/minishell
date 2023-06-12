@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/07 23:00:39 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/10 18:37:17 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,15 +59,16 @@ enum e_tokentype
 	UNQUOTED_STR,
 	DOUBLE_QUOTED_STR,
 	SINGLE_QUOTED_STR,
+	MERGED_STR,
 	HEREDOC,
 	INPUTFILE,
 	OUTPUT_TRUNC,
 	OUTPUT_APPEND,
-	PIPE,
 	//L_ARROW_SINGLE,
 	//R_ARROW_SINGLE,
 	//L_ARROW_DOUBLE,
 	//R_ARROW_DOUBLE,
+	PIPE,
 	L_BRACKET,
 	R_BRACKET,
 	LOGIC_OR,
@@ -100,12 +101,13 @@ struct s_cmd
 {
 	char		*path;
 	char		**args;
+	char		**env;
 	t_tokenlist	*start_token;
 
 };
 struct	s_env
 {
-	t_env	*prec;
+	t_env	*prev;
 	char	*var;
 	t_env	*next;
 };
@@ -135,7 +137,7 @@ void	clear_strarr(char **arr);
 t_env	*env_new(char *var);
 char	**env_to_arr(t_env *env);
 void	destroy_env_list(t_env **env);
-char	*get_val(t_env *env, char *key);
+char	*get_env_val(t_env *env, char *key);
 t_env	*get_env(t_env *env, char *key);
 
 // -------- //
@@ -171,7 +173,11 @@ void	test_command(t_msh *msh);
 void	test_tokenizer(t_msh *msh);
 void	destroy_tokenlist(t_tokenlist **begin);
 int		tokenize(t_msh *msh, const char *input, t_tokenlist **tokens);
+
+char	**get_paths(t_env *env);
+int	find_cmd(char **paths, t_cmd *cmd);
 void	test_pathfinding(t_msh *msh);
+
 void	display_tokens(t_tokenlist *begin);
 
 char	*make_expansion(t_env *env, char *str);

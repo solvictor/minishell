@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 13:39:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/15 18:28:22 by vegret           ###   ########.fr       */
+/*   Updated: 2023/06/09 17:29:41 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_env	*env_new(char *var)
 	if (tmp->var == NULL)
 		return (free(tmp), NULL);
 	tmp->next = NULL;
-	tmp->prec = NULL;
+	tmp->prev = NULL;
 	return (tmp);
 }
 
@@ -85,7 +85,7 @@ t_env	*get_env(t_env *env, char *key)
 	return (NULL);
 }
 
-char	*get_val(t_env *env, char *key)
+char	*get_env_val(t_env *env, char *key)
 {
 	int	len_key;
 
