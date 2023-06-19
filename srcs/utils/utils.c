@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 06:26:22 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/17 00:50:14 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/19 18:27:59 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ void	clear_strarr(char **arr)
 	free(arr);
 }
 
-size_t	rng_bit_rot(size_t num)
+unsigned int rng_bit_rot(unsigned int num)
 {
-	int		shift_val;
-	size_t	shifted_right;
-	size_t	shifted_left;
+	int				shift_val;
+	unsigned int	shifted_right;
+	unsigned int	shifted_left;
 
-	shift_val = RNG_BIT_ROTATIONS % (sizeof(num) * 8);
+	shift_val = num % (sizeof(num) * 8);
 
 	shifted_right = num >> shift_val;
 	shifted_left = num << ((sizeof(num) * 8) - shift_val);

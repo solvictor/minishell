@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/19 10:11:29 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/19 18:29:20 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 
 // SETTINGS
 # define MSH_PROMPT			"\e[38;2;255;0;255mminishell>\e[0m " // lame... make it better
-# define RNG_MODULUS 		10000000
+# define RNG_MAX			INT_MAX
 # define RNG_BIT_ROTATIONS	13
 # define RNG_ZERO_FIX_SEED	694201337
 
@@ -100,9 +100,9 @@ enum e_nodetype // DONT FORGET TO LASKDFJLAKSDJFLAKSDJFLAKFJKLAJFASKDLJFALSFJAKL
 struct s_rng
 {
 	int		fd_urandom;
-	size_t	curr_rand;
-	size_t	multiplier;
-	size_t	increment;
+	unsigned int	rand;
+	unsigned int	mult;
+	unsigned int	inc;
 };
 struct s_tokenlist
 {
@@ -150,14 +150,14 @@ int	init_rng(t_rng *rng);
 // ----- //
 // UTILS //
 // ----- //
-void	msh_terminate(t_msh *msh);
-void	clear_strarr(char **arr);
-size_t	rng_bit_rot(size_t num);
-t_env	*env_new(char *var);
-char	**env_to_arr(t_env *env);
-void	destroy_env_list(t_env **env);
-char	*get_env_val(t_env *env, char *key);
-t_env	*get_env(t_env *env, char *key);
+void			msh_terminate(t_msh *msh);
+void			clear_strarr(char **arr);
+unsigned int	rng_bit_rot(unsigned int num);
+t_env			*env_new(char *var);
+char			**env_to_arr(t_env *env);
+void			destroy_env_list(t_env **env);
+char			*get_env_val(t_env *env, char *key);
+t_env			*get_env(t_env *env, char *key);
 
 // -------- //
 // BUILTINS //

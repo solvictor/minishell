@@ -6,27 +6,27 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 23:37:49 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/17 00:37:27 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/19 17:47:12 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	read_urandom(t_rng *rng)
+static unsigned int	get_randint(t_rng *rng)
 {
-	static ssize_t	zero_fix = RNG_ZERO_FIX_SEED;
-	int	ret;
-	ssize_t	random;
+	static unsigned int	zero_fix = RNG_ZERO_FIX_SEED;
+	unsigned int		randint;
+	int					ret;
 
-	ret = read(rng->fd_urandom, &random, sizeof(random));
+	ret = read(rng->fd_urandom, &randint, sizeof(randint));
 	if (ret == -1)
 		return (0);
-	if (random == 0)
+	if (randint == 0)
 	{
 		zero_fix = rng_bit_rot((zero_fix - 298342394234) * 972893401234);
-		random = zero_fix;
+		randint = zero_fix;
 	}
-	return (random);
+	return (randint);
 }
 
 int	init_rng(t_rng *rng)
@@ -34,14 +34,14 @@ int	init_rng(t_rng *rng)
 	rng->fd_urandom = open("/dev/urandom", O_RDONLY);
 	if (rng->fd_urandom == -1)
 		return (-1);
-	rng->curr_rand = read_urandom(rng);
-	if (rng->curr_rand == 0)
+	rng->rand = get_randint(rng);
+	if (rng->rand == 0)
 		return (-1);
-	rng->multiplier = read_urandom(rng);
-	if (rng->multiplier == 0)
+	rng->mult = get_randint(rng);
+	if (rng->mult == 0)
 		return (-1);
-	rng->increment = read_urandom(rng);
-	if (rng->increment == 0)
+	rng->inc = get_randint(rng);
+	if (rng->inc == 0)
 		return (-1);
 	return (0);
 }
