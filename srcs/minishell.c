@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:00:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/12 16:43:19 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/16 22:17:55 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	msh_loop(t_msh *msh)
 			msh->input = readline(MSH_PROMPT);
 		else
 			msh->input = readline(NULL);
+		//msh->input = readline(NULL);
 		if (msh->input == NULL) // readline manual says NULL is returned when EOF encountered on an empty line so this should handle ctrl+d properly (maybe)
 			return (0);
 		//if (msh.cmdline && *(msh.cmdline))
@@ -52,7 +53,8 @@ int	msh_loop(t_msh *msh)
 //			test_tokenizer(msh);
 //			test_pathfinding(msh);
 //			test_pipeline(msh);
-			test_command(msh);
+//			test_command(msh);
+			test_rng(msh);
 		}
 		free(msh->input);
 	}

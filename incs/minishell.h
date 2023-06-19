@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/10 18:37:17 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/19 10:11:29 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,23 +20,28 @@
 # include <unistd.h>
 # include <stdbool.h>
 # include <sys/wait.h>
+# include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
-# define MSH_PROMPT		"\e[38;2;255;0;255mminishell>\e[0m " // lame... make it better
+// SETTINGS
+# define MSH_PROMPT			"\e[38;2;255;0;255mminishell>\e[0m " // lame... make it better
+# define RNG_MODULUS 		10000000
+# define RNG_BIT_ROTATIONS	13
+# define RNG_ZERO_FIX_SEED	694201337
 
 // ERROR MESSAGES
 # define MSH_ERROR		"\e[31;7;1m[MINISHELL ERROR]\e[0m "
 # define ME_AC			"Minishell takes no arguments\n"
 # define ME_ENV			"Failed to create minishell environment\n"
+# define ME_RNG			"Failed to random number generator\n"
 # define ME_TOKENIZE	"Failed to tokenize\n"
 # define ME_PARSE_CMD	"Failed to parse command\n"
 # define ME_SPLIT_ARGS	"Failed to split command arguments\n"
 # define ME_EXEC_CMD	"Failed to exec command\n"
 # define ME_BAD_FORMAT	"Bad format command\n"
 # define ME_SIGNALS		"Failed to bind signals\n"
-# define ME_LOOP		"Minishell input loop exited with -1, \
-						don't forget to free stuff\n"
+# define ME_LOOP		"Minishell input loop exited with -1\n"
 # define ME_USAGE		"Incorrect usage\n"
 
 typedef struct s_parse_stack	t_parse_stack; // remoooooooooooooooooooooooooove later
@@ -49,6 +54,7 @@ struct s_parse_stack
 typedef enum e_tokentype	t_tokentype;
 typedef enum e_nodetype		t_nodetype;
 typedef struct s_tokenlist	t_tokenlist;
+typedef struct s_rng		t_rng;
 typedef struct s_cmd		t_cmd;
 typedef struct s_env		t_env;
 typedef struct s_msh		t_msh;
@@ -90,6 +96,14 @@ enum e_nodetype // DONT FORGET TO LASKDFJLAKSDJFLAKSDJFLAKFJKLAJFASKDLJFALSFJAKL
 //	t_nodetype	right_type;
 //	t_tokentype	operand;
 //}
+
+struct s_rng
+{
+	int		fd_urandom;
+	size_t	curr_rand;
+	size_t	multiplier;
+	size_t	increment;
+};
 struct s_tokenlist
 {
 	char		*data;
@@ -116,24 +130,29 @@ struct s_msh
 	//char		**envp;
 	t_env		*env;
 	char		*input;
-	t_tokenlist	*tokens; // restructure later so that it's a local variable
+	//t_tokenlist	*tokens; // restructure later so that it's a local variable
 	//t_cmd	cmd; // will have to replace with pipeline or some other new big struct that will contain the whole parsed thing
 	int		exit;
 	int		ret;
+	t_rng	rng;
 };
 
 // minishell.c
 int	msh_loop(t_msh *msh);
 
-// setup.c
+// ----- //
+// SETUP //
+// ----- //
 int	msh_setup(t_msh	*msh, int ac, char **envp);
-// setup_env.c
 int	make_env(t_msh *msh, char **envp);
+int	init_rng(t_rng *rng);
 
-// utils.c
+// ----- //
+// UTILS //
+// ----- //
 void	msh_terminate(t_msh *msh);
 void	clear_strarr(char **arr);
-// utils_env.c
+size_t	rng_bit_rot(size_t num);
 t_env	*env_new(char *var);
 char	**env_to_arr(t_env *env);
 void	destroy_env_list(t_env **env);
@@ -169,6 +188,7 @@ int	setup_signals(void);
 //void	test_parentheses(const char *line, int left);
 //void	test_parsing(t_msh *msh);
 void	test_command(t_msh *msh);
+void	test_rng(t_msh *msh);
 //void	test_quotes(t_msh *msh, const char *line);
 void	test_tokenizer(t_msh *msh);
 void	destroy_tokenlist(t_tokenlist **begin);

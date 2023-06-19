@@ -26,6 +26,7 @@ COL_RESET	=	\033[0m
 SRCS	:=	minishell.c \
 			setup/setup.c \
 			setup/setup_env.c \
+			setup/setup_rng.c \
 			utils/utils.c \
 			utils/utils_env.c \
 			builtins/pwd/pwd.c \
@@ -40,7 +41,8 @@ SRCS	:=	minishell.c \
 			tests/test_builtins_finder.c \
 			tests/test_expansion.c \
 			tests/test_signals.c \
-			tests/test_pathfinding.c
+			tests/test_pathfinding.c \
+			tests/test_rng.c
 #			tests/test_pipeline.c
 OBJS	:=	$(SRCS:.c=.o)
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRCS))

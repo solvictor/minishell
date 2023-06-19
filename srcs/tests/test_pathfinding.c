@@ -6,20 +6,20 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/22 16:11:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/10 18:37:21 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/15 01:21:24 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	**get_args(t_msh *msh)
+static char	**get_args(t_tokenlist *tokens)
 {
 	char	**tmp;
 	int		i;
 	t_tokenlist *curr;
 
 	i = 0;
-	curr = msh->tokens;
+	curr = tokens;
 	while (curr)
 	{
 		++i;
@@ -30,7 +30,7 @@ static char	**get_args(t_msh *msh)
 	if (tmp == NULL)
 		return (NULL);
 	i = 0;
-	curr = msh->tokens;
+	curr = tokens;
 	while (curr)
 	{
 		tmp[i] = curr->data;
@@ -110,34 +110,35 @@ void	test_pathfinding(t_msh *msh)
 {
 	t_cmd		cmd;
 	int			ret;
+	t_tokenlist	*tokens;
 	char		**paths;
 	char		**env_arr;
 	t_builtin	builtin;
 
-	ret = tokenize(msh, msh->input, &msh->tokens);
+	ret = tokenize(msh, msh->input, &tokens);
 	if (ret < 0)
 		return ((void)printf(MSH_ERROR ME_TOKENIZE));
-	//display_tokens(msh->tokens);
+	//display_tokens(tokens);
 
 	paths = get_paths(msh->env);
 	if (paths == NULL)
-		return (destroy_tokenlist(&msh->tokens), (void)printf("failed allocating paths\n"));
+		return (destroy_tokenlist(&tokens), (void)printf("failed allocating paths\n"));
 
-	cmd.args = get_args(msh);
+	cmd.args = get_args(tokens);
 	if (cmd.args == NULL)
-		return (destroy_tokenlist(&msh->tokens), clear_strarr(paths), (void)printf("Failed to allocate args for command\n"));
+		return (destroy_tokenlist(&tokens), clear_strarr(paths), (void)printf("Failed to allocate args for command\n"));
 
 	// TODO Check (valeur de retour du builtin)
 	builtin = get_builtin(&cmd);
 	if (builtin)
-		return (builtin(msh, cmd.args), destroy_tokenlist(&msh->tokens), clear_strarr(paths), free(cmd.args), (void) 0);
+		return (builtin(msh, cmd.args), destroy_tokenlist(&tokens), clear_strarr(paths), free(cmd.args), (void) 0);
 
 	if (find_cmd(paths, &cmd) == -1)
-		return (destroy_tokenlist(&msh->tokens), clear_strarr(paths), free(cmd.args), (void)printf("Failed to find command\n"));
+		return (destroy_tokenlist(&tokens), clear_strarr(paths), free(cmd.args), (void)printf("Failed to find command\n"));
 
 	env_arr = env_to_arr(msh->env);
 	if (env_arr == NULL)
-		return (destroy_tokenlist(&msh->tokens), clear_strarr(paths), free(cmd.args), free(cmd.path), (void)printf("Failed to convert env to str array\n"));
+		return (destroy_tokenlist(&tokens), clear_strarr(paths), free(cmd.args), free(cmd.path), (void)printf("Failed to convert env to str array\n"));
 
 	ret = fork();
 	if (ret == -1)
@@ -147,7 +148,7 @@ void	test_pathfinding(t_msh *msh)
 		if (execve(cmd.path, cmd.args, env_arr) == -1)
 		{
 			printf("Failed to execve\n");
-			destroy_tokenlist(&msh->tokens);
+			destroy_tokenlist(&tokens);
 			free(cmd.args);
 			free(cmd.path);
 			free(env_arr);
@@ -156,7 +157,7 @@ void	test_pathfinding(t_msh *msh)
 		}
 	}
 	waitpid(ret, NULL, 0);
-	destroy_tokenlist(&msh->tokens);
+	destroy_tokenlist(&tokens);
 	free(cmd.args);
 	free(cmd.path);
 	free(env_arr);

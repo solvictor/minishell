@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 12:29:21 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/10 18:41:42 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/15 01:19:22 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,19 +82,19 @@ static char **set_cmd_args(t_cmd *cmd)
 	return (cmd->args);
 }
 
-static void	display_cmd_args(t_cmd *cmd) // REMOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOVE LATER
-{
-	int	i;
-
-	if (cmd == NULL)
-		return ((void)printf("cmd is NULL\n"));
-	if (cmd->args == NULL)
-		return ((void)printf("cmd->args is NULL\n"));
-	i = 0;
-	while (cmd->args[i])
-		printf("%s ", cmd->args[i++]);
-	printf("\n");
-}
+//static void	display_cmd_args(t_cmd *cmd) // REMOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOVE LATER
+//{
+//	int	i;
+//
+//	if (cmd == NULL)
+//		return ((void)printf("cmd is NULL\n"));
+//	if (cmd->args == NULL)
+//		return ((void)printf("cmd->args is NULL\n"));
+//	i = 0;
+//	while (cmd->args[i])
+//		printf("%s ", cmd->args[i++]);
+//	printf("\n");
+//}
 
 static int	set_cmd(t_msh *msh, t_cmd *cmd)
 {
@@ -128,7 +128,7 @@ static int	set_cmd(t_msh *msh, t_cmd *cmd)
 //static int	exec_cmd(t_msh *msh, t_cmd *cmd)
 //{
 //	// do every heredoc and set redirection to final one, free and clean unused heredocs (ignore for now)
-//	// 
+//	
 //}
 
 void	test_command(t_msh *msh)
@@ -141,7 +141,6 @@ void	test_command(t_msh *msh)
 	if (ret < 0)
 		return ((void)printf(MSH_ERROR ME_TOKENIZE));
 
-	//display_tokens(tokens);
 	if (clean_redir_tokens(&tokens) == -1)
 		return (printf("Wrong redirection without delimiter probably\n"),
 			destroy_tokenlist(&tokens));
@@ -151,10 +150,10 @@ void	test_command(t_msh *msh)
 	if (set_cmd(msh, &my_cmd) == -1)
 		return (printf("couldn't set command\n"), destroy_tokenlist(&tokens));
 
-	free(my_cmd.args);
-	free(my_cmd.env);
 	//if (exec_cmd(msh, &my_cmd) == -1)
 	//	return (printf("couldn't exec command\n"), destroy_tokenlist(&tokens));
 
+	free(my_cmd.args);
+	free(my_cmd.env);
 	destroy_tokenlist(&tokens);
 }
