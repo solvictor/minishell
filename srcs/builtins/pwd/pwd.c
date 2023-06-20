@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 09:46:30 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/05/15 19:21:09 by vegret           ###   ########.fr       */
+/*   Updated: 2023/06/20 16:21:44 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,10 @@ int	builtin_pwd(t_msh *msh, char **args)
 	cwd = getcwd(NULL, 0);
 	if (cwd == NULL)
 	{
-		// Check if its the good way to handle
 		ft_dprintf(2, "bash: pwd: %s\n", strerror(errno));
 		return (1);
 	}
-	printf("%s\n", cwd);
+	ft_dprintf(STDOUT_FILENO, "%s\n", cwd);
 	free(cwd);
 	return (0);
 }

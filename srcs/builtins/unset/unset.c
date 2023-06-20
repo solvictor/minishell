@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 19:05:35 by vegret            #+#    #+#             */
-/*   Updated: 2023/06/09 17:05:11 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/20 15:53:25 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	unset(t_msh *msh, char *var)
 
 	if (!msh->env || !var)
 		return (1);
-	target = get_env(msh->env, var);
+	target = get_env(msh->env, var, -1);
 	if (!target)
 		return (1);
 	if (target == msh->env)

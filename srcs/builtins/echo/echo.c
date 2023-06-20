@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 23:05:14 by vegret            #+#    #+#             */
-/*   Updated: 2023/06/13 16:43:07 by vegret           ###   ########.fr       */
+/*   Updated: 2023/06/20 15:10:48 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,15 @@ static int	print_args(char **args, bool newline, int i)
 {
 	while (args[i])
 	{
-		if (printf("%s", args[i++]) < 0)
+		if (ft_dprintf(STDOUT_FILENO, "%s", args[i++]) < 0)
 			return (EXIT_FAILURE);
 		if (args[i] != NULL)
 		{
-			if (printf(" ") < 0)
+			if (write(STDOUT_FILENO, " ", 1) < 0)
 				return (EXIT_FAILURE);
 		}
 	}
-	if (newline && printf("\n") < 0)
+	if (newline && write(STDOUT_FILENO, "\n", 1) < 0)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -48,7 +48,7 @@ int	builtin_echo(t_msh *msh, char **args)
 
 	(void) msh;
 	if (!args || !args[0])
-		return (printf("\n"), 0);
+		return (write(STDOUT_FILENO, "\n", 1), 0);
 	i = 1;
 	while (is_flag_n(args[i]))
 		i++;
