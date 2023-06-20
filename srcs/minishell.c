@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:00:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/20 15:53:49 by vegret           ###   ########.fr       */
+/*   Updated: 2023/06/20 19:43:54 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ int	msh_loop(t_msh *msh)
 //			test_parsing(msh);
 //			test_quotes(msh, msh->input);
 //			test_tokenizer(msh);
-			test_pathfinding(msh);
+//			test_pathfinding(msh);
 //			test_pipeline(msh);
-//			test_command(msh);
+			test_command(msh);
 //			test_rng(msh);
 		}
 		free(msh->input);

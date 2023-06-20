@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/20 15:49:26 by vegret           ###   ########.fr       */
+/*   Updated: 2023/06/20 19:34:53 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef enum e_nodetype		t_nodetype;
 typedef struct s_tokenlist	t_tokenlist;
 typedef struct s_rng		t_rng;
 typedef struct s_cmd		t_cmd;
+typedef struct s_pipeline	t_pipeline;
 typedef struct s_env		t_env;
 typedef struct s_msh		t_msh;
 typedef int					(*t_builtin)(t_msh *, char **);
@@ -68,25 +69,18 @@ enum e_tokentype
 	MERGED_STR,
 	HEREDOC,
 	INPUTFILE,
-	OUTPUT_TRUNC,
-	OUTPUT_APPEND,
-	//L_ARROW_SINGLE,
-	//R_ARROW_SINGLE,
-	//L_ARROW_DOUBLE,
-	//R_ARROW_DOUBLE,
+	OUTPUTFILE_TRUNC,
+	OUTPUTFILE_APPEND,
 	PIPE,
-	L_BRACKET,
-	R_BRACKET,
-	LOGIC_OR,
-	LOGIC_AND,
+	//NEWLINE, // added this as a comment because of the "\newline" syntax error context
 	UNKNOWN
 };
-enum e_nodetype // DONT FORGET TO LASKDFJLAKSDJFLAKSDJFLAKFJKLAJFASKDLJFALSFJAKLSJFAKLSD
-{
-	COMMAND,
-	PIPELINE,
-	CHILD_NODE
-};
+//enum e_nodetype // DONT FORGET TO LASKDFJLAKSDJFLAKSDJFLAKFJKLAJFASKDLJFALSFJAKLSJFAKLSD
+//{
+//	COMMAND,
+//	PIPELINE,
+//	CHILD_NODE
+//};
 
 //struct s_astnode
 //{
@@ -117,7 +111,13 @@ struct s_cmd
 	char		**args;
 	char		**env;
 	t_tokenlist	*start_token;
-
+//	int			empty; // flag for pipelines with empty commands but rediretions so redirections work
+};
+struct s_pipeline
+{
+	int	cmd_count;
+	t_cmd	*cmds;
+//	int		ret;
 };
 struct	s_env
 {

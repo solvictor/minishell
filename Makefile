@@ -8,7 +8,7 @@ LIBFT	=	libft
 
 # Compiler options
 CC		=	cc
-CWARNS	=	-Wall -Wextra -Werror -MD
+CWARNS	=	-Wall -Wextra -MD
 CLIBS	=	-L./$(LIBDIR) -lft -lreadline
 CINCS	=	-I./$(INCDIR) -I./$(LIBFT)
 
