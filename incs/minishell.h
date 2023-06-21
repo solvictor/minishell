@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/21 16:22:04 by vegret           ###   ########.fr       */
+/*   Updated: 2023/06/21 20:51:38 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,6 @@
 # define ME_LOOP		"Minishell input loop exited with -1\n"
 # define ME_USAGE		"Incorrect usage\n"
 
-typedef struct s_parse_stack	t_parse_stack; // remoooooooooooooooooooooooooove later
-struct s_parse_stack
-{
-	int				index; // probably change to char* later (if i end up using strdup)
-	t_parse_stack	*next;
-};
-
 typedef enum e_tokentype	t_tokentype;
 typedef enum e_nodetype		t_nodetype;
 typedef struct s_tokenlist	t_tokenlist;
@@ -75,25 +68,10 @@ enum e_tokentype
 	//NEWLINE, // added this as a comment because of the "\newline" syntax error context
 	UNKNOWN
 };
-//enum e_nodetype // DONT FORGET TO LASKDFJLAKSDJFLAKSDJFLAKFJKLAJFASKDLJFALSFJAKLSJFAKLSD
-//{
-//	COMMAND,
-//	PIPELINE,
-//	CHILD_NODE
-//};
-
-//struct s_astnode
-//{
-//	void		*left;
-//	void		*right;
-//	t_nodetype	left_type;
-//	t_nodetype	right_type;
-//	t_tokentype	operand;
-//}
 
 struct s_rng
 {
-	int		fd_urandom;
+	int				fd_urandom;
 	unsigned int	rand;
 	unsigned int	mult;
 	unsigned int	inc;
@@ -115,7 +93,7 @@ struct s_cmd
 };
 struct s_pipeline
 {
-	int	cmd_count;
+	int		cmds_n;
 	t_cmd	*cmds;
 //	int		ret;
 };
@@ -127,25 +105,22 @@ struct	s_env
 };
 struct s_msh
 {
-	//char		**envp;
-	t_env		*env;
-	char		*input;
-	//t_tokenlist	*tokens; // restructure later so that it's a local variable
-	//t_cmd	cmd; // will have to replace with pipeline or some other new big struct that will contain the whole parsed thing
+	t_env	*env;
+	char	*input;
 	int		exit;
 	int		ret;
 	t_rng	rng;
 };
 
 // minishell.c
-int	msh_loop(t_msh *msh);
+int				msh_loop(t_msh *msh);
 
 // ----- //
 // SETUP //
 // ----- //
-int	msh_setup(t_msh	*msh, int ac, char **envp);
-int	make_env(t_msh *msh, char **envp);
-int	init_rng(t_rng *rng);
+int				msh_setup(t_msh	*msh, int ac, char **envp);
+int				make_env(t_msh *msh, char **envp);
+int				init_rng(t_rng *rng);
 
 // ----- //
 // UTILS //
@@ -153,30 +128,42 @@ int	init_rng(t_rng *rng);
 void			msh_terminate(t_msh *msh);
 void			clear_strarr(char **arr);
 unsigned int	rng_bit_rot(unsigned int num);
+// Env
 t_env			*env_new(char *var);
 char			**env_to_arr(t_env *env);
 void			destroy_env_list(t_env **env);
 char			*get_env_val(t_env *env, char *key);
 t_env			*get_env(t_env *env, char *key, int len_key);
+// Tokens
+t_tokenlist		*token_add_front(t_tokenlist **begin, char *data);
+void			destroy_tokenlist(t_tokenlist **begin);
+
+// --------- //
+// TOKENIZER //
+// --------- //
+int				tokenize(t_msh *msh, const char *input, t_tokenlist **tokens);
+int				is_whitespace(char c);
+int				is_metachar(char c);
+t_tokentype		get_metachar_tokentype(const char *input, int *i);
+int				get_str_quoted(const char *str, char **dst);
+int				get_str_unquoted(const char *str, char **dst);
+int				push_str_token(t_tokenlist **tokens, const char *input, int *i);
+int				push_metachar_token(t_tokenlist **tokens,
+					const char *input, int *i);
+char			*get_str_token(const char *input, int *i);
+void			reverse_tokens(t_tokenlist **begin);
 
 // -------- //
 // BUILTINS //
 // -------- //
-t_builtin	get_builtin(t_cmd *cmd);
-// pwd
-int	builtin_pwd(t_msh *msh, char **args);
-// cd
-int	builtin_cd(t_msh *msh, char **args);
-// exit
-int	builtin_exit(t_msh *msh, char **args);
-// echo
-int	builtin_echo(t_msh *msh, char **args);
-// export
-int	builtin_export(t_msh *msh, char **args);
-// unset
-int	builtin_unset(t_msh *msh, char **args);
-// env
-int	builtin_env(t_msh *msh, char **args);
+t_builtin		get_builtin(t_cmd *cmd);
+int				builtin_pwd(t_msh *msh, char **args);
+int				builtin_cd(t_msh *msh, char **args);
+int				builtin_exit(t_msh *msh, char **args);
+int				builtin_echo(t_msh *msh, char **args);
+int				builtin_export(t_msh *msh, char **args);
+int				builtin_unset(t_msh *msh, char **args);
+int				builtin_env(t_msh *msh, char **args);
 // -------- //
 //          //
 // -------- //
@@ -184,24 +171,18 @@ int	builtin_env(t_msh *msh, char **args);
 // -------- //
 //  SIGNALS //
 // -------- //
-int	setup_signals(void);
+int				setup_signals(void);
 
-// tests folder // remooooooooooooooooooooooooooooooooooooooooooooooooooooooooove later
-//void	test_parentheses(const char *line, int left);
-//void	test_parsing(t_msh *msh);
-void	test_command(t_msh *msh);
-void	test_rng(t_msh *msh);
-//void	test_quotes(t_msh *msh, const char *line);
-void	test_tokenizer(t_msh *msh);
-void	destroy_tokenlist(t_tokenlist **begin);
-int		tokenize(t_msh *msh, const char *input, t_tokenlist **tokens);
-
-char	**get_paths(t_env *env);
-int	find_cmd(char **paths, t_cmd *cmd);
-void	test_pathfinding(t_msh *msh);
-
+// TEST FUNCTIONS ONLY // REMOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOVE LATER
+void	display_token_type(t_tokenlist *token);
 void	display_tokens(t_tokenlist *begin);
+void	test_tokenizer(t_msh *msh);
+void	test_command(t_msh *msh);
+//char			**get_paths(t_env *env);
+//int				find_cmd(char **paths, t_cmd *cmd);
+//void			test_pathfinding(t_msh *msh);
 
-char	*make_expansion(t_env *env, char *str);
+
+char			*make_expansion(t_env *env, char *str);
 
 #endif

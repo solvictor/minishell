@@ -29,6 +29,10 @@ SRCS	:=	minishell.c \
 			setup/setup_rng.c \
 			utils/utils.c \
 			utils/utils_env.c \
+			utils/utils_tokens.c \
+			tokenizer/tokenizer.c \
+			tokenizer/tokenizer_utils_1.c \
+			tokenizer/tokenizer_utils_2.c \
 			builtins/pwd/pwd.c \
 			builtins/cd/cd.c \
 			builtins/exit/exit.c \
@@ -36,15 +40,14 @@ SRCS	:=	minishell.c \
 			builtins/export/export.c \
 			builtins/unset/unset.c \
 			builtins/env/env.c \
-			tests/test_parenthesis.c \
-			tests/test_command.c \
-			tests/test_tokenizer.c \
-			tests/test_builtins_finder.c \
-			tests/test_expansion.c \
-			tests/test_signals.c \
-			tests/test_pathfinding.c \
-			tests/test_rng.c
-#			tests/test_pipeline.c
+			test_code_remove_later/test_builtins_finder.c \
+			test_code_remove_later/test_command.c \
+			test_code_remove_later/test_env.c \
+			test_code_remove_later/test_expansion.c \
+			test_code_remove_later/test_pathfinding.c \
+			test_code_remove_later/test_rng.c \
+			test_code_remove_later/test_signals.c \
+			test_code_remove_later/tokenizer_display_utils.c
 OBJS	:=	$(SRCS:.c=.o)
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRCS))
 OBJS	:=	$(addprefix $(OBJDIR)/, $(OBJS))
@@ -75,7 +78,8 @@ $(OBJDIR):
 	mkdir -p $(OBJDIR)/builtins/env
 	mkdir -p $(OBJDIR)/setup
 	mkdir -p $(OBJDIR)/utils
-	mkdir -p $(OBJDIR)/tests # REMOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOVE later
+	mkdir -p $(OBJDIR)/tokenizer
+	mkdir -p $(OBJDIR)/test_code_remove_later
 
 clean:
 	make clean -C $(LIBDIR)/$(LIBFT)

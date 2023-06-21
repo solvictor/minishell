@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 12:29:21 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/20 19:32:20 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/21 21:15:09 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,11 +155,11 @@ static void	display_pipeline(t_pipeline *pipeline)
 	int	i;
 	t_tokenlist *cur;
 
-	printf("number of commands -> %d\n", pipeline->cmd_count);
+	printf("number of commands -> %d\n", pipeline->cmds_n);
 	if (pipeline->cmds == NULL)
 		return ((void)printf("pas encore malloc ta maman\n"));
 	i = 0;
-	while (i < pipeline->cmd_count)
+	while (i < pipeline->cmds_n)
 	{
 		printf("COMMAND #%d\n", i);
 		cur = pipeline->cmds[i].start_token;
@@ -226,11 +226,11 @@ static void	set_cmds_start_token(t_pipeline *pipeline, t_tokenlist *tokens)
 
 static int	set_pipeline(t_pipeline *pipeline, t_tokenlist *tokens)
 {
-	pipeline->cmd_count = count_pipeline_commands(tokens);
-	pipeline->cmds = malloc(sizeof(t_cmd) * pipeline->cmd_count);
+	pipeline->cmds_n = count_pipeline_commands(tokens);
+	pipeline->cmds = malloc(sizeof(t_cmd) * pipeline->cmds_n);
 	if (pipeline->cmds == NULL)
 		return (printf("failed to malloc cmds\n"), -1);
-	ft_bzero(pipeline->cmds, sizeof(t_cmd) * pipeline->cmd_count);
+	ft_bzero(pipeline->cmds, sizeof(t_cmd) * pipeline->cmds_n);
 	set_cmds_start_token(pipeline, tokens);
 	return (0);
 }
