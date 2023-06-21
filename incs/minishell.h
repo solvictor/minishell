@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/20 19:34:53 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/21 16:22:04 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,8 @@ int	builtin_echo(t_msh *msh, char **args);
 int	builtin_export(t_msh *msh, char **args);
 // unset
 int	builtin_unset(t_msh *msh, char **args);
+// env
+int	builtin_env(t_msh *msh, char **args);
 // -------- //
 //          //
 // -------- //
