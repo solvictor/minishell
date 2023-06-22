@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/21 20:51:38 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/21 21:37:49 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ struct s_msh
 
 // minishell.c
 int				msh_loop(t_msh *msh);
+int				process_input(t_msh *msh);
 
 // ----- //
 // SETUP //

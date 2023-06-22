@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:00:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/21 20:48:18 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/22 19:28:16 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,24 +39,27 @@ int	msh_loop(t_msh *msh)
 			msh->input = readline(MSH_PROMPT);
 		else
 			msh->input = readline(NULL);
-		//msh->input = readline(NULL);
 		if (msh->input == NULL) // readline manual says NULL is returned when EOF encountered on an empty line so this should handle ctrl+d properly (maybe)
 			return (0);
-		//if (msh.cmdline && *(msh.cmdline))
 		if (msh->input[0]) // probably no need for msh.cmdline check because there's a return before
 		{
-			//printf("%s\n", make_expansion(msh->env, msh->input));
 			add_history(msh->input); // careful about history with heredoc
-//			test_parentheses(msh->cmdline, 0);
-//			test_parsing(msh);
-//			test_quotes(msh, msh->input);
-//			test_tokenizer(msh);
-//			test_pathfinding(msh);
-//			test_pipeline(msh);
-			test_command(msh);
-//			test_rng(msh);
+			msh->ret = process_input(msh);
 		}
 		free(msh->input);
 	}
 	return (0);
+}
+
+int	process_input(t_msh *msh)
+{
+	int			ret;
+	t_tokenlist	*tokens;
+	t_pipeline	*pipeline;
+
+	ret = tokenize(msh, msh->input, &tokens);
+
+	display_tokens(tokens);
+
+	return (destroy_tokenlist(&tokens), ret);
 }
