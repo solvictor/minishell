@@ -6,25 +6,21 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 19:05:35 by vegret            #+#    #+#             */
-/*   Updated: 2023/06/20 15:53:25 by vegret           ###   ########.fr       */
+/*   Updated: 2023/06/23 17:11:00 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	unset(t_msh *msh, char *var)
+static int	unset(t_msh *msh, t_env *target)
 {
-	t_env	*target;
-
-	if (!msh->env || !var)
-		return (1);
-	target = get_env(msh->env, var, -1);
-	if (!target)
+	if (!msh->env || !target)
 		return (1);
 	if (target == msh->env)
 	{
 		msh->env = msh->env->next;
-		msh->env->prev = NULL;
+		if (msh->env)
+			msh->env->prev = NULL;
 	}
 	else
 	{
@@ -44,7 +40,7 @@ int	builtin_unset(t_msh *msh, char **args)
 	i = 1;
 	while (args[i])
 	{
-		ret = unset(msh, args[i]);
+		ret = unset(msh, get_env(msh->env, args[i], -1));
 		if (ret)
 			return (ret);
 		i++;
