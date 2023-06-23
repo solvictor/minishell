@@ -33,6 +33,9 @@ SRCS	:=	minishell.c \
 			tokenizer/tokenizer.c \
 			tokenizer/tokenizer_utils_1.c \
 			tokenizer/tokenizer_utils_2.c \
+			tokenizer/tokenizer_utils_3.c \
+			parser/parser.c \
+			parser/parser_utils.c \
 			builtins/pwd/pwd.c \
 			builtins/cd/cd.c \
 			builtins/exit/exit.c \
@@ -40,14 +43,8 @@ SRCS	:=	minishell.c \
 			builtins/export/export.c \
 			builtins/unset/unset.c \
 			builtins/env/env.c \
-			test_code_remove_later/test_builtins_finder.c \
-			test_code_remove_later/test_command.c \
-			test_code_remove_later/test_env.c \
-			test_code_remove_later/test_expansion.c \
-			test_code_remove_later/test_pathfinding.c \
-			test_code_remove_later/test_rng.c \
 			test_code_remove_later/test_signals.c \
-			test_code_remove_later/tokenizer_display_utils.c
+			test_code_remove_later/display_utils.c
 OBJS	:=	$(SRCS:.c=.o)
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRCS))
 OBJS	:=	$(addprefix $(OBJDIR)/, $(OBJS))
@@ -79,6 +76,7 @@ $(OBJDIR):
 	mkdir -p $(OBJDIR)/setup
 	mkdir -p $(OBJDIR)/utils
 	mkdir -p $(OBJDIR)/tokenizer
+	mkdir -p $(OBJDIR)/parser
 	mkdir -p $(OBJDIR)/test_code_remove_later
 
 clean:

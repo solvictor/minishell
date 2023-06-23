@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:10:34 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/21 19:16:01 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/22 23:55:51 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,18 @@ void	destroy_tokenlist(t_tokenlist **begin)
 		free(tmp->data);
 		free(tmp);
 	}
+}
+
+int	is_redir_token(t_tokenlist *token)
+{
+	if (token == NULL)
+		return (0);
+	return (token->type >= HEREDOC && token->type <= OUTPUTFILE_APPEND);
+}
+
+int	is_str_token(t_tokenlist *token)
+{
+	if (token == NULL)
+		return (0);
+	return (token->type <= MERGED_STR);
 }

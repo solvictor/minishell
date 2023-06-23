@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/21 21:37:49 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/23 00:21:28 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 # define ME_ENV			"Failed to create minishell environment\n"
 # define ME_RNG			"Failed to random number generator\n"
 # define ME_TOKENIZE	"Failed to tokenize\n"
-# define ME_PARSE_CMD	"Failed to parse command\n"
+# define ME_PARSE		"Failed to parse\n"
 # define ME_SPLIT_ARGS	"Failed to split command arguments\n"
 # define ME_EXEC_CMD	"Failed to exec command\n"
 # define ME_BAD_FORMAT	"Bad format command\n"
@@ -138,11 +138,13 @@ t_env			*get_env(t_env *env, char *key, int len_key);
 // Tokens
 t_tokenlist		*token_add_front(t_tokenlist **begin, char *data);
 void			destroy_tokenlist(t_tokenlist **begin);
+int				is_redir_token(t_tokenlist *token);
+int				is_str_token(t_tokenlist *token);
 
 // --------- //
 // TOKENIZER //
 // --------- //
-int				tokenize(t_msh *msh, const char *input, t_tokenlist **tokens);
+int				tokenize(const char *input, t_tokenlist **tokens);
 int				is_whitespace(char c);
 int				is_metachar(char c);
 t_tokentype		get_metachar_tokentype(const char *input, int *i);
@@ -153,6 +155,15 @@ int				push_metachar_token(t_tokenlist **tokens,
 					const char *input, int *i);
 char			*get_str_token(const char *input, int *i);
 void			reverse_tokens(t_tokenlist **begin);
+int				check_syntax_errors(t_tokenlist *tokens);
+void			clean_redir_tokens(t_tokenlist **tokens);
+
+// ------ //
+// PARSER //
+// ------ //
+int				parse(t_pipeline *pip, t_tokenlist *tokens);
+int				count_pipeline_commands(t_tokenlist *tokens);
+void			set_cmds_start_token(t_pipeline *pip, t_tokenlist *tokens);
 
 // -------- //
 // BUILTINS //
@@ -179,6 +190,7 @@ void	display_token_type(t_tokenlist *token);
 void	display_tokens(t_tokenlist *begin);
 void	test_tokenizer(t_msh *msh);
 void	test_command(t_msh *msh);
+void	display_pipeline(t_pipeline *pip);
 //char			**get_paths(t_env *env);
 //int				find_cmd(char **paths, t_cmd *cmd);
 //void			test_pathfinding(t_msh *msh);

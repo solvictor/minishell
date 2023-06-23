@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:00:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/22 19:28:16 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/23 02:48:55 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ int	msh_loop(t_msh *msh)
 		{
 			add_history(msh->input); // careful about history with heredoc
 			msh->ret = process_input(msh);
+			if (msh->ret == -1)
+				return (printf("An error occured in process_input, returning...\n"), -1);
 		}
 		free(msh->input);
 	}
@@ -55,11 +57,18 @@ int	process_input(t_msh *msh)
 {
 	int			ret;
 	t_tokenlist	*tokens;
-	t_pipeline	*pipeline;
+	t_pipeline	pip;
 
-	ret = tokenize(msh, msh->input, &tokens);
+	ret = tokenize(msh->input, &tokens);
+	if (ret < 0)
+		return (ft_dprintf(2, MSH_ERROR ME_TOKENIZE), -1);
+	//display_tokens(tokens);
 
-	display_tokens(tokens);
+	ret = parse(&pip, tokens);
+	if (ret < 0)
+		return (ft_dprintf(2, MSH_ERROR ME_PARSE),
+			destroy_tokenlist(&tokens), -1);
+	display_pipeline(&pip);
 
-	return (destroy_tokenlist(&tokens), ret);
+	return (free(pip.cmds), destroy_tokenlist(&tokens), ret); // free(pip.cmds) replace with destroy_pipeline(&pip) later when necessary
 }

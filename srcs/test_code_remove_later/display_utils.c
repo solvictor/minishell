@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenizer_remove_this_file.c                       :+:      :+:    :+:   */
+/*   tokenizer_display_utils.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:33:32 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/21 20:30:58 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/23 02:07:40 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,36 @@ void	display_tokens(t_tokenlist *begin)
 	}
 }
 
-void	test_tokenizer(t_msh *msh)
+void	display_pipeline(t_pipeline *pip)
 {
-	int			ret;
-	t_tokenlist	*tokens; // can be made into an ArrayList
+	int	i;
+	t_tokenlist *cur;
 
-	ret = tokenize(msh, msh->input, &tokens);
-	if (ret < 0)
-		return ((void)printf(MSH_ERROR ME_TOKENIZE));
-	display_tokens(tokens);
-	destroy_tokenlist(&tokens);
+	printf("number of commands -> %d\n", pip->cmds_n);
+	if (pip->cmds == NULL)
+		return ((void)printf("pas encore malloc ta maman\n"));
+	i = 0;
+	while (i < pip->cmds_n)
+	{
+		printf("COMMAND #%d\n", i);
+		cur = pip->cmds[i].start_token;
+		while (cur && cur->type < PIPE)
+		{
+			if (is_str_token(cur))
+				printf("%s ", cur->data);
+			else if (cur->type == HEREDOC)
+				printf("<< %s ", cur->data);
+			else if (cur->type == INPUTFILE)
+				printf("< %s ", cur->data);
+			else if (cur->type == OUTPUTFILE_TRUNC)
+				printf("> %s ", cur->data);
+			else if (cur->type == OUTPUTFILE_APPEND)
+				printf(">> %s ", cur->data);
+			else
+				printf("WAGNAGNAGNAALSKDLKFJAAOIEPW\n");
+			cur = cur->next;
+		}
+		printf("\n");
+		++i;
+	}
 }
