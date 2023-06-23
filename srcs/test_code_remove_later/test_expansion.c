@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 14:18:21 by vegret            #+#    #+#             */
-/*   Updated: 2023/06/23 21:56:43 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/23 22:52:49 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,16 +68,22 @@ static void	expand(t_env *env, char *str, char *dst)
 	}
 }
 
-char	*make_expansion(t_env *env, char *str)
+//char	*make_expansion(t_env *env, char *str)
+int	make_expansion(t_env *env, t_tokenlist *token)
 {
 	int		size;
 	char	*expanded;
 
-	size = get_expanded_size(env, str) + 1;
-	expanded = malloc(size * sizeof(char));
+	if (token->data && ft_strchr(token->data, '$') == NULL)
+		return (0);
+	size = get_expanded_size(env, token->data) + 1;
+	expanded = malloc(sizeof(char) * size);
 	if (!expanded)
-		return (NULL);
-	expand(env, str, expanded);
+		return (-1);
+	expand(env, token->data, expanded);
 	expanded[size - 1] = '\0';
-	return (expanded);
+	free(token->data);
+	token->data = expanded;
+	return (0);
 }
+

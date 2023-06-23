@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:00:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/23 22:30:20 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/23 22:56:50 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,18 @@ int	process_input(t_msh *msh)
 	if (ret < 0)
 		return (ft_dprintf(2, MSH_ERROR ME_PARSE),
 			destroy_tokenlist(&tokens), -1);
+	display_pipeline(&pip);
+
+	// expand test remove later
+	t_tokenlist *cur = tokens;
+	while (cur)
+	{
+		if (cur->type == DOUBLE_QUOTED_STR ||  cur->type == UNQUOTED_STR)
+			if (make_expansion(msh->env, cur) == -1)
+				printf("ya une error\n");
+		cur = cur->next;
+	}
+	printf("\n\n");
 	display_pipeline(&pip);
 
 	return (free(pip.cmds), destroy_tokenlist(&tokens), ret); // free(pip.cmds) replace with destroy_pipeline(&pip) later when necessary

@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/23 22:31:12 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/23 22:54:33 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,12 +186,12 @@ int				builtin_env(t_msh *msh, char **args);
 //void	display_tokens(t_tokenlist *begin);
 //void	test_tokenizer(t_msh *msh);
 //void	test_command(t_msh *msh);
-//void	display_pipeline(t_pipeline *pip);
+void	display_pipeline(t_pipeline *pip);
 //char			**get_paths(t_env *env);
 //int				find_cmd(char **paths, t_cmd *cmd);
 //void			test_pathfinding(t_msh *msh);
 
 
-char			*make_expansion(t_env *env, char *str);
+int	make_expansion(t_env *env, t_tokenlist *token);
 
 #endif
