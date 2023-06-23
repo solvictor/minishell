@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 19:05:35 by vegret            #+#    #+#             */
-/*   Updated: 2023/06/23 17:11:00 by vegret           ###   ########.fr       */
+/*   Updated: 2023/06/23 17:19:58 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	unset(t_msh *msh, t_env *target)
 {
 	if (!msh->env || !target)
-		return (1);
+		return (0);
 	if (target == msh->env)
 	{
 		msh->env = msh->env->next;
