@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   setup_rng.c                                        :+:      :+:    :+:   */
+/*   setup_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 23:37:49 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/19 17:47:12 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/23 08:45:11 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static unsigned int	get_randint(t_rng *rng)
+// Outputs a pseudo-random number from the seeded values in rng
+unsigned int	get_randint(t_rng *rng)
 {
 	static unsigned int	zero_fix = RNG_ZERO_FIX_SEED;
 	unsigned int		randint;
@@ -29,19 +30,14 @@ static unsigned int	get_randint(t_rng *rng)
 	return (randint);
 }
 
-int	init_rng(t_rng *rng)
+// Signal handling function for sigint (ctrl+c)
+void	handler_sigint(int sig)
 {
-	rng->fd_urandom = open("/dev/urandom", O_RDONLY);
-	if (rng->fd_urandom == -1)
-		return (-1);
-	rng->rand = get_randint(rng);
-	if (rng->rand == 0)
-		return (-1);
-	rng->mult = get_randint(rng);
-	if (rng->mult == 0)
-		return (-1);
-	rng->inc = get_randint(rng);
-	if (rng->inc == 0)
-		return (-1);
-	return (0);
+	if (sig == SIGINT)
+	{
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", ft_strlen(MSH_PROMPT));
+		rl_redisplay();
+	}
 }

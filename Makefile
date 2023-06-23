@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/06/23 08:28:27 by nlegrand          #+#    #+#              #
+#    Updated: 2023/06/23 09:06:15 by nlegrand         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 # Project structure
 NAME	=	minishell
 INCDIR	=	incs
@@ -25,8 +37,7 @@ COL_RESET	=	\033[0m
 # Files
 SRCS	:=	minishell.c \
 			setup/setup.c \
-			setup/setup_env.c \
-			setup/setup_rng.c \
+			setup/setup_utils.c \
 			utils/utils.c \
 			utils/utils_env.c \
 			utils/utils_tokens.c \
@@ -42,9 +53,9 @@ SRCS	:=	minishell.c \
 			builtins/echo/echo.c \
 			builtins/export/export.c \
 			builtins/unset/unset.c \
-			builtins/env/env.c \
-			test_code_remove_later/test_signals.c \
-			test_code_remove_later/display_utils.c
+			builtins/env/env.c
+#			test_code_remove_later/test_signals.c
+#			test_code_remove_later/display_utils.c
 OBJS	:=	$(SRCS:.c=.o)
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRCS))
 OBJS	:=	$(addprefix $(OBJDIR)/, $(OBJS))

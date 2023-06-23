@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/23 00:21:28 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/23 09:07:18 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,6 @@ enum e_tokentype
 	UNKNOWN
 };
 
-struct s_rng
-{
-	int				fd_urandom;
-	unsigned int	rand;
-	unsigned int	mult;
-	unsigned int	inc;
-};
 struct s_tokenlist
 {
 	char		*data;
@@ -103,6 +96,13 @@ struct	s_env
 	char	*var;
 	t_env	*next;
 };
+struct s_rng
+{
+	int				fd_urandom;
+	unsigned int	rand;
+	unsigned int	mult;
+	unsigned int	inc;
+};
 struct s_msh
 {
 	t_env	*env;
@@ -120,8 +120,8 @@ int				process_input(t_msh *msh);
 // SETUP //
 // ----- //
 int				msh_setup(t_msh	*msh, int ac, char **envp);
-int				make_env(t_msh *msh, char **envp);
-int				init_rng(t_rng *rng);
+unsigned int	get_randint(t_rng *rng);
+void			handler_sigint(int sig);
 
 // ----- //
 // UTILS //
@@ -180,17 +180,12 @@ int				builtin_env(t_msh *msh, char **args);
 //          //
 // -------- //
 
-// -------- //
-//  SIGNALS //
-// -------- //
-int				setup_signals(void);
-
 // TEST FUNCTIONS ONLY // REMOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOVE LATER
-void	display_token_type(t_tokenlist *token);
-void	display_tokens(t_tokenlist *begin);
-void	test_tokenizer(t_msh *msh);
-void	test_command(t_msh *msh);
-void	display_pipeline(t_pipeline *pip);
+//void	display_token_type(t_tokenlist *token);
+//void	display_tokens(t_tokenlist *begin);
+//void	test_tokenizer(t_msh *msh);
+//void	test_command(t_msh *msh);
+//void	display_pipeline(t_pipeline *pip);
 //char			**get_paths(t_env *env);
 //int				find_cmd(char **paths, t_cmd *cmd);
 //void			test_pathfinding(t_msh *msh);
