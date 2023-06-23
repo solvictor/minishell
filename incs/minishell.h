@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/23 09:07:18 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/23 22:31:12 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@
 # include <readline/history.h>
 
 // SETTINGS
-# define MSH_PROMPT			"\e[38;2;255;0;255mminishell>\e[0m " // lame... make it better
+//# define MSH_PROMPT			"\[\e[38;2;255;0;255mminishell>\e[0m\] " // lame... make it better
+# define MSH_PROMPT			"minishell> " // lame... make it better
 # define RNG_MAX			INT_MAX
 # define RNG_BIT_ROTATIONS	13
 # define RNG_ZERO_FIX_SEED	694201337
