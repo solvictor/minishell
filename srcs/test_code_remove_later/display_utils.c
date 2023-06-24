@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:33:32 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/24 07:00:30 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/24 12:21:58 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	display_cmdline(t_cmdline *cmdline)
 {
 	int	i;
 	t_tokenlist *cur;
+	int	j;
 
 	printf("number of commands -> %d\n", cmdline->cmds_n);
 	if (cmdline->cmds == NULL)
@@ -69,7 +70,7 @@ void	display_cmdline(t_cmdline *cmdline)
 	i = 0;
 	while (i < cmdline->cmds_n)
 	{
-		printf("COMMAND #%d\n", i);
+		printf("COMMAND #%d\ntokens: ", i);
 		cur = cmdline->cmds[i].start_token;
 		while (cur && cur->type < PIPE)
 		{
@@ -87,7 +88,11 @@ void	display_cmdline(t_cmdline *cmdline)
 				printf("WAGNAGNAGNAALSKDLKFJAAOIEPW\n");
 			cur = cur->next;
 		}
-		printf("\n");
+		printf("\nargs: {");
+		j = 0;
+		while (cmdline->cmds[i].args && cmdline->cmds[i].args[j])
+			printf("'%s', ", cmdline->cmds[i].args[j++]);
+		printf("NULL}\n\n");
 		++i;
 	}
 }

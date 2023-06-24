@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 02:35:57 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/24 07:17:58 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/24 12:29:43 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,14 @@ int	prep_cmdline(t_msh *msh, t_cmdline *cmdline, t_tokenlist *tokens)
 			free(cmdline->envp), clear_strarr(cmdline->paths), -1);
 	
 	// merge str tokens
-	display_tokens(tokens);
-	printf("\n\n");
 	if (merge_str_tokens(tokens) == -1)
 		return (ft_dprintf(2, "Failed merge str tokens\n"),
 			free(cmdline->envp), clear_strarr(cmdline->paths), -1);
-	display_tokens(tokens);
 	// make argv(s) and merge strings
-	//if (make_cmds_args(cmdline, tokens) == -1)
-	//	return (ft_dprintf(2, "Failed making argv for commands\n",
-	//		free(envp), clear_strarr(envp), -1);
+	if (make_cmds_args(cmdline) == -1)
+		return (ft_dprintf(2, "Failed making argv for commands\n"),
+			free(cmdline->envp), clear_strarr(cmdline->paths), -1);
+	display_cmdline(cmdline);
 
 	// find commands here
 	//find_cmds(cmdline, *paths); // return what?
@@ -65,5 +63,6 @@ int	exec_cmdline(t_msh *msh, t_cmdline *cmdline)
 	if (ret == -1)
 		ft_dprintf(2, "DONT KNOW WHAT TO DO LOL\n");
 
-	return (clear_strarr(cmdline->paths), free(cmdline->envp), 0);
+	return (clear_strarr(cmdline->paths), free(cmdline->envp),
+		clear_args(cmdline), 0);
 }

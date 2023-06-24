@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/24 06:35:27 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/24 12:30:03 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ struct s_cmd
 	char		*path;
 	char		**args;
 	t_tokenlist	*start_token;
-//	int			empty; // flag for cmdlines with empty commands but rediretions so redirections work
 };
 struct s_cmdline
 {
@@ -181,6 +180,8 @@ int				exec_cmdline(t_msh *msh, t_cmdline *cmdline);
 char			**get_paths(t_env *env);
 int				do_dollar_expansions(t_msh *msh, t_tokenlist *tokens);
 int				merge_str_tokens(t_tokenlist *tokens);
+void			clear_args(t_cmdline *cmdline);
+int				make_cmds_args(t_cmdline *cmdline);
 
 // -------- //
 // BUILTINS //
