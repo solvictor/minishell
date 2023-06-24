@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenizer_display_utils.c                          :+:      :+:    :+:   */
+/*   display_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:33:32 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/23 02:07:40 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/24 03:14:23 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,19 +56,19 @@ void	display_tokens(t_tokenlist *begin)
 	}
 }
 
-void	display_pipeline(t_pipeline *pip)
+void	display_cmdline(t_cmdline *cmdline)
 {
 	int	i;
 	t_tokenlist *cur;
 
-	printf("number of commands -> %d\n", pip->cmds_n);
-	if (pip->cmds == NULL)
+	printf("number of commands -> %d\n", cmdline->cmds_n);
+	if (cmdline->cmds == NULL)
 		return ((void)printf("pas encore malloc ta maman\n"));
 	i = 0;
-	while (i < pip->cmds_n)
+	while (i < cmdline->cmds_n)
 	{
 		printf("COMMAND #%d\n", i);
-		cur = pip->cmds[i].start_token;
+		cur = cmdline->cmds[i].start_token;
 		while (cur && cur->type < PIPE)
 		{
 			if (is_str_token(cur))

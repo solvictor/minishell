@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:00:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/23 22:56:50 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/24 03:13:18 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,11 @@ int	main(int ac, char **av, char **envp)
 {
 	t_msh	msh;
 
-	(void) av;
-	if (ac != 1)
-		return (ft_dprintf(2, ME_USAGE), 1);
+	(void)av;
 	if (msh_setup(&msh, ac, envp) == -1)
 		return (1); // check if anything is allocated
 	if (msh_loop(&msh) == -1)
 		printf(ME_LOOP);
-	// free stuff?
 	msh_terminate(&msh);
 	return (msh.ret);
 }
@@ -33,54 +30,46 @@ int	main(int ac, char **av, char **envp)
 // Parses inputs, executes commands and updates history
 int	msh_loop(t_msh *msh)
 {
+	char	*input;
+
 	while (!msh->exit)
 	{
 		if (isatty(0))
-			msh->input = readline(MSH_PROMPT);
+			input = readline(MSH_PROMPT);
 		else
-			msh->input = readline(NULL);
-		if (msh->input == NULL) // readline manual says NULL is returned when EOF encountered on an empty line so this should handle ctrl+d properly (maybe)
+			input = readline(NULL);
+		if (input == NULL) // readline manual says NULL is returned when EOF encountered on an empty line so this should handle ctrl+d properly (maybe)
 			return (0);
-		if (msh->input[0]) // probably no need for msh.cmdline check because there's a return before
+		if (input[0]) // probably no need for msh.cmdline check because there's a return before
 		{
-			add_history(msh->input); // careful about history with heredoc
-			msh->ret = process_input(msh);
+			add_history(input);
+			msh->ret = process_input(msh, input);
 			if (msh->ret == -1)
 				return (printf("An error occured in process_input, returning...\n"), -1);
 		}
-		free(msh->input);
+		free(input);
 	}
 	return (0);
 }
 
-int	process_input(t_msh *msh)
+// Used the input and figures out the structure of commands and executes them
+// Returns the output of the last command on success, -1 otherwise
+int	process_input(t_msh *msh, char *input)
 {
 	int			ret;
 	t_tokenlist	*tokens;
-	t_pipeline	pip;
+	t_cmdline	cmdline;
 
-	ret = tokenize(msh->input, &tokens);
-	if (ret < 0)
+	ret = tokenize(input, &tokens);
+	if (ret == -1)
 		return (ft_dprintf(2, MSH_ERROR ME_TOKENIZE), -1);
-	//display_tokens(tokens);
-
-	ret = parse(&pip, tokens);
-	if (ret < 0)
+	ret = parse(&cmdline, tokens);
+	if (ret == -1)
 		return (ft_dprintf(2, MSH_ERROR ME_PARSE),
 			destroy_tokenlist(&tokens), -1);
-	display_pipeline(&pip);
-
-	// expand test remove later
-	t_tokenlist *cur = tokens;
-	while (cur)
-	{
-		if (cur->type == DOUBLE_QUOTED_STR ||  cur->type == UNQUOTED_STR)
-			if (make_expansion(msh->env, cur) == -1)
-				printf("ya une error\n");
-		cur = cur->next;
-	}
-	printf("\n\n");
-	display_pipeline(&pip);
-
-	return (free(pip.cmds), destroy_tokenlist(&tokens), ret); // free(pip.cmds) replace with destroy_pipeline(&pip) later when necessary
+	ret = exec_cmdline(msh, &cmdline);
+	if (ret == -1)
+		ft_dprintf(2, MSH_ERROR ME_EXEC);
+	return (free(cmdline.cmds), destroy_tokenlist(&tokens), ret); // free(pip.cmds) replace with destroy_pipeline(&pip) later when necessary
 }
+

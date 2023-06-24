@@ -6,7 +6,7 @@
 #    By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/23 08:28:27 by nlegrand          #+#    #+#              #
-#    Updated: 2023/06/23 21:57:50 by nlegrand         ###   ########.fr        #
+#    Updated: 2023/06/24 03:15:18 by nlegrand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,7 @@ SRCS	:=	minishell.c \
 			tokenizer/tokenizer_utils_3.c \
 			parser/parser.c \
 			parser/parser_utils.c \
+			exec/exec.c \
 			builtins/pwd/pwd.c \
 			builtins/cd/cd.c \
 			builtins/exit/exit.c \
@@ -89,6 +90,7 @@ $(OBJDIR):
 	mkdir -p $(OBJDIR)/utils
 	mkdir -p $(OBJDIR)/tokenizer
 	mkdir -p $(OBJDIR)/parser
+	mkdir -p $(OBJDIR)/exec
 	mkdir -p $(OBJDIR)/test_code_remove_later
 
 clean:

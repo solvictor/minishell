@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/23 22:54:33 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/24 03:27:04 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,12 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+
+
 // SETTINGS
-//# define MSH_PROMPT			"\[\e[38;2;255;0;255mminishell>\e[0m\] " // lame... make it better
-# define MSH_PROMPT			"minishell> " // lame... make it better
+//# define MSH_PROMPT			"\001\e[38;2;255;0;255m\002minishell>\001\e[0m\002 " // lame... make it better
+//# define MSH_PROMPT			"minishell> " // do this uqick
+# define MSH_PROMPT				"\001\e[38;2;184;123;79m\0028\001\e[38;2;252;185;114m\002===\001\e[38;2;201;115;158m\002D\001\e[0m\002 "
 # define RNG_MAX			INT_MAX
 # define RNG_BIT_ROTATIONS	13
 # define RNG_ZERO_FIX_SEED	694201337
@@ -34,23 +37,23 @@
 // ERROR MESSAGES
 # define MSH_ERROR		"\e[31;7;1m[MINISHELL ERROR]\e[0m "
 # define ME_AC			"Minishell takes no arguments\n"
+# define ME_SIGNALS		"Failed to bind signals\n"
 # define ME_ENV			"Failed to create minishell environment\n"
 # define ME_RNG			"Failed to random number generator\n"
 # define ME_TOKENIZE	"Failed to tokenize\n"
 # define ME_PARSE		"Failed to parse\n"
-# define ME_SPLIT_ARGS	"Failed to split command arguments\n"
-# define ME_EXEC_CMD	"Failed to exec command\n"
-# define ME_BAD_FORMAT	"Bad format command\n"
-# define ME_SIGNALS		"Failed to bind signals\n"
+# define ME_EXEC		"Failed to execute command line\n"
 # define ME_LOOP		"Minishell input loop exited with -1\n"
-# define ME_USAGE		"Incorrect usage\n"
+//# define ME_SPLIT_ARGS	"Failed to split command arguments\n"
+//# define ME_EXEC_CMD	"Failed to exec command\n"
+//# define ME_BAD_FORMAT	"Bad format command\n"
 
 typedef enum e_tokentype	t_tokentype;
 typedef enum e_nodetype		t_nodetype;
 typedef struct s_tokenlist	t_tokenlist;
 typedef struct s_rng		t_rng;
 typedef struct s_cmd		t_cmd;
-typedef struct s_pipeline	t_pipeline;
+typedef struct s_cmdline	t_cmdline;
 typedef struct s_env		t_env;
 typedef struct s_msh		t_msh;
 typedef int					(*t_builtin)(t_msh *, char **);
@@ -83,9 +86,9 @@ struct s_cmd
 	char		**args;
 	char		**env;
 	t_tokenlist	*start_token;
-//	int			empty; // flag for pipelines with empty commands but rediretions so redirections work
+//	int			empty; // flag for cmdlines with empty commands but rediretions so redirections work
 };
-struct s_pipeline
+struct s_cmdline
 {
 	int		cmds_n;
 	t_cmd	*cmds;
@@ -107,7 +110,6 @@ struct s_rng
 struct s_msh
 {
 	t_env	*env;
-	char	*input;
 	int		exit;
 	int		ret;
 	t_rng	rng;
@@ -115,7 +117,7 @@ struct s_msh
 
 // minishell.c
 int				msh_loop(t_msh *msh);
-int				process_input(t_msh *msh);
+int				process_input(t_msh *msh, char *input);
 
 // ----- //
 // SETUP //
@@ -162,9 +164,14 @@ void			clean_redir_tokens(t_tokenlist **tokens);
 // ------ //
 // PARSER //
 // ------ //
-int				parse(t_pipeline *pip, t_tokenlist *tokens);
-int				count_pipeline_commands(t_tokenlist *tokens);
-void			set_cmds_start_token(t_pipeline *pip, t_tokenlist *tokens);
+int				parse(t_cmdline *cmdline, t_tokenlist *tokens);
+int				count_cmdline_commands(t_tokenlist *tokens);
+void			set_cmds_start_token(t_cmdline *cmdline, t_tokenlist *tokens);
+
+// --------- //
+// EXECUTION //
+// --------- //
+int	exec_cmdline(t_msh *msh, t_cmdline *cmdline);
 
 // -------- //
 // BUILTINS //
@@ -186,7 +193,7 @@ int				builtin_env(t_msh *msh, char **args);
 //void	display_tokens(t_tokenlist *begin);
 //void	test_tokenizer(t_msh *msh);
 //void	test_command(t_msh *msh);
-void	display_pipeline(t_pipeline *pip);
+void	display_cmdline(t_cmdline *cmdline);
 //char			**get_paths(t_env *env);
 //int				find_cmd(char **paths, t_cmd *cmd);
 //void			test_pathfinding(t_msh *msh);

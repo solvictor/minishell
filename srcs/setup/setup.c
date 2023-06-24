@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 06:25:47 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/23 09:07:36 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/24 03:13:34 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 static void	msh_init_vars(t_msh *msh)
 {
 	msh->env = NULL;
-	msh->input = NULL;
 	msh->exit = 0;
 	msh->ret = EXIT_SUCCESS;
 	msh->rng.fd_urandom = -1;
