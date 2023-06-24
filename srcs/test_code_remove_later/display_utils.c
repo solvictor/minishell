@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:33:32 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/24 03:14:23 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/24 07:00:30 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	display_token_type(t_tokenlist *token)
 		printf("DOUBLE_QUOTED_STR\n");
 	else if (token->type == SINGLE_QUOTED_STR)
 		printf("SINGLE_QUOTED_STR\n");
+	else if (token->type == MERGED_STR)
+		printf("MERGED_STR\n");
 	else if (token->type == HEREDOC)
 		printf("HEREDOC\n");
 	else if (token->type == INPUTFILE)
@@ -46,7 +48,7 @@ void	display_tokens(t_tokenlist *begin)
 	{
 		printf("TOKEN #%d\n", i);
 		printf("token data -> %s", curr->data);
-		if (curr->concat_next)
+		if (curr->merge_next)
 			printf(" --->");
 		printf("\n");
 		display_token_type(curr);

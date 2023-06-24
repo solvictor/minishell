@@ -1,17 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_expansion.c                                   :+:      :+:    :+:   */
+/*   exec_utils_3.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
+/*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/16 14:18:21 by vegret            #+#    #+#             */
-/*   Updated: 2023/06/23 22:52:49 by nlegrand         ###   ########.fr       */
+/*   Created: 2023/06/24 06:39:03 by nlegrand          #+#    #+#             */
+/*   Updated: 2023/06/24 07:16:48 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// Calculates the size of the future expanded string after replacing the dollar
+// variable being replaced by its content
 static int	get_expanded_size(t_env *env, char *str)
 {
 	int		j;
@@ -41,6 +43,7 @@ static int	get_expanded_size(t_env *env, char *str)
 	return (size);
 }
 
+// Makes new expanded string for token
 static void	expand(t_env *env, char *str, char *dst)
 {
 	int		j;
@@ -68,8 +71,8 @@ static void	expand(t_env *env, char *str, char *dst)
 	}
 }
 
-//char	*make_expansion(t_env *env, char *str)
-int	make_expansion(t_env *env, t_tokenlist *token)
+// Expands a single token's data
+int	expand_token(t_env *env, t_tokenlist *token)
 {
 	int		size;
 	char	*expanded;
@@ -87,3 +90,18 @@ int	make_expansion(t_env *env, t_tokenlist *token)
 	return (0);
 }
 
+// Loops through the token list and expands the proper tokens
+int	do_dollar_expansions(t_msh *msh, t_tokenlist *tokens)
+{
+	t_tokenlist	*cur;
+
+	cur = tokens;
+	while (cur)
+	{
+		if (cur->type == UNQUOTED_STR || cur->type == DOUBLE_QUOTED_STR)
+			if (expand_token(msh->env, cur) == -1)
+				return (-1);
+		cur = cur->next;
+	}
+	return (0);
+}

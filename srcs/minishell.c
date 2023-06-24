@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:00:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/24 03:13:18 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/24 04:21:15 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,10 @@ int	process_input(t_msh *msh, char *input)
 	ret = parse(&cmdline, tokens);
 	if (ret == -1)
 		return (ft_dprintf(2, MSH_ERROR ME_PARSE),
+			destroy_tokenlist(&tokens), -1);
+	ret = prep_cmdline(msh, &cmdline, tokens);
+	if (ret == -1)
+		return (ft_dprintf(2, MSH_ERROR ME_PREP), free(cmdline.cmds),
 			destroy_tokenlist(&tokens), -1);
 	ret = exec_cmdline(msh, &cmdline);
 	if (ret == -1)

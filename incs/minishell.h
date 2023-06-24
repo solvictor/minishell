@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/24 03:27:04 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/24 06:35:27 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 # define ME_RNG			"Failed to random number generator\n"
 # define ME_TOKENIZE	"Failed to tokenize\n"
 # define ME_PARSE		"Failed to parse\n"
+# define ME_PREP		"Failed to prep command line\n"
 # define ME_EXEC		"Failed to execute command line\n"
 # define ME_LOOP		"Minishell input loop exited with -1\n"
 //# define ME_SPLIT_ARGS	"Failed to split command arguments\n"
@@ -77,14 +78,13 @@ struct s_tokenlist
 {
 	char		*data;
 	t_tokentype	type;
-	int			concat_next;
+	int			merge_next;
 	t_tokenlist	*next;
 };
 struct s_cmd
 {
 	char		*path;
 	char		**args;
-	char		**env;
 	t_tokenlist	*start_token;
 //	int			empty; // flag for cmdlines with empty commands but rediretions so redirections work
 };
@@ -92,6 +92,8 @@ struct s_cmdline
 {
 	int		cmds_n;
 	t_cmd	*cmds;
+	char	**paths;
+	char	**envp;
 //	int		ret;
 };
 struct	s_env
@@ -143,6 +145,8 @@ t_tokenlist		*token_add_front(t_tokenlist **begin, char *data);
 void			destroy_tokenlist(t_tokenlist **begin);
 int				is_redir_token(t_tokenlist *token);
 int				is_str_token(t_tokenlist *token);
+// Expansion
+int				expand_token(t_env *env, t_tokenlist *token);
 
 // --------- //
 // TOKENIZER //
@@ -171,7 +175,12 @@ void			set_cmds_start_token(t_cmdline *cmdline, t_tokenlist *tokens);
 // --------- //
 // EXECUTION //
 // --------- //
-int	exec_cmdline(t_msh *msh, t_cmdline *cmdline);
+int				prep_cmdline(t_msh *msh, t_cmdline *cmdline,
+	t_tokenlist *tokens);
+int				exec_cmdline(t_msh *msh, t_cmdline *cmdline);
+char			**get_paths(t_env *env);
+int				do_dollar_expansions(t_msh *msh, t_tokenlist *tokens);
+int				merge_str_tokens(t_tokenlist *tokens);
 
 // -------- //
 // BUILTINS //
@@ -190,7 +199,7 @@ int				builtin_env(t_msh *msh, char **args);
 
 // TEST FUNCTIONS ONLY // REMOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOVE LATER
 //void	display_token_type(t_tokenlist *token);
-//void	display_tokens(t_tokenlist *begin);
+void	display_tokens(t_tokenlist *begin);
 //void	test_tokenizer(t_msh *msh);
 //void	test_command(t_msh *msh);
 void	display_cmdline(t_cmdline *cmdline);

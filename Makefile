@@ -6,7 +6,7 @@
 #    By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/23 08:28:27 by nlegrand          #+#    #+#              #
-#    Updated: 2023/06/24 03:15:18 by nlegrand         ###   ########.fr        #
+#    Updated: 2023/06/24 07:22:26 by nlegrand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,6 +48,9 @@ SRCS	:=	minishell.c \
 			parser/parser.c \
 			parser/parser_utils.c \
 			exec/exec.c \
+			exec/exec_utils_1.c \
+			exec/exec_utils_expansion.c \
+			exec/exec_utils_merge.c \
 			builtins/pwd/pwd.c \
 			builtins/cd/cd.c \
 			builtins/exit/exit.c \
@@ -55,8 +58,8 @@ SRCS	:=	minishell.c \
 			builtins/export/export.c \
 			builtins/unset/unset.c \
 			builtins/env/env.c \
-			test_code_remove_later/display_utils.c \
-			test_code_remove_later/test_expansion.c
+			test_code_remove_later/display_utils.c
+#			test_code_remove_later/test_expansion.c
 #			test_code_remove_later/test_signals.c
 OBJS	:=	$(SRCS:.c=.o)
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRCS))
