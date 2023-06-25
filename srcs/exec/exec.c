@@ -6,19 +6,41 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 02:35:57 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/25 12:38:28 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/25 13:57:23 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	exec_cmd(t_cmd *cmd, t_cmdline *cmdline)
+static int	exec_cmd(t_msh *msh, t_cmd *cmd, t_cmdline *cmdline)
 {
-	// make argv and merge strings in one command
-	
-	(void)cmd;
-	(void)cmdline;
-	printf("pas faire encore sa exec_cmd\n");
+	int	pid;
+
+	(void)msh; // only added for builtin prototype
+	if (cmdline->cmds_n == 1)
+	{
+		if (cmd->builtin != NULL)
+		{
+			cmd->builtin(msh, cmd->args);
+			return (0);
+		}
+		pid = fork();
+		if (pid == -1)
+			return (printf("failed to make child process\n"), -1);
+		else if (pid == 0)
+		{
+			if (execve(cmd->path, cmd->args, cmdline->envp) == -1)
+				return (printf("Failed to execute command, what do?\n"), -1);
+		}
+		else
+		{
+			//printf("parent is waiting...\n");
+			waitpid(pid, NULL, 0);
+			//printf("parent done waiting.\n");
+		}
+	}
+	else
+		printf("pas faire encore sa exec_cmd pour plusieurs commandes\n");
 	return (0);
 }
 
@@ -46,16 +68,12 @@ int	prep_cmdline(t_msh *msh, t_cmdline *cmdline, t_tokenlist *tokens)
 // In case of a pipeline, commands are executed in a subshell
 int	exec_cmdline(t_msh *msh, t_cmdline *cmdline)
 {
-	(void)msh; // might not even need msh here maybe
 	int		ret;
 
-	// EXECUTE
-	// loop execution here
-	// single command execution
-
-	ret = exec_cmd(&cmdline->cmds[0], cmdline); // return what?
+	(void)msh; // might not even need msh here maybe
+	ret = exec_cmd(msh, &cmdline->cmds[0], cmdline); // return what?
 	if (ret == -1)
 		ft_dprintf(2, "DONT KNOW WHAT TO DO LOL\n");
-
+	//make_subshell(); // for pipeline do something like this in a loop
 	return (0);
 }

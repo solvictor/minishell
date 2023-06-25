@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 05:43:54 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/24 07:22:56 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/25 13:20:05 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,7 @@ static int	merge_token(t_tokenlist *tokens)
 		cur = cur->next;
 	}
 	ft_strlcat(tmp, cur->data, len + 1);
-	free(tokens->data);
-	tokens->data = tmp;
-	return (0);
+	return (free(tokens->data), (tokens->data = tmp), 0);
 }
 
 // Removes the tokens that have been merged to the first token from the list
@@ -63,7 +61,7 @@ static void	discard_merge_rest(t_tokenlist *tokens)
 
 int	merge_str_tokens(t_tokenlist *tokens)
 {
-	t_tokenlist *cur;
+	t_tokenlist	*cur;
 
 	cur = tokens;
 	while (cur)

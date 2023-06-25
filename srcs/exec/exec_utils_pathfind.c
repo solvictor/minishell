@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 04:16:08 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/25 12:34:55 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/25 13:20:45 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static char	*concat_cmd_path(char *path, char *name)
 
 static int	get_builtin(t_cmd *cmd)
 {
-	static const char	*names[] = {"cd", "pwd", "exit",
+	static const char		*names[] = {"cd", "pwd", "exit",
 		"echo", "export", "unset", "env", NULL};
 	static const t_builtin	funcs[] = {builtin_cd, builtin_pwd, builtin_exit,
 		builtin_echo, builtin_export, builtin_unset, builtin_env};
@@ -107,8 +107,8 @@ int	pathfind_cmds(t_cmdline *cmdline)
 	i = 0;
 	while (i < cmdline->cmds_n)
 	{
-		if (!cmdline->cmds[i].empty &&
-			find_cmd(&cmdline->cmds[i], cmdline->paths) == -1)
+		if (!cmdline->cmds[i].empty
+			&& find_cmd(&cmdline->cmds[i], cmdline->paths) == -1)
 			return (-1);
 		++i;
 	}

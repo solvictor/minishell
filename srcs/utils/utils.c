@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 06:26:22 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/25 12:02:51 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/25 13:06:39 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,13 @@ void	clear_cmdline(t_cmdline *cmdline)
 
 // Bit rotation function used by the random number generation for random file
 // name generation for heredocs
-unsigned int rng_bit_rot(unsigned int num)
+unsigned int	rng_bit_rot(unsigned int num)
 {
 	int				shift_val;
 	unsigned int	shifted_right;
 	unsigned int	shifted_left;
 
 	shift_val = num % (sizeof(num) * 8);
-
 	shifted_right = num >> shift_val;
 	shifted_left = num << ((sizeof(num) * 8) - shift_val);
 	return (shifted_left | shifted_right);

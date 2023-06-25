@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 21:53:03 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/24 02:50:02 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/25 13:04:17 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	count_cmdline_commands(t_tokenlist *tokens)
 		if (cur && cur->type == PIPE)
 			cur = cur->next;
 		else
-			break;
+			break ;
 	}
 	return (count);
 }
@@ -50,6 +50,6 @@ void	set_cmds_start_token(t_cmdline *cmdline, t_tokenlist *tokens)
 		if (cur && cur->type == PIPE)
 			cur = cur->next;
 		else
-			break;
+			break ;
 	}
 }
