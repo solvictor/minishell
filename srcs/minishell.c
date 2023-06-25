@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:00:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/25 07:08:46 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/25 12:41:23 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,18 +63,20 @@ int	process_input(t_msh *msh, char *input)
 	ret = tokenize(input, &tokens);
 	if (ret == -1)
 		return (ft_dprintf(2, MSH_ERROR ME_TOKENIZE), -1);
+	if (ret == -2)
+		return (ft_printf("syntax error, try again\n"), 0);
 	ret = parse(&cmdline, tokens);
 	if (ret == -1)
 		return (ft_dprintf(2, MSH_ERROR ME_PARSE),
 			destroy_tokenlist(&tokens), -1);
 	ret = prep_cmdline(msh, &cmdline, tokens);
 	if (ret == -1)
-		return (ft_dprintf(2, MSH_ERROR ME_PREP), free(cmdline.cmds),
+		return (ft_dprintf(2, MSH_ERROR ME_PREP), clear_cmdline(&cmdline),
 			destroy_tokenlist(&tokens), -1);
 	display_cmdline(&cmdline);
 	ret = exec_cmdline(msh, &cmdline);
 	if (ret == -1)
 		ft_dprintf(2, MSH_ERROR ME_EXEC);
-	return (free(cmdline.cmds), destroy_tokenlist(&tokens), ret); // free(pip.cmds) replace with destroy_pipeline(&pip) later when necessary
+	return (clear_cmdline(&cmdline), destroy_tokenlist(&tokens), ret); // free(pip.cmds) replace with destroy_pipeline(&pip) later when necessary
 }
 

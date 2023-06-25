@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 09:58:53 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/25 06:02:31 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/25 11:42:25 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,24 +50,6 @@ static int	set_cmd_args(t_cmd *cmd)
 		cur = cur->next;
 	}
 	return (0);
-}
-
-// replace with destroy_cmdline() and include free envp and clear paths
-void	clear_cmdline(t_cmdline *cmdline)
-{
-	int	i;
-
-	free(cmdline->envp);
-	clear_strarr(cmdline->paths);
-	i = 0;
-	while (i < cmdline->cmds_n)
-	{
-		free(cmdline->cmds[i].args);
-		free(cmdline->cmds[i].path);
-		++i;
-	}
-	free(cmdline->cmds);
-	ft_bzero(cmdline, sizeof(t_cmdline));
 }
 
 int	make_cmds_args(t_cmdline *cmdline)

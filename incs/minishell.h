@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/25 07:05:39 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/25 12:30:11 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ struct s_tokenlist
 struct s_cmd
 {
 	char		*path;
+	int			(*builtin)(t_msh *, char **);
 	char		**args;
 	t_tokenlist	*start_token;
 	int			empty;
@@ -133,6 +134,7 @@ void			handler_sigint(int sig);
 // ----- //
 void			msh_terminate(t_msh *msh);
 void			clear_strarr(char **arr);
+void			clear_cmdline(t_cmdline *cmdline);
 unsigned int	rng_bit_rot(unsigned int num);
 // Env
 t_env			*env_new(char *var);
@@ -188,7 +190,6 @@ int				pathfind_cmds(t_cmdline *cmdline);
 // -------- //
 // BUILTINS //
 // -------- //
-t_builtin		get_builtin(t_cmd *cmd);
 int				builtin_pwd(t_msh *msh, char **args);
 int				builtin_cd(t_msh *msh, char **args);
 int				builtin_exit(t_msh *msh, char **args);

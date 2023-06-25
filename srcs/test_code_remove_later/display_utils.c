@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:33:32 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/25 07:09:09 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/25 12:37:10 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,12 @@ void	display_cmdline(t_cmdline *cmdline)
 		printf("COMMAND #%d\n", i);
 		if (cmdline->cmds[i].path)
 			printf("path -> %s\n", cmdline->cmds[i].path);
+		else if (cmdline->cmds[i].builtin)
+			printf("builtin command!!\n");
+		else if (cmdline->cmds[i].empty)
+			printf("empty command...\n");
+		else
+			printf("command not found *0*\n");
 		printf("tokens: ");
 		cur = cmdline->cmds[i].start_token;
 		while (cur && cur->type < PIPE)

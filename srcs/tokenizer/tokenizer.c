@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:52:25 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/23 00:02:16 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/25 12:40:31 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	tokenize(const char *input, t_tokenlist **tokens)
 	}
 	reverse_tokens(tokens);
 	if (check_syntax_errors(*tokens) == -1)
-		return (printf("Syntax error return\n"), destroy_tokenlist(tokens), -1);
+		return (printf("Syntax error return\n"), destroy_tokenlist(tokens), -2);
 	clean_redir_tokens(tokens);
 	return (0);
 }
