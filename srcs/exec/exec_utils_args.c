@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 09:58:53 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/24 12:30:40 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/25 06:02:31 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	set_cmd_args(t_cmd *cmd)
 
 	count = count_cmd_args(cmd->start_token);
 	if (count == 0)
-		return ((cmd->args = NULL), 0);
+		return ((cmd->empty = 1), 0);
 	cmd->args = malloc(sizeof(char *) * (count + 1));
 	if (cmd->args == NULL)
 		return (-1);
@@ -53,13 +53,21 @@ static int	set_cmd_args(t_cmd *cmd)
 }
 
 // replace with destroy_cmdline() and include free envp and clear paths
-void	clear_args(t_cmdline *cmdline)
+void	clear_cmdline(t_cmdline *cmdline)
 {
 	int	i;
 
+	free(cmdline->envp);
+	clear_strarr(cmdline->paths);
 	i = 0;
 	while (i < cmdline->cmds_n)
-		free(cmdline->cmds[i++].args);
+	{
+		free(cmdline->cmds[i].args);
+		free(cmdline->cmds[i].path);
+		++i;
+	}
+	free(cmdline->cmds);
+	ft_bzero(cmdline, sizeof(t_cmdline));
 }
 
 int	make_cmds_args(t_cmdline *cmdline)

@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:33:32 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/24 12:21:58 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/25 07:09:09 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,10 @@ void	display_cmdline(t_cmdline *cmdline)
 	i = 0;
 	while (i < cmdline->cmds_n)
 	{
-		printf("COMMAND #%d\ntokens: ", i);
+		printf("COMMAND #%d\n", i);
+		if (cmdline->cmds[i].path)
+			printf("path -> %s\n", cmdline->cmds[i].path);
+		printf("tokens: ");
 		cur = cmdline->cmds[i].start_token;
 		while (cur && cur->type < PIPE)
 		{

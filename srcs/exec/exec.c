@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 02:35:57 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/24 12:29:43 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/25 07:08:09 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,24 +29,20 @@ int	prep_cmdline(t_msh *msh, t_cmdline *cmdline, t_tokenlist *tokens)
 		return (ft_dprintf(2, "fail a creer envp, debug ta mere\n"), -1);
 	cmdline->paths = get_paths(msh->env);
 	if (cmdline->paths == NULL) // faut pas retourner une erreur normalement faut juste faire sans
-		return (ft_dprintf(2, "pas trouve path, koi faire?\n"),
+		return (ft_dprintf(2, "path malloc errror\n"),
 			free(cmdline->envp),  -1);
 	if (do_dollar_expansions(msh, tokens) == -1)
 		return (ft_dprintf(2, "Failed to expand dollars for some reason idk lol\n"),
-			free(cmdline->envp), clear_strarr(cmdline->paths), -1);
-	
-	// merge str tokens
+			clear_cmdline(cmdline), -1);
 	if (merge_str_tokens(tokens) == -1)
 		return (ft_dprintf(2, "Failed merge str tokens\n"),
-			free(cmdline->envp), clear_strarr(cmdline->paths), -1);
-	// make argv(s) and merge strings
+			clear_cmdline(cmdline), -1);
 	if (make_cmds_args(cmdline) == -1)
 		return (ft_dprintf(2, "Failed making argv for commands\n"),
-			free(cmdline->envp), clear_strarr(cmdline->paths), -1);
-	display_cmdline(cmdline);
-
-	// find commands here
-	//find_cmds(cmdline, *paths); // return what?
+			clear_cmdline(cmdline), -1);
+	if (pathfind_cmds(cmdline) == -1) // return what?
+		return (ft_dprintf(2, "Failed pathfinding the command\n"),
+			clear_cmdline(cmdline), -1);
 	return (0);
 }
 
@@ -63,6 +59,5 @@ int	exec_cmdline(t_msh *msh, t_cmdline *cmdline)
 	if (ret == -1)
 		ft_dprintf(2, "DONT KNOW WHAT TO DO LOL\n");
 
-	return (clear_strarr(cmdline->paths), free(cmdline->envp),
-		clear_args(cmdline), 0);
+	return (clear_cmdline(cmdline), 0);
 }

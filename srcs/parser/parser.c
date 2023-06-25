@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 20:10:06 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/24 02:50:02 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/25 03:08:01 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,7 @@ int	parse(t_cmdline *cmdline, t_tokenlist *tokens)
 		return (printf("failed to malloc cmds\n"), -1);
 	ft_bzero(cmdline->cmds, sizeof(t_cmd) * cmdline->cmds_n);
 	set_cmds_start_token(cmdline, tokens);
+	cmdline->paths = NULL;
+	cmdline->envp = NULL;
 	return (0);
 }

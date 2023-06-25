@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 06:26:22 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/19 18:27:59 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/25 02:50:14 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,13 @@ void	clear_strarr(char **arr)
 {
 	int	i;
 
-	i = 0;
-	while (arr[i])
-		free(arr[i++]);
-	free(arr);
+	if (arr)
+	{
+		i = 0;
+		while (arr[i])
+			free(arr[i++]);
+		free(arr);
+	}
 }
 
 unsigned int rng_bit_rot(unsigned int num)

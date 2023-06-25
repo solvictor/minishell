@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/24 12:30:03 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/25 07:05:39 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 // SETTINGS
 //# define MSH_PROMPT			"\001\e[38;2;255;0;255m\002minishell>\001\e[0m\002 " // lame... make it better
 //# define MSH_PROMPT			"minishell> " // do this uqick
-# define MSH_PROMPT				"\001\e[38;2;184;123;79m\0028\001\e[38;2;252;185;114m\002===\001\e[38;2;201;115;158m\002D\001\e[0m\002 "
+# define MSH_PROMPT				"\001\e[38;2;184;123;79m\0028\001\e[38;2;252;185;114m\002====\001\e[38;2;201;115;158m\002D\001\e[0m\002 "
 # define RNG_MAX			INT_MAX
 # define RNG_BIT_ROTATIONS	13
 # define RNG_ZERO_FIX_SEED	694201337
@@ -86,6 +86,7 @@ struct s_cmd
 	char		*path;
 	char		**args;
 	t_tokenlist	*start_token;
+	int			empty;
 };
 struct s_cmdline
 {
@@ -180,8 +181,9 @@ int				exec_cmdline(t_msh *msh, t_cmdline *cmdline);
 char			**get_paths(t_env *env);
 int				do_dollar_expansions(t_msh *msh, t_tokenlist *tokens);
 int				merge_str_tokens(t_tokenlist *tokens);
-void			clear_args(t_cmdline *cmdline);
+void			clear_cmdline(t_cmdline *cmdline);
 int				make_cmds_args(t_cmdline *cmdline);
+int				pathfind_cmds(t_cmdline *cmdline);
 
 // -------- //
 // BUILTINS //

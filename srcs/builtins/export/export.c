@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 16:38:05 by vegret            #+#    #+#             */
-/*   Updated: 2023/06/20 16:07:46 by vegret           ###   ########.fr       */
+/*   Updated: 2023/06/25 03:57:08 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static bool	is_valid_identifier(char *str)
 {
-	if (!*str || *str == '=')
+	if (!*str || *str == '=' || ft_isdigit(*str))
 		return (false);
 	while (*str && *str != '=')
 	{
