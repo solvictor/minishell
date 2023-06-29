@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:52:25 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/25 12:40:31 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/26 13:14:54 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	tokenize(const char *input, t_tokenlist **tokens)
 {
-	int			i;
+	int	i;
 
 	*tokens = NULL;
 	i = 0;

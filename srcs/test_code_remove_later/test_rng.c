@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   test_rng.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 22:48:56 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/19 19:03:54 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/29 13:22:09 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,23 @@ void	set_heredoc_name(char *filename, unsigned int rand)
 		filename[offset + i--] = '0';
 }
 
-void	test_rng(t_msh *msh)
+char	*random_name(t_msh *msh)
 {
+	int			i;
 	t_rng		*rng;
 	static char	heredoc_name[] = ".msh_heredoc_0000000000\0";
 
 	rng = &msh->rng;
-
-	int i = 0;
-	while (i < 10)
+	i = 0;
+	while (i < 1024)
 	{
 		rng->rand = rng_bit_rot((rng->rand + rng->inc) * rng->mult);
 		set_heredoc_name(heredoc_name, rng->rand);
-		printf("%s\n", heredoc_name);
+		if (access(heredoc_name, F_OK) != 0)
+			return (heredoc_name);
 		++i;
 	}
+	return (NULL);
 	// REMOVE COMMENTS AFTER THIS FUNCTION, NORMINETTE DOESN'T CATCH THIS ERROR
 }
 
@@ -84,3 +86,47 @@ void	test_rng(t_msh *msh)
 	//printf("%s\n", heredoc_name);
 	//set_heredoc_name(heredoc_name, 69201337);
 	//printf("%s\n", heredoc_name);
+
+int	create_heredoc(t_msh *msh, char *delimiter)
+{
+	const char	*name = random_name(msh);
+	const int	size_delim = ft_strlen(delimiter) + 1;
+	char		*line;
+	int			fd;
+
+	if (!name)
+		return (1);
+	fd = open(name, O_CREAT | O_RDWR, 0644);
+	if (fd == -1)
+		return (2);
+	while (1)
+	{
+		line = readline(NULL);
+		if (ft_strncmp(line, delimiter, size_delim) == 0)
+			break ;
+		if (write(fd, line, ft_strlen(line)) < 0)
+			return (3);
+	}
+	return (0);
+}
+
+int	test_heredoc(t_msh *msh, char *delimiter)
+{
+	const pid_t	ret = fork();
+	int			heredoc_fd;
+
+	heredoc_fd = create_heredoc(msh, delimiter);
+	if (ret == -1)
+		return (-1);
+	if (ret == 0)
+	{
+		if (dup2(STDIN_FILENO, heredoc_fd) == -1)
+			return (-1);
+		execve("/bin/cat", (char *[]) {"cat", NULL}, env_to_arr(msh->env));
+		return (0);
+	}
+	if (close(heredoc_fd) == -1)
+		return (-1);
+	waitpid(ret, NULL, 0);
+	return (0);
+}
