@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:00:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/29 12:57:32 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/29 13:40:31 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,10 @@ int	msh_loop(t_msh *msh)
 		if (input[0]) // probably no need for msh.cmdline check because there's a return before
 		{
 			add_history(input);
-			msh->ret = process_input(msh, input);
-			if (msh->ret == -1)
-				return (printf("An error occured in process_input, returning...\n"), -1);
+			test_heredoc(msh, "EOF");
+//			msh->ret = process_input(msh, input);
+//			if (msh->ret == -1)
+//				return (printf("An error occured in process_input, returning...\n"), -1);
 		}
 		free(input);
 	}
