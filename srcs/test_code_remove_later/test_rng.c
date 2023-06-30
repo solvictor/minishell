@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 22:48:56 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/30 18:13:14 by vegret           ###   ########.fr       */
+/*   Updated: 2023/06/30 18:41:29 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,25 @@ char	*random_name(t_msh *msh)
 	//set_heredoc_name(heredoc_name, 69201337);
 	//printf("%s\n", heredoc_name);
 
-int	create_heredoc(char *delimiter, const char *name)
+int	expand_heredoc(t_msh *msh, char **str)
+{
+	int		size;
+	char	*expanded;
+
+	if (*str && ft_strchr(*str, '$') == NULL)
+		return (0);
+	size = get_expanded_size(msh->env, *str) + 1;
+	expanded = malloc(sizeof(char) * size);
+	if (!expanded)
+		return (-1);
+	expand(msh->env, *str, expanded);
+	expanded[size - 1] = '\0';
+	free(*str);
+	*str = expanded;
+	return (0);
+}
+
+int	create_heredoc(t_msh *msh, char *delimiter, const char *name)
 {
 	const int	size_delim = ft_strlen(delimiter) + 1;
 	char		*line;
@@ -105,10 +123,13 @@ int	create_heredoc(char *delimiter, const char *name)
 			break ;
 		if (ft_strncmp(line, delimiter, size_delim) == 0)
 			break ;
+		if (expand_heredoc(msh, &line) == -1)
+			return (-1);
 		if (write(fd, line, ft_strlen(line)) < 0)
 			return (-3);
 		if (write(fd, "\n", 1) < 0)
 			return (-4);
+		free(line);
 	}
 	return (fd);
 }
@@ -119,7 +140,7 @@ int	test_heredoc(t_msh *msh, char *delimiter)
 	int			heredoc_fd;
 	pid_t		ret;
 
-	heredoc_fd = create_heredoc(delimiter, name);
+	heredoc_fd = create_heredoc(msh, delimiter, name);
 	if (heredoc_fd < 0)
 		return (-1);
 	ret = fork();
