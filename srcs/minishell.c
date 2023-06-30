@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:00:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/30 15:14:32 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/30 22:36:21 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,8 @@ int	process_input(t_msh *msh, char *input)
 
 	//display_cmdline(&cmdline);
 
-	//ret = exec_cmdline(msh, &cmdline);
-	//if (ret == -1)
-	//	ft_dprintf(2, MSH_ERROR ME_EXEC);
+	ret = exec_cmdline(msh, &cmdline);
+	if (ret == -1)
+		ft_dprintf(2, MSH_ERROR ME_EXEC);
 	return (clear_cmdline(&cmdline), destroy_tokenlist(&tokens), ret); // free(pip.cmds) replace with destroy_pipeline(&pip) later when necessary
 }

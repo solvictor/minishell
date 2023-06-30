@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 06:39:03 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/30 22:26:26 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/30 22:36:45 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ int	expand_str(t_msh *msh, char **str)
 	if (*str && ft_strchr(*str, '$') == NULL)
 		return (0);
 	size = get_expanded_len(msh, *str) + 1;
-	printf("size + 1 -> %d\n", size); // remove
 	expanded = malloc(sizeof(char) * size);
 	if (!expanded)
 		return (-1);

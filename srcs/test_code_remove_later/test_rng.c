@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 22:48:56 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/30 18:41:29 by vegret           ###   ########.fr       */
+/*   Updated: 2023/06/30 22:34:06 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,24 +87,6 @@ char	*random_name(t_msh *msh)
 	//set_heredoc_name(heredoc_name, 69201337);
 	//printf("%s\n", heredoc_name);
 
-int	expand_heredoc(t_msh *msh, char **str)
-{
-	int		size;
-	char	*expanded;
-
-	if (*str && ft_strchr(*str, '$') == NULL)
-		return (0);
-	size = get_expanded_size(msh->env, *str) + 1;
-	expanded = malloc(sizeof(char) * size);
-	if (!expanded)
-		return (-1);
-	expand(msh->env, *str, expanded);
-	expanded[size - 1] = '\0';
-	free(*str);
-	*str = expanded;
-	return (0);
-}
-
 int	create_heredoc(t_msh *msh, char *delimiter, const char *name)
 {
 	const int	size_delim = ft_strlen(delimiter) + 1;
@@ -123,7 +105,7 @@ int	create_heredoc(t_msh *msh, char *delimiter, const char *name)
 			break ;
 		if (ft_strncmp(line, delimiter, size_delim) == 0)
 			break ;
-		if (expand_heredoc(msh, &line) == -1)
+		if (expand_str(msh, &line) == -1)
 			return (-1);
 		if (write(fd, line, ft_strlen(line)) < 0)
 			return (-3);
