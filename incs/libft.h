@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 17:48:35 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/02/10 16:37:11 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/30 18:13:47 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,4 +208,5 @@ int		ft_atois(int *n, char *nptr);
 int		ft_abs(int n);
 int		ft_min(int a, int b);
 int		ft_max(int a, int b);
+int		ft_numlen(int n);
 #endif

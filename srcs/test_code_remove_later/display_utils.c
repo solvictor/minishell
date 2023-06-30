@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:33:32 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/25 12:37:10 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/30 15:11:58 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,3 +105,29 @@ void	display_cmdline(t_cmdline *cmdline)
 		++i;
 	}
 }
+
+//int	do_redirs(t_cmdline *cmdline)
+//{
+//	t_tokenlist *cur;
+//	int			i;
+//	int			(*do_redir)(t_cmdline *, t_cmd *);
+//	int			ret;
+//
+//	i = 0;
+//	while (i < cmdline->cmds_n)
+//	{
+//		cur = cmdline->cmds[i].start_token;
+//		while (cur && cur->type < PIPE)
+//		{
+//			if (is_redir_token(cur))
+//			{
+//				do_redir = get_redir_funptr(cur);
+//				ret = do_redir(cmdline, &cmdline->cmds[i]);
+//				if (ret == -1)
+//					handle error
+//			}
+//		}
+//		++i;
+//	}
+//	return (0);
+//}

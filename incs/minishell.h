@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/29 13:27:54 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/30 21:21:14 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,8 +144,6 @@ t_tokenlist		*token_add_front(t_tokenlist **begin, char *data);
 void			destroy_tokenlist(t_tokenlist **begin);
 int				is_redir_token(t_tokenlist *token);
 int				is_str_token(t_tokenlist *token);
-// Expansion
-int				expand_token(t_env *env, t_tokenlist *token);
 
 // --------- //
 // TOKENIZER //
@@ -178,6 +176,7 @@ int				prep_cmdline(t_msh *msh, t_cmdline *cmdline,
 					t_tokenlist *tokens);
 int				exec_cmdline(t_msh *msh, t_cmdline *cmdline);
 char			**get_paths(t_env *env);
+int				expand_str(t_msh *msh, char **str);
 int				do_dollar_expansions(t_msh *msh, t_tokenlist *tokens);
 int				merge_str_tokens(t_tokenlist *tokens);
 void			clear_cmdline(t_cmdline *cmdline);

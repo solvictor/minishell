@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:00:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/29 13:40:31 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/30 15:14:32 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ int	msh_loop(t_msh *msh)
 		if (input[0]) // probably no need for msh.cmdline check because there's a return before
 		{
 			add_history(input);
-			test_heredoc(msh, "EOF");
-//			msh->ret = process_input(msh, input);
-//			if (msh->ret == -1)
-//				return (printf("An error occured in process_input, returning...\n"), -1);
+//			test_heredoc(msh, "EOF");
+			msh->ret = process_input(msh, input);
+			if (msh->ret == -1)
+				return (printf("An error occured in process_input, returning...\n"), -1);
 		}
 		free(input);
 	}
@@ -65,18 +65,19 @@ int	process_input(t_msh *msh, char *input)
 	if (ret == -1)
 		return (ft_dprintf(2, MSH_ERROR ME_TOKENIZE), -1);
 	if (ret == -2)
-		return (ft_printf("syntax error, try again\n"), 0);
-	ret = parse(&cmdline, tokens);
-	if (ret == -1)
+		return (ft_printf("syntax error, try again\n"), 0); // syntax error return is 2 apparently for msh->ret
+	if (parse(&cmdline, tokens) == -1)
 		return (ft_dprintf(2, MSH_ERROR ME_PARSE),
 			destroy_tokenlist(&tokens), -1);
 	ret = prep_cmdline(msh, &cmdline, tokens);
 	if (ret == -1)
 		return (ft_dprintf(2, MSH_ERROR ME_PREP), clear_cmdline(&cmdline),
 			destroy_tokenlist(&tokens), -1);
+
 	//display_cmdline(&cmdline);
-	ret = exec_cmdline(msh, &cmdline);
-	if (ret == -1)
-		ft_dprintf(2, MSH_ERROR ME_EXEC);
+
+	//ret = exec_cmdline(msh, &cmdline);
+	//if (ret == -1)
+	//	ft_dprintf(2, MSH_ERROR ME_EXEC);
 	return (clear_cmdline(&cmdline), destroy_tokenlist(&tokens), ret); // free(pip.cmds) replace with destroy_pipeline(&pip) later when necessary
 }

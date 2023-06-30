@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 13:39:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/20 16:11:13 by vegret           ###   ########.fr       */
+/*   Updated: 2023/06/30 21:51:24 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,11 @@ char	*get_env_val(t_env *env, char *key)
 
 	if (!env || !key)
 		return (NULL);
-	len_key = ft_strlen(key);
+	if (key[0] != '_' && !ft_isalpha(key[0]))
+		return (NULL);
+	len_key = 0;
+	while (key[len_key] == '_' || ft_isalnum(key[len_key]))
+		++len_key;
 	while (env)
 	{
 		if (ft_strncmp(key, env->var, len_key) == 0 && env->var[len_key] == '=')
