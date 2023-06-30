@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 22:48:56 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/29 14:03:13 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/06/30 18:13:14 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,8 @@ int	create_heredoc(char *delimiter, const char *name)
 int	test_heredoc(t_msh *msh, char *delimiter)
 {
 	const char	*name = random_name(msh);
-	pid_t	ret;
-	int		heredoc_fd;
+	int			heredoc_fd;
+	pid_t		ret;
 
 	heredoc_fd = create_heredoc(delimiter, name);
 	if (heredoc_fd < 0)
@@ -127,15 +127,14 @@ int	test_heredoc(t_msh *msh, char *delimiter)
 		return (-1);
 	if (ret == 0)
 	{
-		close(heredoc_fd);
-		heredoc_fd = open(name, O_RDONLY);
-		if (dup2(heredoc_fd, STDIN_FILENO) == -1)
+		if (close(heredoc_fd) == -1)
 			return (-1);
-		execve("/bin/cat", (char *[]) {"cat", NULL}, env_to_arr(msh->env));
+		heredoc_fd = open(name, O_RDONLY);
+		if (heredoc_fd == -1 || dup2(heredoc_fd, STDIN_FILENO) == -1)
+			return (-1);
+		return (execve("/bin/cat", (char *[]){"cat", NULL}, env_to_arr(msh->env)));
 	}
-	if (close(heredoc_fd) == -1)
+	if (close(heredoc_fd) == -1 || waitpid(ret, NULL, 0) == -1)
 		return (-1);
-	waitpid(ret, NULL, 0);
-	unlink(name);
-	return (0);
+	return (unlink(name));
 }
