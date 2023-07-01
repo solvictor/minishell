@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 06:26:22 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/30 18:17:18 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/01 10:06:37 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,10 @@ void	clear_cmdline(t_cmdline *cmdline)
 	i = 0;
 	while (i < cmdline->cmds_n)
 	{
+		if (cmdline->cmds[i].args
+			&& cmdline->cmds[i].path != cmdline->cmds[i].args[0])
+			free(cmdline->cmds[i].path);
 		free(cmdline->cmds[i].args);
-		free(cmdline->cmds[i].path);
 		++i;
 	}
 	free(cmdline->cmds);

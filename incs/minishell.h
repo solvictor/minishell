@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/30 21:21:14 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/01 10:55:12 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,8 @@ void			set_cmds_start_token(t_cmdline *cmdline, t_tokenlist *tokens);
 // --------- //
 int				prep_cmdline(t_msh *msh, t_cmdline *cmdline,
 					t_tokenlist *tokens);
-int				exec_cmdline(t_msh *msh, t_cmdline *cmdline);
+int				exec_cmdline(t_msh *msh, t_cmdline *cmdline,
+					t_tokenlist **tokens);
 char			**get_paths(t_env *env);
 int				expand_str(t_msh *msh, char **str);
 int				do_dollar_expansions(t_msh *msh, t_tokenlist *tokens);

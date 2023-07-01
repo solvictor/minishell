@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 05:43:54 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/25 13:20:05 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/01 08:24:33 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,9 @@ static void	discard_merge_rest(t_tokenlist *tokens)
 	free(cur);
 }
 
+// Traverses the tokenlist and merges string tokens with the attribute
+// 'merge_next' set to 1
+// Returns 0 on success and -1 otherwise
 int	merge_str_tokens(t_tokenlist *tokens)
 {
 	t_tokenlist	*cur;

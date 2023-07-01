@@ -6,12 +6,15 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 09:58:53 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/25 11:42:25 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/01 09:13:35 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// Given the start_token of each command and counts the number of argv elements
+// to be allocated
+// Returns the argc basically
 static int	count_cmd_args(t_tokenlist *tokens)
 {
 	t_tokenlist	*cur;
@@ -28,6 +31,8 @@ static int	count_cmd_args(t_tokenlist *tokens)
 	return (count);
 }
 
+// Creates the argv array one command
+// Returns 0 on success, -1 otherwise
 static int	set_cmd_args(t_cmd *cmd)
 {
 	t_tokenlist	*cur;
@@ -52,6 +57,8 @@ static int	set_cmd_args(t_cmd *cmd)
 	return (0);
 }
 
+// Creates the argv array for every command
+// Returns 0 on success, -1 otherwise
 int	make_cmds_args(t_cmdline *cmdline)
 {
 	int	i;

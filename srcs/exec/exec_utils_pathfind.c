@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 04:16:08 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/30 21:51:38 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/01 10:28:04 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@ char	**get_paths(t_env *env)
 	return (tmp);
 }
 
+// Allocates a string to concatenate the command name to the directories of PATH
+// for existence check with access
+// Returns a pointer to the newly allocated string or NULL otherwise
 static char	*concat_cmd_path(char *path, char *name)
 {
 	char	*tmp;
@@ -54,6 +57,10 @@ static char	*concat_cmd_path(char *path, char *name)
 	return (tmp);
 }
 
+// If the command name is present in the list of builtins, the builtin function
+// pointer of the t_cmd struct will be set accordingly and pathfinding won't be
+// performed
+// Returns 1 if a buitin is found, 0 otherwise
 static int	get_builtin(t_cmd *cmd)
 {
 	static const char		*names[] = {"cd", "pwd", "exit",
@@ -74,16 +81,16 @@ static int	get_builtin(t_cmd *cmd)
 	return (0);
 }
 
+// Tries to find the path a single command and stores it in each
+// 'path' property of t_cmd struct
+// Returns 0 on success, -1 otherwise
 static int	find_cmd(t_cmd *cmd, char **paths)
 {
 	int		i;
 	char	*tmp;
 
-	if (ft_strchr(cmd->args[0], '/'))
-	{
-		cmd->path = ft_strdup(cmd->args[0]);
-		return ((cmd->path == NULL) * -1);
-	}
+	if (ft_strchr(cmd->args[0], '/')) // TEST LOCAL EXEC PATH WONT CRASH
+		return ((cmd->path = cmd->args[0]), 0);
 	if (get_builtin(cmd))
 		return (0);
 	i = 0;
@@ -100,6 +107,9 @@ static int	find_cmd(t_cmd *cmd, char **paths)
 	return (0);
 }
 
+// Tries to find the path to the all command executables and stores it in each
+// 'path' property of t_cmd struct
+// Returns 0 on success, -1 otherwise
 int	pathfind_cmds(t_cmdline *cmdline)
 {
 	int	i;
@@ -107,7 +117,10 @@ int	pathfind_cmds(t_cmdline *cmdline)
 	i = 0;
 	while (i < cmdline->cmds_n)
 	{
-		if (!cmdline->cmds[i].empty
+		//printf("coucou\n");
+		//printf("cmdline->cmds[%d].empty -> %d\n", i, cmdline->cmds[i].empty);
+		//printf("cmdline->cmds[%d].args -> %p\n", i, cmdline->cmds[i].args);
+		if (cmdline->cmds[i].empty == 0
 			&& find_cmd(&cmdline->cmds[i], cmdline->paths) == -1)
 			return (-1);
 		++i;

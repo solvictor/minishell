@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:00:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/30 22:36:21 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/01 10:55:58 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ int	msh_loop(t_msh *msh)
 int	process_input(t_msh *msh, char *input)
 {
 	int			ret;
-	t_tokenlist	*tokens;
-	t_cmdline	cmdline;
+	t_tokenlist	*tokens; // probably should move tokens and cmdline to msh struct
+	t_cmdline	cmdline; // probably should move tokens and cmdline to msh struct
 
 	ret = tokenize(input, &tokens);
 	if (ret == -1)
@@ -76,7 +76,7 @@ int	process_input(t_msh *msh, char *input)
 
 	//display_cmdline(&cmdline);
 
-	ret = exec_cmdline(msh, &cmdline);
+	ret = exec_cmdline(msh, &cmdline, &tokens);
 	if (ret == -1)
 		ft_dprintf(2, MSH_ERROR ME_EXEC);
 	return (clear_cmdline(&cmdline), destroy_tokenlist(&tokens), ret); // free(pip.cmds) replace with destroy_pipeline(&pip) later when necessary
