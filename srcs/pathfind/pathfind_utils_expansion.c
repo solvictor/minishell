@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_utils_expansion.c                             :+:      :+:    :+:   */
+/*   pathfind_utils_expansion.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 06:39:03 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/30 22:36:45 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/01 16:18:19 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	copy_num(int n, char *dst)
+//static int	copy_num(int n, char *dst)
+int	copy_num(int n, char *dst)
 {
 	int		len;
 	int		i;

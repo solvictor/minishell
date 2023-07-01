@@ -6,13 +6,13 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:00:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/01 14:38:05 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/01 16:33:47 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-volatile sig_atomic_t	g_is_child = 0;
+volatile sig_atomic_t	g_running_child = 0;
 
 // Unimportant function :]
 int	main(int ac, char **av, char **envp)

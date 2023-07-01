@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/01 12:05:07 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/01 16:17:00 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,5 +212,6 @@ void	display_cmdline(t_cmdline *cmdline);
 //int				find_cmd(char **paths, t_cmd *cmd);
 //void			test_pathfinding(t_msh *msh);
 int	test_heredoc(t_msh *msh, char *delimiter);
+int	copy_num(int n, char *dst);
 
 #endif
