@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:17:20 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/24 05:20:00 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/01 14:27:47 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	push_str_token(t_tokenlist **tokens, const char *input, int *i)
 		(*tokens)->type = UNQUOTED_STR;
 	(*tokens)->data = get_str_token(input, i);
 	if ((*tokens)->data == NULL)
-		return (printf("malloc error get_str_token\n"), -1);
+		return (-1);
 	if (input[*i] && !is_metachar(input[*i]) && !is_whitespace(input[*i]))
 		(*tokens)->merge_next = 1;
 	else

@@ -6,11 +6,13 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:00:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/01 10:55:58 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/01 14:38:05 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+volatile sig_atomic_t	g_is_child = 0;
 
 // Unimportant function :]
 int	main(int ac, char **av, char **envp)
@@ -46,7 +48,7 @@ int	msh_loop(t_msh *msh)
 //			test_heredoc(msh, "EOF");
 			msh->ret = process_input(msh, input);
 			if (msh->ret == -1)
-				return (printf("An error occured in process_input, returning...\n"), -1);
+				return (printf("An error occured in process_input, returning...\n"), free(input), -1);
 		}
 		free(input);
 	}
@@ -63,13 +65,13 @@ int	process_input(t_msh *msh, char *input)
 
 	ret = tokenize(input, &tokens);
 	if (ret == -1)
-		return (ft_dprintf(2, MSH_ERROR ME_TOKENIZE), -1);
+		return (ft_dprintf(2, "tokenize a fail, malloc ou unmatch quotation\n"), 0); // remove big red thing
 	if (ret == -2)
 		return (ft_printf("syntax error, try again\n"), 0); // syntax error return is 2 apparently for msh->ret
 	if (parse(&cmdline, tokens) == -1)
 		return (ft_dprintf(2, MSH_ERROR ME_PARSE),
 			destroy_tokenlist(&tokens), -1);
-	ret = prep_cmdline(msh, &cmdline, tokens);
+	ret = pathfind_cmdline(msh, &cmdline, tokens);
 	if (ret == -1)
 		return (ft_dprintf(2, MSH_ERROR ME_PREP), clear_cmdline(&cmdline),
 			destroy_tokenlist(&tokens), -1);

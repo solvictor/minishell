@@ -6,7 +6,7 @@
 #    By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/23 08:28:27 by nlegrand          #+#    #+#              #
-#    Updated: 2023/06/29 13:28:19 by nlegrand         ###   ########.fr        #
+#    Updated: 2023/07/01 12:10:26 by nlegrand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,10 +48,11 @@ SRCS	:=	minishell.c \
 			parser/parser.c \
 			parser/parser_utils.c \
 			exec/exec.c \
-			exec/exec_utils_pathfind.c \
-			exec/exec_utils_expansion.c \
-			exec/exec_utils_merge.c \
-			exec/exec_utils_args.c \
+			pathfind/pathfind.c \
+			pathfind/pathfind_utils_pathfind.c \
+			pathfind/pathfind_utils_expansion.c \
+			pathfind/pathfind_utils_merge.c \
+			pathfind/pathfind_utils_args.c \
 			builtins/pwd/pwd.c \
 			builtins/cd/cd.c \
 			builtins/exit/exit.c \
@@ -96,6 +97,7 @@ $(OBJDIR):
 	mkdir -p $(OBJDIR)/tokenizer
 	mkdir -p $(OBJDIR)/parser
 	mkdir -p $(OBJDIR)/exec
+	mkdir -p $(OBJDIR)/pathfind
 	mkdir -p $(OBJDIR)/test_code_remove_later
 
 clean:

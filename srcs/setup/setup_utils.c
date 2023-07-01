@@ -6,11 +6,13 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 23:37:49 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/23 08:45:11 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/01 13:52:10 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern volatile sig_atomic_t g_is_child;
 
 // Outputs a pseudo-random number from the seeded values in rng
 unsigned int	get_randint(t_rng *rng)
@@ -33,11 +35,11 @@ unsigned int	get_randint(t_rng *rng)
 // Signal handling function for sigint (ctrl+c)
 void	handler_sigint(int sig)
 {
-	if (sig == SIGINT)
+	if (sig == SIGINT && !g_is_child)
 	{
 		printf("\n");
 		rl_on_new_line();
-		rl_replace_line("", ft_strlen(MSH_PROMPT));
-		rl_redisplay();
+		rl_replace_line("", 0);
+//		rl_redisplay();
 	}
 }
