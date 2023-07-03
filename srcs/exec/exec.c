@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 02:35:57 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/03 20:02:18 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/03 22:38:16 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ t_tokenlist **tokens)
 	// g_running_child = 1 here maybe??? so that it doesn't double print after ctrl+c in a builtin, but if this is done set it back to zero at the end of this function, wait this is already done
 	if (cmd->empty)
 		return (0);
+	if ((has_input_redir(cmd) && cmd->io_redir[0] == -1)
+		|| (has_output_redir(cmd) && cmd->io_redir[1] == -1))
+		return (1);
 	if (cmd->builtin)
 		return (exec_builtin(msh, cmdline, cmd));
 	if (cmd->path == NULL)
@@ -70,6 +73,16 @@ t_tokenlist **tokens)
 		}
 	}
 	close_valid_fds(cmdline->fds, cmdline->cmds_n * 2);
+	// test
+	int i = 0;
+	while (i < cmdline->cmds_n)
+	{
+		close(cmdline->cmds[i].io_redir[0]);
+		close(cmdline->cmds[i].io_redir[1]);
+		++i;
+	}
+	// test
+	//close_valid_fds(cmd->io_redir, 2);
 	if (waitpid(pid, NULL, 0) == -1) // store statlock to return good number
 		return (printf("Failed to waitpid, returned -1\n"), -1);
 	return (0); // NO!! Return stat lock or something
@@ -77,7 +90,7 @@ t_tokenlist **tokens)
 
 static	int	exec_pipeline(t_msh *msh, t_cmdline *cmdline, t_tokenlist **tokens)
 {
-	int		i;
+	int	i;
 	pid_t	pid;
 
 	i = 0;
@@ -102,6 +115,15 @@ static	int	exec_pipeline(t_msh *msh, t_cmdline *cmdline, t_tokenlist **tokens)
 		++i;
 	}
 	close_valid_fds(cmdline->fds, cmdline->cmds_n * 2);
+	// test
+	i = 0;
+	while (i < cmdline->cmds_n)
+	{
+		close(cmdline->cmds[i].io_redir[0]);
+		close(cmdline->cmds[i].io_redir[1]);
+		++i;
+	}
+	// test
 	while (i--)
 		waitpid(-1, NULL, 0);
 	return (0);
@@ -131,5 +153,5 @@ int	exec_cmdline(t_msh *msh, t_cmdline *cmdline, t_tokenlist **tokens)
 			return (ft_dprintf(2, "Failed exec_cmd with one command, DONT KNOW WHAT TO DO!!\n"), -1);
 		//set msh->ret to last ret of pipeline here
 	}
-	return (0);
+	return (ret);
 }

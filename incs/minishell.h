@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/03 19:21:18 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/03 21:48:13 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ struct s_cmd
 	int			(*builtin)(t_msh *, char **);
 	char		**args;
 	t_tokenlist	*start_token;
-	int			index;
+	int			num;
 	int			io_redir[2];
 	int			empty;
 };
@@ -195,6 +195,8 @@ int				do_redirections(t_cmdline *cmdline);
 int				exec_cmdline(t_msh *msh, t_cmdline *cmdline,
 					t_tokenlist **tokens);
 void			close_valid_fds(int	*arr, int size);
+int				has_input_redir(t_cmd *cmd);
+int				has_output_redir(t_cmd *cmd);
 int				redirect_io(t_cmdline *cmdline, t_cmd *cmd);
 int				redirect_builtin_io(t_cmdline *cmdline, t_cmd *cmd,
 				int io_dup[2]);

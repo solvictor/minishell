@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 20:10:06 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/03 19:21:52 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/03 21:48:44 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	set_cmds_attributes(t_cmdline *cmdline, t_tokenlist *tokens)
 	index = 0;
 	while (1)
 	{
-		cmdline->cmds[index].index = index;
+		cmdline->cmds[index].num = index;
 		cmdline->cmds[index].start_token = cur;
 		set_int_array(cmdline->cmds[index].io_redir, -1, 2);
 		while (cur && cur->type < PIPE)
