@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/03 10:48:36 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/03 19:21:18 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ struct s_cmd
 	int			(*builtin)(t_msh *, char **);
 	char		**args;
 	t_tokenlist	*start_token;
+	int			index;
+	int			io_redir[2];
 	int			empty;
 };
 struct s_cmdline
@@ -137,6 +139,7 @@ void			clear_strarr(char **arr);
 void			clear_cmdline(t_cmdline *cmdline);
 unsigned int	rng_bit_rot(unsigned int num);
 void			set_int_array(int *arr, int val, int size);
+void			close_valid_fds(int	*arr, int size);
 
 // Env
 t_env			*env_new(char *var);
@@ -171,8 +174,6 @@ void			clean_redir_tokens(t_tokenlist **tokens);
 // PARSER //
 // ------ //
 int				parse(t_cmdline *cmdline, t_tokenlist *tokens);
-int				count_cmdline_commands(t_tokenlist *tokens);
-void			set_cmds_start_token(t_cmdline *cmdline, t_tokenlist *tokens);
 
 // ---- //
 // PREP //
@@ -193,6 +194,11 @@ int				do_redirections(t_cmdline *cmdline);
 // ---- //
 int				exec_cmdline(t_msh *msh, t_cmdline *cmdline,
 					t_tokenlist **tokens);
+void			close_valid_fds(int	*arr, int size);
+int				redirect_io(t_cmdline *cmdline, t_cmd *cmd);
+int				redirect_builtin_io(t_cmdline *cmdline, t_cmd *cmd,
+				int io_dup[2]);
+int				unredirect_builtin_io(int io_dup[2]);
 
 // -------- //
 // BUILTINS //

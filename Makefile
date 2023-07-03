@@ -6,7 +6,7 @@
 #    By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/23 08:28:27 by nlegrand          #+#    #+#              #
-#    Updated: 2023/07/03 10:48:47 by nlegrand         ###   ########.fr        #
+#    Updated: 2023/07/03 17:37:28 by nlegrand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ SRCS	:=	minishell.c \
 			setup/setup.c \
 			setup/setup_utils.c \
 			utils/utils.c \
+			utils/utils_2.c \
 			utils/utils_env.c \
 			utils/utils_tokens.c \
 			tokenizer/tokenizer.c \
@@ -46,8 +47,8 @@ SRCS	:=	minishell.c \
 			tokenizer/tokenizer_utils_2.c \
 			tokenizer/tokenizer_utils_3.c \
 			parser/parser.c \
-			parser/parser_utils.c \
 			exec/exec.c \
+			exec/exec_utils.c \
 			prep/prep.c \
 			prep/prep_pathfind.c \
 			prep/prep_expansion.c \

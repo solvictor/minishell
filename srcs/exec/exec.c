@@ -6,13 +6,31 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 02:35:57 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/03 12:16:12 by vegret           ###   ########.fr       */
+/*   Updated: 2023/07/03 20:02:18 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 extern volatile sig_atomic_t g_running_child;
+
+// Executes a single builtin function
+// Needs its own function because of redirections
+static int	exec_builtin(t_msh *msh, t_cmdline *cmdline, t_cmd *cmd)
+{
+	int	io_dup[2];
+
+	set_int_array(io_dup, -1, 2);
+	if (redirect_builtin_io(cmdline, cmd, io_dup) == -1)
+		return (ft_dprintf(2, "fucked builtin redirection\n"),
+			close_valid_fds(io_dup, 2), -1);
+	close_valid_fds(cmdline->fds, cmdline->cmds_n * 2);
+	msh->ret = cmd->builtin(msh, cmd->args);
+	if (unredirect_builtin_io(io_dup) == -1)
+		return (ft_dprintf(2, "fucked builtin unredirection\n"),
+			close_valid_fds(io_dup, 2), -1);
+	return (close_valid_fds(io_dup, 2), 0); // return exit code of builtin
+}
 
 // Executes a single command
 // Returns 0 for success or -1 in case of error
@@ -25,7 +43,7 @@ t_tokenlist **tokens)
 	if (cmd->empty)
 		return (0);
 	if (cmd->builtin)
-		return (cmd->builtin(msh, cmd->args), 0); // return exit code of builtin
+		return (exec_builtin(msh, cmdline, cmd));
 	if (cmd->path == NULL)
 		return (ft_dprintf(STDOUT_FILENO, "minishellllll: %s: command pas trouve lol\n", cmd->args[0]), 127);
 	pid = fork();
@@ -33,6 +51,14 @@ t_tokenlist **tokens)
 		return (printf("failed to make child process\n"), -1);
 	else if (pid == 0)
 	{
+		if (redirect_io(cmdline, cmd) == -1)
+		{
+			printf("Failed to redirect io\n");
+			clear_cmdline(cmdline);
+			destroy_tokenlist(tokens);
+			msh_terminate(msh);
+			exit(0); // the fuck do i do here?
+		}
 		g_running_child = 1;
 		if (execve(cmd->path, cmd->args, cmdline->envp) == -1)
 		{
@@ -43,6 +69,7 @@ t_tokenlist **tokens)
 			exit(126);
 		}
 	}
+	close_valid_fds(cmdline->fds, cmdline->cmds_n * 2);
 	if (waitpid(pid, NULL, 0) == -1) // store statlock to return good number
 		return (printf("Failed to waitpid, returned -1\n"), -1);
 	return (0); // NO!! Return stat lock or something
@@ -74,6 +101,7 @@ static	int	exec_pipeline(t_msh *msh, t_cmdline *cmdline, t_tokenlist **tokens)
 //		}
 		++i;
 	}
+	close_valid_fds(cmdline->fds, cmdline->cmds_n * 2);
 	while (i--)
 		waitpid(-1, NULL, 0);
 	return (0);

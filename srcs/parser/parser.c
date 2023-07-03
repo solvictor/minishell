@@ -6,11 +6,55 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 20:10:06 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/03 10:13:35 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/03 19:21:52 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// Iterates through token list and counts the number of commands
+static int	count_cmdline_commands(t_tokenlist *tokens)
+{
+	t_tokenlist	*cur;
+	int			count;
+
+	cur = tokens;
+	count = 0;
+	while (1)
+	{
+		while (cur && cur->type < PIPE)
+			cur = cur->next;
+		++count;
+		if (cur && cur->type == PIPE)
+			cur = cur->next;
+		else
+			break ;
+	}
+	return (count);
+}
+
+// Finds the first token for every command and stores it in the cmdline struct
+static void	set_cmds_attributes(t_cmdline *cmdline, t_tokenlist *tokens)
+{
+	t_tokenlist	*cur;
+	int			index;
+
+	cur = tokens;
+	index = 0;
+	while (1)
+	{
+		cmdline->cmds[index].index = index;
+		cmdline->cmds[index].start_token = cur;
+		set_int_array(cmdline->cmds[index].io_redir, -1, 2);
+		while (cur && cur->type < PIPE)
+			cur = cur->next;
+		++index;
+		if (cur && cur->type == PIPE)
+			cur = cur->next;
+		else
+			break ;
+	}
+}
 
 // Transforms the token list into a struct of cmdline
 int	parse(t_cmdline *cmdline, t_tokenlist *tokens)
@@ -22,9 +66,10 @@ int	parse(t_cmdline *cmdline, t_tokenlist *tokens)
 	ft_bzero(cmdline->cmds, sizeof(t_cmd) * cmdline->cmds_n);
 	cmdline->fds = malloc(sizeof(int) * (cmdline->cmds_n * 2));
 	if (cmdline->fds == NULL)
-		return (printf("failed to malloc fds in cmdline\n"), -1);
+		return (printf("failed to malloc fds in cmdline\n"),
+			free(cmdline->cmds), -1);
 	set_int_array(cmdline->fds, -1, cmdline->cmds_n * 2);
-	set_cmds_start_token(cmdline, tokens);
+	set_cmds_attributes(cmdline, tokens);
 	cmdline->paths = NULL;
 	cmdline->envp = NULL;
 	return (0);
