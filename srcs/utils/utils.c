@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 06:26:22 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/01 10:06:37 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/03 10:52:06 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,20 @@ void	clear_cmdline(t_cmdline *cmdline)
 			&& cmdline->cmds[i].path != cmdline->cmds[i].args[0])
 			free(cmdline->cmds[i].path);
 		free(cmdline->cmds[i].args);
+		if (cmdline->fds[i * 2] != -1)
+			close(cmdline->fds[i * 2]);
+		if (cmdline->fds[i * 2 + 1] != -1)
+			close(cmdline->fds[i * 2 + 1]);
 		++i;
 	}
 	free(cmdline->cmds);
+	free(cmdline->fds);
+	// set everything to zero if i end up putting it in msh, same for tokenlist functions
+	//cmdline->cmds_n = 0;
+	//cmdline->cmds = NULL;
+	//cmdline->fds = NULL;
+	//cmdline->paths = NULL;
+	//cmdline->envp = NULL;
 }
 
 // Bit rotation function used by the random number generation for random file
@@ -65,4 +76,14 @@ unsigned int	rng_bit_rot(unsigned int num)
 	shifted_right = num >> shift_val;
 	shifted_left = num << ((sizeof(num) * 8) - shift_val);
 	return (shifted_left | shifted_right);
+}
+
+// Sets integer array to specified value
+void	set_int_array(int *arr, int val, int size)
+{
+	int	i;
+
+	i = 0;
+	while (i < size)
+		arr[i++] = val;
 }

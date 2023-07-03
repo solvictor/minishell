@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:00:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/01 16:33:47 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/03 10:04:59 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	process_input(t_msh *msh, char *input)
 	if (parse(&cmdline, tokens) == -1)
 		return (ft_dprintf(2, MSH_ERROR ME_PARSE),
 			destroy_tokenlist(&tokens), -1);
-	ret = pathfind_cmdline(msh, &cmdline, tokens);
+	ret = prep_cmdline(msh, &cmdline, tokens);
 	if (ret == -1)
 		return (ft_dprintf(2, MSH_ERROR ME_PREP), clear_cmdline(&cmdline),
 			destroy_tokenlist(&tokens), -1);

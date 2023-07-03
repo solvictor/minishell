@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/01 16:17:00 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/03 10:48:36 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,9 @@ struct s_tokenlist
 {
 	char		*data;
 	t_tokentype	type;
-	int			merge_next;
+//	void		*data_option;
+	int			merge_next; // replace with data_option, maybe, or find another way to keep track of created heredocs
+//	char		data_option[24];
 	t_tokenlist	*next;
 };
 struct s_cmd
@@ -90,6 +92,7 @@ struct s_cmdline
 {
 	int		cmds_n;
 	t_cmd	*cmds;
+	int		*fds;
 	char	**paths;
 	char	**envp;
 //	int		ret;
@@ -133,6 +136,8 @@ void			msh_terminate(t_msh *msh);
 void			clear_strarr(char **arr);
 void			clear_cmdline(t_cmdline *cmdline);
 unsigned int	rng_bit_rot(unsigned int num);
+void			set_int_array(int *arr, int val, int size);
+
 // Env
 t_env			*env_new(char *var);
 char			**env_to_arr(t_env *env);
@@ -169,10 +174,10 @@ int				parse(t_cmdline *cmdline, t_tokenlist *tokens);
 int				count_cmdline_commands(t_tokenlist *tokens);
 void			set_cmds_start_token(t_cmdline *cmdline, t_tokenlist *tokens);
 
-// ---------- //
-// PATHFINDER //
-// ---------- //
-int				pathfind_cmdline(t_msh *msh, t_cmdline *cmdline,
+// ---- //
+// PREP //
+// ---- //
+int				prep_cmdline(t_msh *msh, t_cmdline *cmdline,
 					t_tokenlist *tokens);
 char			**get_paths(t_env *env);
 int				expand_str(t_msh *msh, char **str);
@@ -181,6 +186,7 @@ int				merge_str_tokens(t_tokenlist *tokens);
 void			clear_cmdline(t_cmdline *cmdline);
 int				make_cmds_args(t_cmdline *cmdline);
 int				pathfind_cmds(t_cmdline *cmdline);
+int				do_redirections(t_cmdline *cmdline);
 
 // ---- //
 // EXEC //

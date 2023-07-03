@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pathfinder.c                                       :+:      :+:    :+:   */
+/*   prep.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 12:02:53 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/01 12:03:10 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/03 10:08:23 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // Finds the commands and prepares environment and arguments for later execution
-int	pathfind_cmdline(t_msh *msh, t_cmdline *cmdline, t_tokenlist *tokens)
+int	prep_cmdline(t_msh *msh, t_cmdline *cmdline, t_tokenlist *tokens)
 {
 	cmdline->envp = env_to_arr(msh->env);
 	if (cmdline->envp == NULL)
@@ -29,6 +29,7 @@ int	pathfind_cmdline(t_msh *msh, t_cmdline *cmdline, t_tokenlist *tokens)
 		return (ft_dprintf(2, "Failed making argv for commands\n"), -1);
 	if (pathfind_cmds(cmdline) == -1) // return what?
 		return (ft_dprintf(2, "Failed pathfinding the command\n"), -1);
-	// do_redirections( ) //includes heredocs
+	if (do_redirections(cmdline) == -1) // return what?
+		return (ft_dprintf(2, "Failed do io redirections\n"), -1);
 	return (0);
 }
