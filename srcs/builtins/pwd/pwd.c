@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 09:46:30 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/01 08:11:17 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/03 13:09:53 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ int	builtin_pwd(t_msh *msh, char **args)
 	cwd = getcwd(NULL, 0);
 	if (cwd == NULL)
 	{
-		ft_dprintf(STDERR_FILENO, "bash: pwd: %s\n", strerror(errno)); // NON, pas bash, minishell ou msh
+		ft_dprintf(STDERR_FILENO, "bash: pwd: %s\n", strerror(errno));
 		return (1);
 	}
 	if (ft_dprintf(STDOUT_FILENO, "%s\n", cwd) < 0)
 	{
-		ft_dprintf(STDERR_FILENO, "bash: pwd: write error: %s\n", // pareil ici
+		ft_dprintf(STDERR_FILENO, "bash: pwd: write error: %s\n",
 			strerror(errno));
 		free(cwd);
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 16:38:05 by vegret            #+#    #+#             */
-/*   Updated: 2023/06/25 03:57:08 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/03 13:24:51 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,14 @@ int	builtin_export(t_msh *msh, char **args)
 	char	*equal;
 	t_env	*new;
 
-	ret = EXIT_SUCCESS;
+	ret = 0;
 	while (*++args)
 	{
 		if (!is_valid_identifier(*args))
 		{
 			ft_dprintf(STDERR_FILENO,
 				"bash: export: `%s': not a valid identifier\n", *args);
-			ret = EXIT_FAILURE;
+			ret = 1;
 			continue ;
 		}
 		equal = ft_strchr(*args, '=');
@@ -64,7 +64,7 @@ int	builtin_export(t_msh *msh, char **args)
 			new = get_env(msh->env, *args, equal - *args);
 		else
 			new = get_env(msh->env, *args, -1);
-		if ((!new || equal) && assign_var(msh, new, *args))
+		if ((!new || equal) && assign_var(msh, new, *args)) // Malloc fail return value?
 			return (-1);
 	}
 	return (ret);

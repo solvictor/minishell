@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 23:05:14 by vegret            #+#    #+#             */
-/*   Updated: 2023/06/20 15:10:48 by vegret           ###   ########.fr       */
+/*   Updated: 2023/07/03 13:51:02 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,31 +29,32 @@ static int	print_args(char **args, bool newline, int i)
 	while (args[i])
 	{
 		if (ft_dprintf(STDOUT_FILENO, "%s", args[i++]) < 0)
-			return (EXIT_FAILURE);
+			return (1);
 		if (args[i] != NULL)
 		{
-			if (write(STDOUT_FILENO, " ", 1) < 0)
-				return (EXIT_FAILURE);
+			if (write(STDOUT_FILENO, " ", 1) != 1)
+				return (1);
 		}
 	}
-	if (newline && write(STDOUT_FILENO, "\n", 1) < 0)
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+	if (newline)
+		return (write(STDOUT_FILENO, "\n", 1) != 1);
+	return (0);
 }
 
-int	builtin_echo(t_msh *msh, char **args)
+int	builtin_echo(t_msh *msh, char **args) // infinite loop on error
 {
 	int	i;
 	int	ret;
 
 	(void) msh;
 	if (!args || !args[0])
-		return (write(STDOUT_FILENO, "\n", 1), 0);
+		return (write(STDOUT_FILENO, "\n", 1) != 1);
 	i = 1;
 	while (is_flag_n(args[i]))
 		i++;
 	ret = print_args(args, i == 1, i);
-	if (ret == EXIT_FAILURE)
-		perror("bash: echo: printf failed\n");
+	if (ret == 1)
+		ft_dprintf(STDERR_FILENO, "bash: echo: write error: %s\n",
+			strerror(errno));
 	return (ret);
 }

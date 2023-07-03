@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 20:14:11 by vegret            #+#    #+#             */
-/*   Updated: 2023/05/31 17:33:19 by vegret           ###   ########.fr       */
+/*   Updated: 2023/07/03 13:38:29 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,25 +36,23 @@ static int	is_numeric(char *str, int *dst)
 	return (1);
 }
 
-int	builtin_exit(t_msh *msh, char **args)
+int	builtin_exit(t_msh *msh, char **args) // Problem return value
 {
 	ft_dprintf(STDERR_FILENO, "exit\n");
-	msh->exit = 1;
 	if (args[1])
 	{
-		if (args[2])
-		{
-			ft_dprintf(STDERR_FILENO, "bash: exit: too many arguments\n");
-			msh->exit = 0;
-			return (1);
-		}
 		if (!is_numeric(args[1], &msh->ret))
 		{
 			ft_dprintf(STDERR_FILENO,
 				"bash: exit: %s: numeric argument required\n", args[1]);
-			msh->ret = 2;
 			return (2);
 		}
+		if (args[2])
+		{
+			ft_dprintf(STDERR_FILENO, "bash: exit: too many arguments\n");
+			return (1);
+		}
 	}
+	msh->exit = 1;
 	return (0);
 }

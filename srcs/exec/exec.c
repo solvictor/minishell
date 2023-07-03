@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 02:35:57 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/03 12:01:20 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/03 12:16:12 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ t_tokenlist **tokens)
 	// g_running_child = 1 here maybe??? so that it doesn't double print after ctrl+c in a builtin, but if this is done set it back to zero at the end of this function, wait this is already done
 	if (cmd->empty)
 		return (0);
-	if (cmd->path == NULL)
-		return (ft_dprintf(STDOUT_FILENO, "minishellllll: %s: command pas trouve lol\n", cmd->args[0]), 127);
 	if (cmd->builtin)
 		return (cmd->builtin(msh, cmd->args), 0); // return exit code of builtin
+	if (cmd->path == NULL)
+		return (ft_dprintf(STDOUT_FILENO, "minishellllll: %s: command pas trouve lol\n", cmd->args[0]), 127);
 	pid = fork();
 	if (pid == -1)
 		return (printf("failed to make child process\n"), -1);
