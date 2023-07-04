@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 20:14:11 by vegret            #+#    #+#             */
-/*   Updated: 2023/07/03 13:38:29 by vegret           ###   ########.fr       */
+/*   Updated: 2023/07/04 15:51:10 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,10 @@ static int	is_numeric(char *str, int *dst)
 	return (1);
 }
 
-int	builtin_exit(t_msh *msh, char **args) // Problem return value
+int	builtin_exit(t_msh *msh, char **args)
 {
 	ft_dprintf(STDERR_FILENO, "exit\n");
+	msh->exit = 1;
 	if (args[1])
 	{
 		if (!is_numeric(args[1], &msh->ret))
@@ -49,10 +50,10 @@ int	builtin_exit(t_msh *msh, char **args) // Problem return value
 		}
 		if (args[2])
 		{
+			msh->exit = 0;
 			ft_dprintf(STDERR_FILENO, "bash: exit: too many arguments\n");
 			return (1);
 		}
 	}
-	msh->exit = 1;
 	return (0);
 }

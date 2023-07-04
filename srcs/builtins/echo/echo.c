@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 23:05:14 by vegret            #+#    #+#             */
-/*   Updated: 2023/07/04 13:43:45 by vegret           ###   ########.fr       */
+/*   Updated: 2023/07/04 15:26:01 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	print_args(char **args, bool newline, int i)
 	return (0);
 }
 
-int	builtin_echo(t_msh *msh, char **args) // infinite loop on error
+int	builtin_echo(t_msh *msh, char **args)
 {
 	int	i;
 	int	ret;
