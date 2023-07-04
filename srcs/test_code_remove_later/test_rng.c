@@ -6,13 +6,13 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/14 22:48:56 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/01 13:23:30 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 11:29:46 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	set_heredoc_name(char *filename, unsigned int rand)
+char	*set_heredoc_name(char *filename, unsigned int rand)
 {
 	int	offset;
 	int	i;
@@ -26,6 +26,7 @@ void	set_heredoc_name(char *filename, unsigned int rand)
 	}
 	while (i > 0)
 		filename[offset + i--] = '0';
+	return (filename);
 }
 
 char	*random_name(t_msh *msh)

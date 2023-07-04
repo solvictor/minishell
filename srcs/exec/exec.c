@@ -6,13 +6,13 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 02:35:57 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 10:35:00 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 12:06:34 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern volatile sig_atomic_t g_running_child;
+extern volatile sig_atomic_t g_context;
 
 // Executes a single builtin function
 // Needs its own function because of redirections
@@ -59,7 +59,7 @@ t_tokenlist **tokens)
 			msh_terminate(msh);
 			exit(0); // the fuck do i do here?
 		}
-		g_running_child = 1;
+		g_context = 1;
 		if (execve(cmd->path, cmd->args, cmdline->envp) == -1)
 		{
 			ft_dprintf(STDOUT_FILENO, "minishell: %s: %s\n", cmd->path, strerror(errno));
@@ -89,7 +89,7 @@ static	int	exec_pipeline(t_msh *msh, t_cmdline *cmdline, t_tokenlist **tokens)
 			return (printf("Failed to make child process\n"), -1); // kill other children
 		else if (pid == 0)
 		{
-			g_running_child = 1;
+			g_context = 1;
 			exec_cmd(msh, &cmdline->cmds[i], cmdline, tokens); // protect, or maybe dont need if exit already in exec_cmd like right now
 			clear_cmdline(cmdline);
 			destroy_tokenlist(tokens);
@@ -117,18 +117,18 @@ int	exec_cmdline(t_msh *msh, t_cmdline *cmdline, t_tokenlist **tokens)
 
 	if (cmdline->cmds_n == 1)
 	{
-		g_running_child = 2;
+		g_context = 2;
 		ret = exec_cmd(msh, &cmdline->cmds[0], cmdline, tokens); // return what?
-		g_running_child = 0;
+		g_context = 0;
 		if (ret == -1)
 			return (ft_dprintf(2, "Failed exec_cmd with one command, DONT KNOW WHAT TO DO!!\n"), -1);
 		//set msh->ret to something here
 	}
 	else
 	{
-		g_running_child = 2;
+		g_context = 2;
 		ret = exec_pipeline(msh, cmdline, tokens);
-		g_running_child = 0;
+		g_context = 0;
 		if (ret == -1)
 			return (ft_dprintf(2, "Failed exec_cmd with one command, DONT KNOW WHAT TO DO!!\n"), -1);
 		//set msh->ret to last ret of pipeline here

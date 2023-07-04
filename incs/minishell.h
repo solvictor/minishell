@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 10:28:33 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 11:48:54 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,8 @@ void			clear_cmdline(t_cmdline *cmdline);
 int				make_cmds_args(t_cmdline *cmdline);
 int				pathfind_cmds(t_cmdline *cmdline);
 int				do_redirections(t_cmdline *cmdline);
+int				do_redir_input(t_cmd *cmd, t_tokenlist *token);
+int				do_redir_output(t_cmd *cmd, t_tokenlist *token);
 
 // ---- //
 // EXEC //
