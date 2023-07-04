@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:28:05 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 20:13:15 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 20:33:21 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,5 @@ void	set_context(t_msh *msh)
 {
 	g_context.msh = msh;
 	g_context.n = CONT_PARENT;
-	g_context.n = -1;
+	g_context.heredoc_fd = -1;
 }

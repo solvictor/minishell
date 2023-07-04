@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 06:25:47 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 16:31:06 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 20:40:12 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
 static void	msh_init_vars(t_msh *msh)
 {
 	msh->env = NULL;
+	msh->tokens = NULL;
+	msh->cmdline.cmds_n = 0;
+	msh->cmdline.cmds = NULL;
+	msh->cmdline.pipes = NULL;
+	msh->cmdline.paths = NULL;
+	msh->cmdline.envp = NULL;
 	msh->exit = 0;
 	msh->ret = EXIT_SUCCESS;
 	msh->rng.fd_urandom = -1;

@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:10:34 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 19:24:40 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 21:10:36 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void	destroy_tokenlist(t_tokenlist **begin)
 		free(tmp->data);
 		free(tmp);
 	}
-	*begin = NULL;
 }
 
 // Returns 1 if token is of REDIR type, 0 otherwise or if token is NULL

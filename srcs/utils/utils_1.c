@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 06:26:22 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 20:15:51 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 21:00:00 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	msh_terminate(t_msh *msh)
 	rl_clear_history();
 	destroy_env_list(&msh->env);
 	close(msh->rng.fd_urandom);
-	if (g_context.n == HEREDOC)
+	if (g_context.n == CONT_HEREDOC)
 	{
 		destroy_tokenlist(&msh->tokens);
 		clear_cmdline(&msh->cmdline);
