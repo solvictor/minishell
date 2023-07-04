@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 05:43:54 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 10:33:16 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 14:01:53 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	merge_str_tokens(t_tokenlist *tokens)
 	cur = tokens;
 	while (cur)
 	{
-		if (is_str_token(cur) && cur->data_opt) // cant be -1 check why this is verified
+		if (is_str_token(cur) && cur->data_opt == 1) // cant be -1 check why this is verified
 		{
 			if (merge_token(cur) == -1)
 				return (-1);

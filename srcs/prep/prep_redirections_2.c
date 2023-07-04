@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 11:31:12 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 12:15:09 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 13:47:09 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	do_redir_input(t_cmd *cmd, t_tokenlist *token)
 int	do_redir_output(t_cmd *cmd, t_tokenlist *token)
 {
 	close_valid_fds(&cmd->redirs[1], 1);
-	if (token->type == OUTPUTFILE_TRUNC)
+	if (token->type == O_FILE_TRUNC)
 		cmd->redirs[1] = open(token->data, O_CREAT | O_TRUNC | O_WRONLY,
 			0644);
 	else

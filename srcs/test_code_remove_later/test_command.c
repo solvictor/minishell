@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/23 12:29:21 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/23 02:07:23 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 13:02:53 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 //{
 //	if (token == NULL)
 //		return (0);
-//	return (token->type >= HEREDOC && token->type <= OUTPUTFILE_APPEND);
+//	return (token->type >= HEREDOC && token->type <= O_FILE_APPEND);
 //}
 //
 //static int	is_str_token(t_tokenlist *token)
@@ -33,7 +33,7 @@
 //
 //	cur = cmd->start_token;
 //	arg_count = 0;
-//	while (cur && cur->type <= OUTPUTFILE_APPEND)
+//	while (cur && cur->type <= O_FILE_APPEND)
 //	{
 //		if (cur->type <= MERGED_STR)
 //			++arg_count;
@@ -45,7 +45,7 @@
 //	cmd->args[arg_count] = NULL;
 //	arg_count = 0;
 //	cur = cmd->start_token;
-//	while (cur && cur->type <= OUTPUTFILE_APPEND)
+//	while (cur && cur->type <= O_FILE_APPEND)
 //	{
 //		if (cur->type <= MERGED_STR)
 //			cmd->args[arg_count++] = cur->data;

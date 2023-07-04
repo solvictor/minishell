@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 23:37:49 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 12:05:52 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 13:04:41 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,14 @@ unsigned int	get_randint(t_rng *rng)
 // Signal handling function for sigint (ctrl+c)
 void	handler_sigint(int sig)
 {
-	if (sig == SIGINT && (!g_context || g_context == 2))
+	if (sig == SIGINT && (g_context == CONT_PARENT || g_context == CONT_CHILD_WAIT))
 	{
 		printf("\n");
 		rl_on_new_line();
-		if (g_context != 2)
+		if (!g_context)
 		{
 		 		rl_replace_line("", 0);
 				rl_redisplay();
 		}
-		//printf("getpid -> %d\n", getpid());
 	}
 }

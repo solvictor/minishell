@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:10:34 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 11:43:33 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 14:00:30 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_tokenlist	*token_add_front(t_tokenlist **begin, char *data)
 		return (NULL);
 	tmp->data = data;
 	tmp->type = UNKNOWN;
-	tmp->data_opt = 0;
+	tmp->data_opt = -1;
 	tmp->next = *begin;
 	*begin = tmp;
 	return (tmp);
@@ -47,7 +47,7 @@ int	is_redir_token(t_tokenlist *token)
 {
 	if (token == NULL)
 		return (0);
-	return (token->type >= HEREDOC && token->type <= OUTPUTFILE_APPEND);
+	return (token->type >= HEREDOC && token->type <= O_FILE_APPEND);
 }
 
 int	is_str_token(t_tokenlist *token)

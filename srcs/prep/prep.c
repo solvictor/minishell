@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 12:02:53 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 09:55:46 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 13:48:26 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ int	prep_cmdline(t_msh *msh, t_cmdline *cmdline, t_tokenlist *tokens)
 		return (ft_dprintf(2, "Failed making argv for commands\n"), -1);
 	if (pathfind_cmds(cmdline) == -1) // return what?
 		return (ft_dprintf(2, "Failed pathfinding the command\n"), -1);
-//	if (do_heredocs(cmdline) == -1)
-//		return (ft_dprintf(2, "Failed do heredocs\n"), -1);
+	if (do_heredocs(msh, cmdline) == -1)
+		return (ft_dprintf(2, "Failed do heredocs\n"), -1);
 	if (do_redirections(cmdline) == -1) // return what?
 		return (ft_dprintf(2, "Failed do io redirections\n"), -1);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:33:32 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 10:18:42 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 13:03:07 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@ void	display_token_type(t_tokenlist *token)
 		printf("MERGED_STR\n");
 	else if (token->type == HEREDOC)
 		printf("HEREDOC\n");
-	else if (token->type == INPUTFILE)
-		printf("INPUTFILE\n");
-	else if (token->type == OUTPUTFILE_TRUNC)
-		printf("OUTPUTFILE_TRUNC\n");
-	else if (token->type == OUTPUTFILE_APPEND)
-		printf("OUTPUTFILE_APPEND\n");
+	else if (token->type == I_FILE)
+		printf("I_FILE\n");
+	else if (token->type == O_FILE_TRUNC)
+		printf("O_FILE_TRUNC\n");
+	else if (token->type == O_FILE_APPEND)
+		printf("O_FILE_APPEND\n");
 	else if (token->type == PIPE)
 		printf("PIPE\n");
 	else
@@ -87,11 +87,11 @@ void	display_cmdline(t_cmdline *cmdline)
 				printf("%s ", cur->data);
 			else if (cur->type == HEREDOC)
 				printf("<< %s ", cur->data);
-			else if (cur->type == INPUTFILE)
+			else if (cur->type == I_FILE)
 				printf("< %s ", cur->data);
-			else if (cur->type == OUTPUTFILE_TRUNC)
+			else if (cur->type == O_FILE_TRUNC)
 				printf("> %s ", cur->data);
-			else if (cur->type == OUTPUTFILE_APPEND)
+			else if (cur->type == O_FILE_APPEND)
 				printf(">> %s ", cur->data);
 			else
 				printf("WAGNAGNAGNAALSKDLKFJAAOIEPW\n");
