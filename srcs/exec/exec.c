@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 02:35:57 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/03 22:38:16 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 10:35:00 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,10 @@ static int	exec_builtin(t_msh *msh, t_cmdline *cmdline, t_cmd *cmd)
 	if (redirect_builtin_io(cmdline, cmd, io_dup) == -1)
 		return (ft_dprintf(2, "fucked builtin redirection\n"),
 			close_valid_fds(io_dup, 2), -1);
-	close_valid_fds(cmdline->fds, cmdline->cmds_n * 2);
 	msh->ret = cmd->builtin(msh, cmd->args);
 	if (unredirect_builtin_io(io_dup) == -1)
-		return (ft_dprintf(2, "fucked builtin unredirection\n"),
-			close_valid_fds(io_dup, 2), -1);
-	return (close_valid_fds(io_dup, 2), 0); // return exit code of builtin
+		return (ft_dprintf(2, "fucked builtin unredirection\n"), -1);
+	return (0); // return exit code of builtin
 }
 
 // Executes a single command
@@ -39,11 +37,10 @@ t_tokenlist **tokens)
 {
 	pid_t	pid;
 
-	// g_running_child = 1 here maybe??? so that it doesn't double print after ctrl+c in a builtin, but if this is done set it back to zero at the end of this function, wait this is already done
 	if (cmd->empty)
 		return (0);
-	if ((has_input_redir(cmd) && cmd->io_redir[0] == -1)
-		|| (has_output_redir(cmd) && cmd->io_redir[1] == -1))
+	if ((has_input_redir(cmd) && cmd->redirs[0] == -1)
+		|| (has_output_redir(cmd) && cmd->redirs[1] == -1))
 		return (1);
 	if (cmd->builtin)
 		return (exec_builtin(msh, cmdline, cmd));
@@ -72,17 +69,8 @@ t_tokenlist **tokens)
 			exit(126);
 		}
 	}
-	close_valid_fds(cmdline->fds, cmdline->cmds_n * 2);
-	// test
-	int i = 0;
-	while (i < cmdline->cmds_n)
-	{
-		close(cmdline->cmds[i].io_redir[0]);
-		close(cmdline->cmds[i].io_redir[1]);
-		++i;
-	}
-	// test
-	//close_valid_fds(cmd->io_redir, 2);
+	close_valid_fds(cmdline->pipes, cmdline->cmds_n * 2);
+	close_valid_fds(cmdline->redirs, cmdline->cmds_n * 2);
 	if (waitpid(pid, NULL, 0) == -1) // store statlock to return good number
 		return (printf("Failed to waitpid, returned -1\n"), -1);
 	return (0); // NO!! Return stat lock or something
@@ -114,16 +102,8 @@ static	int	exec_pipeline(t_msh *msh, t_cmdline *cmdline, t_tokenlist **tokens)
 //		}
 		++i;
 	}
-	close_valid_fds(cmdline->fds, cmdline->cmds_n * 2);
-	// test
-	i = 0;
-	while (i < cmdline->cmds_n)
-	{
-		close(cmdline->cmds[i].io_redir[0]);
-		close(cmdline->cmds[i].io_redir[1]);
-		++i;
-	}
-	// test
+	close_valid_fds(cmdline->pipes, cmdline->cmds_n * 2);
+	close_valid_fds(cmdline->redirs, cmdline->cmds_n * 2);
 	while (i--)
 		waitpid(-1, NULL, 0);
 	return (0);

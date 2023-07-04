@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 06:26:22 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/03 18:53:22 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 09:32:40 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,17 +47,18 @@ void	clear_cmdline(t_cmdline *cmdline)
 		if (cmdline->cmds[i].args
 			&& cmdline->cmds[i].path != cmdline->cmds[i].args[0])
 			free(cmdline->cmds[i].path);
-		close_valid_fds(cmdline->cmds[i].io_redir, 2);
 		free(cmdline->cmds[i].args);
 		++i;
 	}
-	close_valid_fds(cmdline->fds, cmdline->cmds_n * 2);
+	close_valid_fds(cmdline->pipes, cmdline->cmds_n * 2);
+	close_valid_fds(cmdline->redirs, cmdline->cmds_n * 2);
 	free(cmdline->cmds);
-	free(cmdline->fds);
+	free(cmdline->pipes);
+	free(cmdline->redirs);
 	// set everything to zero if i end up putting it in msh, same for tokenlist functions
 	//cmdline->cmds_n = 0;
 	//cmdline->cmds = NULL;
-	//cmdline->fds = NULL;
+	//cmdline->pipes = NULL;
 	//cmdline->paths = NULL;
 	//cmdline->envp = NULL;
 }

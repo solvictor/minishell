@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:17:20 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/01 14:27:47 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 10:17:43 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	push_metachar_token(t_tokenlist **tokens, const char *input, int *i)
 	if (token_add_front(tokens, NULL) == NULL)
 		return (printf("malloc error token_add_front\n"), -1);
 	(*tokens)->type = get_metachar_tokentype(input, i);
-	(*tokens)->merge_next = 0;
 	return (0);
 }
 
@@ -39,9 +38,7 @@ int	push_str_token(t_tokenlist **tokens, const char *input, int *i)
 	if ((*tokens)->data == NULL)
 		return (-1);
 	if (input[*i] && !is_metachar(input[*i]) && !is_whitespace(input[*i]))
-		(*tokens)->merge_next = 1;
-	else
-		(*tokens)->merge_next = 0;
+		(*tokens)->data_opt = 1;
 	return (0);
 }
 

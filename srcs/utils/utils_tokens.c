@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:10:34 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/24 05:26:27 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 10:14:16 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ t_tokenlist	*token_add_front(t_tokenlist **begin, char *data)
 	if (tmp == NULL)
 		return (NULL);
 	tmp->data = data;
+	tmp->type = UNKNOWN;
+	tmp->data_opt = 0;
 	tmp->next = *begin;
 	*begin = tmp;
 	return (tmp);

@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:33:32 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/30 15:11:58 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 10:18:42 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	display_tokens(t_tokenlist *begin)
 	{
 		printf("TOKEN #%d\n", i);
 		printf("token data -> %s", curr->data);
-		if (curr->merge_next)
+		if (curr->data_opt == 1)
 			printf(" --->");
 		printf("\n");
 		display_token_type(curr);

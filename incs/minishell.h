@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/03 21:48:13 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 10:28:33 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # define RNG_MAX			INT_MAX
 # define RNG_BIT_ROTATIONS	13
 # define RNG_ZERO_FIX_SEED	694201337
+# define HEREDOC_LEN		24
 
 // ERROR MESSAGES
 # define MSH_ERROR		"\e[31;7;1m[MINISHELL ERROR]\e[0m "
@@ -73,12 +74,10 @@ enum e_tokentype
 
 struct s_tokenlist
 {
-	char		*data;
-	t_tokentype	type;
-//	void		*data_option;
-	int			merge_next; // replace with data_option, maybe, or find another way to keep track of created heredocs
-//	char		data_option[24];
-	t_tokenlist	*next;
+	char			*data;
+	t_tokentype		type;
+	unsigned int	data_opt;
+	t_tokenlist		*next;
 };
 struct s_cmd
 {
@@ -87,14 +86,15 @@ struct s_cmd
 	char		**args;
 	t_tokenlist	*start_token;
 	int			num;
-	int			io_redir[2];
+	int			*redirs;
 	int			empty;
 };
 struct s_cmdline
 {
 	int		cmds_n;
 	t_cmd	*cmds;
-	int		*fds;
+	int		*pipes;
+	int		*redirs;
 	char	**paths;
 	char	**envp;
 //	int		ret;

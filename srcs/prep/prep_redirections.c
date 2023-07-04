@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 10:05:50 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/03 22:08:42 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 10:50:44 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,53 +22,43 @@ static int	open_pipes(t_cmdline *cmdline)
 	{
 		if (pipe(fildes) == -1)
 			return (printf("Failed to open pipe #%d\n", i), -1);
-		if (cmdline->fds[i * 2] != -1)
+		if (cmdline->pipes[i * 2] != -1)
 			close(fildes[0]);
 		else
-			cmdline->fds[i * 2] = fildes[0];
-		if (cmdline->fds[i * 2 + 1] != -1)
+			cmdline->pipes[i * 2] = fildes[0];
+		if (cmdline->pipes[i * 2 + 1] != -1)
 			close(fildes[1]);
 		else
-			cmdline->fds[i * 2 + 1] = fildes[1];
+			cmdline->pipes[i * 2 + 1] = fildes[1];
 		++i;
 	}
 	return (0);
 }
 
-// Does heredoc
-static int	do_redir_heredoc(t_cmdline *cmdline, t_cmd *cmd, t_tokenlist *token)
-{
-	(void)cmdline;
-	(void)cmd;
-	(void)token;
-	printf("do_redir_heredoc filler function, probably gonna need it's own file for all the functions\n");
-	return (0);
-}
-
 // Identifies the type of redirection and does it
 // Return 0 on success, -1 otherwise
-static int	do_redir(t_cmdline *cmdline, t_cmd *cmd, t_tokenlist *token)
+static int	do_redir(t_cmd *cmd, t_tokenlist *token)
 {
-	if (token->type == HEREDOC)
-		return (do_redir_heredoc(cmdline, cmd, token));
-	else if (token->type == INPUTFILE)
+	if (token->type == INPUTFILE)
 	{
-		cmd->io_redir[0] = open(token->data, O_RDONLY, 0644);
-		if (cmd->io_redir[0] == -1) // not handled properly, for < inputfile.txt cat checklist (for example), maybe reimplement has_input_redir
-			ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n", token->data,
-				strerror(errno));
+		close_valid_fds(cmd->redirs, 1);
+		cmd->redirs[0] = open(token->data, O_RDONLY, 0644);
+		if (cmd->redirs[0] == -1)
+			return (ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n",
+						token->data, strerror(errno)), -1);
 	}
 	else if (token->type == OUTPUTFILE_TRUNC || token->type == OUTPUTFILE_APPEND)
 	{
+		close_valid_fds(cmd->redirs, 1);
 		if (token->type == OUTPUTFILE_TRUNC)
-			cmd->io_redir[1] = open(token->data, O_CREAT | O_TRUNC | O_WRONLY,
+			cmd->redirs[1] = open(token->data, O_CREAT | O_TRUNC | O_WRONLY,
 				0644);
 		else
-			cmd->io_redir[1] = open(token->data, O_CREAT | O_APPEND | O_WRONLY,
+			cmd->redirs[1] = open(token->data, O_CREAT | O_APPEND | O_WRONLY,
 				0644);
-		if (cmd->io_redir[1] == -1) // not handled properly, for < inputfile.txt cat checklist (for example), maybe reimplement has_input_redir
-			ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n", token->data,
-				strerror(errno));
+		if (cmd->redirs[1] == -1) // not handled properly, for < inputfile.txt cat checklist (for example), maybe reimplement has_input_redir
+			return (ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n",
+					token->data, strerror(errno)), -1);
 	}
 	return (0);
 }
@@ -84,9 +74,8 @@ int	do_redirections(t_cmdline *cmdline)
 		cur = cmdline->cmds[i].start_token;
 		while (cur && cur->type < PIPE)
 		{
-			if (is_redir_token(cur) && do_redir(cmdline,
-				&cmdline->cmds[i], cur) == -1)
-				return (printf("failed to do redirection\n"), -1);
+			if (is_redir_token(cur) && do_redir(&cmdline->cmds[i], cur) == -1)
+				break ;
 			cur = cur->next;
 		}
 		++i;

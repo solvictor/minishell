@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 20:10:06 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/03 21:48:44 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 09:26:21 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	set_cmds_attributes(t_cmdline *cmdline, t_tokenlist *tokens)
 	{
 		cmdline->cmds[index].num = index;
 		cmdline->cmds[index].start_token = cur;
-		set_int_array(cmdline->cmds[index].io_redir, -1, 2);
+		cmdline->cmds[index].redirs = &cmdline->redirs[index * 2];
 		while (cur && cur->type < PIPE)
 			cur = cur->next;
 		++index;
@@ -64,11 +64,16 @@ int	parse(t_cmdline *cmdline, t_tokenlist *tokens)
 	if (cmdline->cmds == NULL)
 		return (printf("failed to malloc cmds in cmdline\n"), -1);
 	ft_bzero(cmdline->cmds, sizeof(t_cmd) * cmdline->cmds_n);
-	cmdline->fds = malloc(sizeof(int) * (cmdline->cmds_n * 2));
-	if (cmdline->fds == NULL)
-		return (printf("failed to malloc fds in cmdline\n"),
+	cmdline->pipes = malloc(sizeof(int) * (cmdline->cmds_n * 2));
+	if (cmdline->pipes == NULL)
+		return (printf("failed to malloc pipes in cmdline\n"),
 			free(cmdline->cmds), -1);
-	set_int_array(cmdline->fds, -1, cmdline->cmds_n * 2);
+	cmdline->redirs = malloc(sizeof(int) * (cmdline->cmds_n * 2));
+	if (cmdline->redirs == NULL)
+		return (printf("failed to malloc redirs in cmdline\n"),
+			free(cmdline->cmds), free(cmdline->pipes), -1);
+	set_int_array(cmdline->pipes, -1, cmdline->cmds_n * 2);
+	set_int_array(cmdline->redirs, -1, cmdline->cmds_n * 2);
 	set_cmds_attributes(cmdline, tokens);
 	cmdline->paths = NULL;
 	cmdline->envp = NULL;

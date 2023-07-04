@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_utils_merge.c                                 :+:      :+:    :+:   */
+/*   prep_merge.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 05:43:54 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/01 08:24:33 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 10:33:16 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	merge_token(t_tokenlist *tokens)
 
 	len = 0;
 	cur = tokens;
-	while (cur && cur->merge_next)
+	while (cur && is_str_token(cur) && cur->data_opt == 1)
 	{
 		len += ft_strlen(cur->data);
 		cur = cur->next;
@@ -31,7 +31,7 @@ static int	merge_token(t_tokenlist *tokens)
 		return (-1);
 	tmp[0] = '\0';
 	cur = tokens;
-	while (cur && cur->merge_next)
+	while (cur && is_str_token(cur) && cur->data_opt == 1)
 	{
 		ft_strlcat(tmp, cur->data, len + 1);
 		cur = cur->next;
@@ -47,7 +47,7 @@ static void	discard_merge_rest(t_tokenlist *tokens)
 	t_tokenlist	*tmp;
 
 	cur = tokens->next;
-	while (cur && cur->merge_next)
+	while (cur && is_str_token(cur) && cur->data_opt == 1)
 	{
 		tmp = cur->next;
 		free(cur->data);
@@ -69,7 +69,7 @@ int	merge_str_tokens(t_tokenlist *tokens)
 	cur = tokens;
 	while (cur)
 	{
-		if (cur->merge_next)
+		if (is_str_token(cur) && cur->data_opt) // cant be -1 check why this is verified
 		{
 			if (merge_token(cur) == -1)
 				return (-1);
