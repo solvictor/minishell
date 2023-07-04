@@ -6,7 +6,7 @@
 #    By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/23 08:28:27 by nlegrand          #+#    #+#              #
-#    Updated: 2023/07/03 17:37:28 by nlegrand         ###   ########.fr        #
+#    Updated: 2023/07/04 11:52:42 by nlegrand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ COL_RESET	=	\033[0m
 SRCS	:=	minishell.c \
 			setup/setup.c \
 			setup/setup_utils.c \
-			utils/utils.c \
+			utils/utils_1.c \
 			utils/utils_2.c \
 			utils/utils_env.c \
 			utils/utils_tokens.c \
@@ -54,7 +54,9 @@ SRCS	:=	minishell.c \
 			prep/prep_expansion.c \
 			prep/prep_merge.c \
 			prep/prep_args.c \
-			prep/prep_redirections.c \
+			prep/prep_redirections_1.c \
+			prep/prep_redirections_2.c \
+			prep/prep_heredocs.c \
 			builtins/pwd/pwd.c \
 			builtins/cd/cd.c \
 			builtins/exit/exit.c \

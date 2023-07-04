@@ -6,15 +6,15 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:00:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/03 22:21:22 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 11:54:33 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-volatile sig_atomic_t	g_running_child = 0;
+volatile sig_atomic_t	g_context = 0;
 
-// Unimportant function :]
+// Cool function :]
 int	main(int ac, char **av, char **envp)
 {
 	t_msh	msh;
@@ -45,7 +45,7 @@ int	msh_loop(t_msh *msh)
 			return (0);
 		if (input[0]) // probably no need for msh.cmdline check because there's a return before
 		{
-			add_history(input);
+			//add_history(input);
 //			test_heredoc(msh, "EOF");
 			msh->ret = process_input(msh, input);
 			if (msh->ret == -1)

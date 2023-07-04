@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prep_redirections.c                                :+:      :+:    :+:   */
+/*   prep_redirections_1.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 10:05:50 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 10:50:44 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 12:11:50 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,38 +35,15 @@ static int	open_pipes(t_cmdline *cmdline)
 	return (0);
 }
 
-// Identifies the type of redirection and does it
-// Return 0 on success, -1 otherwise
-static int	do_redir(t_cmd *cmd, t_tokenlist *token)
-{
-	if (token->type == INPUTFILE)
-	{
-		close_valid_fds(cmd->redirs, 1);
-		cmd->redirs[0] = open(token->data, O_RDONLY, 0644);
-		if (cmd->redirs[0] == -1)
-			return (ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n",
-						token->data, strerror(errno)), -1);
-	}
-	else if (token->type == OUTPUTFILE_TRUNC || token->type == OUTPUTFILE_APPEND)
-	{
-		close_valid_fds(cmd->redirs, 1);
-		if (token->type == OUTPUTFILE_TRUNC)
-			cmd->redirs[1] = open(token->data, O_CREAT | O_TRUNC | O_WRONLY,
-				0644);
-		else
-			cmd->redirs[1] = open(token->data, O_CREAT | O_APPEND | O_WRONLY,
-				0644);
-		if (cmd->redirs[1] == -1) // not handled properly, for < inputfile.txt cat checklist (for example), maybe reimplement has_input_redir
-			return (ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n",
-					token->data, strerror(errno)), -1);
-	}
-	return (0);
-}
-
+// Performs all redirections for all commands in cmdline
+// If a redirection fails for a command all subsequent redirections for that
+// command are cancelled
+// Returns 0 on success, -1 otherwise
 int	do_redirections(t_cmdline *cmdline)
 {
 	t_tokenlist	*cur;
 	int			i;
+	int			ret;
 
 	i = 0;
 	while (i < cmdline->cmds_n)
@@ -74,7 +51,11 @@ int	do_redirections(t_cmdline *cmdline)
 		cur = cmdline->cmds[i].start_token;
 		while (cur && cur->type < PIPE)
 		{
-			if (is_redir_token(cur) && do_redir(&cmdline->cmds[i], cur) == -1)
+			if (is_redir_token(cur) && cur->type <= INPUTFILE)
+				ret = do_redir_input(&cmdline->cmds[i], cur);
+			else if (is_redir_token(cur))
+				ret = do_redir_output(&cmdline->cmds[i], cur);
+			if (is_redir_token(cur) && ret == -1)
 				break ;
 			cur = cur->next;
 		}

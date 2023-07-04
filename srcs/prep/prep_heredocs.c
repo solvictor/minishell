@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 09:56:54 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 09:57:35 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 12:12:39 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,6 @@
 
 int	do_heredocs(t_cmdline *cmdline)
 {
-
+	(void)cmdline;
 	return (0);
 }
