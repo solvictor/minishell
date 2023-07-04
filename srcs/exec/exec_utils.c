@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 13:23:21 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 09:34:45 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 13:03:11 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	has_input_redir(t_cmd *cmd)
 	cur = cmd->start_token;
 	while (cur && cur->type < PIPE)
 	{
-		if (cur->type == HEREDOC || cur->type == INPUTFILE)
+		if (cur->type == HEREDOC || cur->type == I_FILE)
 			return (1);
 		cur = cur->next;
 	}
@@ -37,7 +37,7 @@ int	has_output_redir(t_cmd *cmd)
 	cur = cmd->start_token;
 	while (cur && cur->type < PIPE)
 	{
-		if (cur->type == OUTPUTFILE_TRUNC || cur->type == OUTPUTFILE_APPEND)
+		if (cur->type == O_FILE_TRUNC || cur->type == O_FILE_APPEND)
 			return (1);
 		cur = cur->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:52:41 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/21 19:20:57 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 13:02:48 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ t_tokentype	get_metachar_tokentype(const char *input, int *i)
 	if (input[*i] == '|')
 		return (++(*i), PIPE);
 	else if (input[*i] == '<' && input[*i + 1] != '<')
-		return (++(*i), INPUTFILE);
+		return (++(*i), I_FILE);
 	else if (input[*i] == '>' && input[*i + 1] != '>')
-		return (++(*i), OUTPUTFILE_TRUNC);
+		return (++(*i), O_FILE_TRUNC);
 	else if (input[*i] == '<' && input[*i + 1] == '<')
 		return (((*i) += 2), HEREDOC);
 	else if (input[*i] == '>' && input[*i + 1] == '>')
-		return (((*i) += 2), OUTPUTFILE_APPEND);
+		return (((*i) += 2), O_FILE_APPEND);
 	else
 		return (++(*i), UNKNOWN); // what the fuck do i do in this case??
 }

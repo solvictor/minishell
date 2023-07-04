@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:17:20 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 10:17:43 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 13:59:17 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int	push_str_token(t_tokenlist **tokens, const char *input, int *i)
 		return (-1);
 	if (input[*i] && !is_metachar(input[*i]) && !is_whitespace(input[*i]))
 		(*tokens)->data_opt = 1;
+	else
+		(*tokens)->data_opt = 0;
 	return (0);
 }
 

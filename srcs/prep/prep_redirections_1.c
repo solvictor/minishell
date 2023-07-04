@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 10:05:50 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 12:11:50 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 12:59:25 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	do_redirections(t_cmdline *cmdline)
 		cur = cmdline->cmds[i].start_token;
 		while (cur && cur->type < PIPE)
 		{
-			if (is_redir_token(cur) && cur->type <= INPUTFILE)
+			if (is_redir_token(cur) && cur->type <= I_FILE)
 				ret = do_redir_input(&cmdline->cmds[i], cur);
 			else if (is_redir_token(cur))
 				ret = do_redir_output(&cmdline->cmds[i], cur);
