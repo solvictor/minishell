@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 23:05:14 by vegret            #+#    #+#             */
-/*   Updated: 2023/07/03 13:51:02 by vegret           ###   ########.fr       */
+/*   Updated: 2023/07/04 13:43:45 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,18 @@ int	builtin_echo(t_msh *msh, char **args) // infinite loop on error
 
 	(void) msh;
 	if (!args || !args[0])
-		return (write(STDOUT_FILENO, "\n", 1) != 1);
+	{
+		ret = write(STDOUT_FILENO, "\n", 1) != 1;
+		if (ret)
+			ft_dprintf(STDERR_FILENO, "bash: echo: write error: %s\n",
+				strerror(errno));
+		return (ret);
+	}
 	i = 1;
 	while (is_flag_n(args[i]))
 		i++;
 	ret = print_args(args, i == 1, i);
-	if (ret == 1)
+	if (ret)
 		ft_dprintf(STDERR_FILENO, "bash: echo: write error: %s\n",
 			strerror(errno));
 	return (ret);

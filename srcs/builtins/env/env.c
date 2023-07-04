@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 16:19:58 by vegret            #+#    #+#             */
-/*   Updated: 2023/07/03 13:28:03 by vegret           ###   ########.fr       */
+/*   Updated: 2023/07/04 13:43:40 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	builtin_env(t_msh *msh, char **args)
 		{
 			if (ft_dprintf(STDOUT_FILENO, "%s\n", cur->var) < 0)
 			{
-				ft_dprintf(STDERR_FILENO, "bash: pwd: write error: %s\n",
+				ft_dprintf(STDERR_FILENO, "bash: env: write error: %s\n",
 					strerror(errno));
 				return (125);
 			}
