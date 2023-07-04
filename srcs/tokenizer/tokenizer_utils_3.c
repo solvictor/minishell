@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 21:28:23 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/25 13:26:55 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 18:39:33 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,31 +33,4 @@ int	check_syntax_errors(t_tokenlist *tokens)
 		cur = cur->next;
 	}
 	return (0);
-}
-
-// Removes the redirection tokens gives their property to the next string type
-// token
-void	clean_redir_tokens(t_tokenlist **tokens)
-{
-	t_tokenlist	*cur;
-	t_tokenlist	**prev_next_ptr;
-
-	prev_next_ptr = tokens;
-	cur = *tokens;
-	while (cur)
-	{
-		if (!is_redir_token(cur))
-		{
-			prev_next_ptr = &cur->next;
-			cur = cur->next;
-		}
-		else
-		{
-			cur->next->type = cur->type;
-			*prev_next_ptr = cur->next;
-			prev_next_ptr = &cur->next->next;
-			free(cur);
-			cur = *prev_next_ptr;
-		}
-	}
 }

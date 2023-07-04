@@ -6,7 +6,7 @@
 #    By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/23 08:28:27 by nlegrand          #+#    #+#              #
-#    Updated: 2023/07/04 11:52:42 by nlegrand         ###   ########.fr        #
+#    Updated: 2023/07/04 18:28:45 by nlegrand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,8 +64,7 @@ SRCS	:=	minishell.c \
 			builtins/export/export.c \
 			builtins/unset/unset.c \
 			builtins/env/env.c \
-			test_code_remove_later/display_utils.c \
-			test_code_remove_later/test_rng.c
+			test_code_remove_later/display_utils.c
 #			test_code_remove_later/test_expansion.c
 #			test_code_remove_later/test_signals.c
 OBJS	:=	$(SRCS:.c=.o)

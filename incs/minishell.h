@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 13:56:47 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 20:13:36 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 # define CONT_PARENT		0
 # define CONT_CHILD_WAIT	1
 # define CONT_CHILD_FORK	2
+# define CONT_HEREDOC		3
 
 // ERROR MESSAGES
 # define MSH_ERROR		"\e[31;7;1m[MINISHELL ERROR]\e[0m "
@@ -50,6 +51,7 @@
 //# define ME_EXEC_CMD	"Failed to exec command\n"
 //# define ME_BAD_FORMAT	"Bad format command\n"
 
+typedef struct	s_context	t_context;
 typedef enum e_tokentype	t_tokentype;
 typedef enum e_nodetype		t_nodetype;
 typedef struct s_tokenlist	t_tokenlist;
@@ -75,6 +77,12 @@ enum e_tokentype
 	UNKNOWN
 };
 
+struct s_context
+{
+	int		n;
+	t_msh	*msh;
+	int		heredoc_fd;
+};
 struct s_tokenlist
 {
 	char			*data;
@@ -117,22 +125,26 @@ struct s_rng
 };
 struct s_msh
 {
-	t_env	*env;
-	int		exit;
-	int		ret;
-	t_rng	rng;
+	t_env		*env;
+	t_tokenlist	*tokens;
+	t_cmdline	cmdline;
+	int			exit;
+	int			ret;
+	t_rng		rng;
 };
 
 // minishell.c
 int				msh_loop(t_msh *msh);
-int				process_input(t_msh *msh, char *input);
+int				process_input(t_msh *msh, t_tokenlist *tokens,
+					t_cmdline *cmdline, char *input);
 
 // ----- //
 // SETUP //
 // ----- //
 int				msh_setup(t_msh	*msh, int ac, char **envp);
 unsigned int	get_randint(t_rng *rng);
-void			handler_sigint(int sig);
+unsigned int	randuint_rng(t_rng *rng);
+void			handler(int sig);
 
 // ----- //
 // UTILS //
@@ -143,7 +155,8 @@ void			clear_cmdline(t_cmdline *cmdline);
 unsigned int	rng_bit_rot(unsigned int num);
 void			set_int_array(int *arr, int val, int size);
 void			close_valid_fds(int	*arr, int size);
-
+void			unlink_heredocs(t_tokenlist *tokens);
+void			set_context(t_msh *msh);
 // Env
 t_env			*env_new(char *var);
 char			**env_to_arr(t_env *env);
@@ -155,6 +168,7 @@ t_tokenlist		*token_add_front(t_tokenlist **begin, char *data);
 void			destroy_tokenlist(t_tokenlist **begin);
 int				is_redir_token(t_tokenlist *token);
 int				is_str_token(t_tokenlist *token);
+void			clean_redir_tokens(t_tokenlist *tokens);
 
 // --------- //
 // TOKENIZER //
@@ -171,7 +185,6 @@ int				push_metachar_token(t_tokenlist **tokens,
 char			*get_str_token(const char *input, int *i);
 void			reverse_tokens(t_tokenlist **begin);
 int				check_syntax_errors(t_tokenlist *tokens);
-void			clean_redir_tokens(t_tokenlist **tokens);
 
 // ------ //
 // PARSER //
@@ -187,9 +200,10 @@ char			**get_paths(t_env *env);
 int				expand_str(t_msh *msh, char **str);
 int				do_dollar_expansions(t_msh *msh, t_tokenlist *tokens);
 int				merge_str_tokens(t_tokenlist *tokens);
-void			clear_cmdline(t_cmdline *cmdline);
+int				merge_heredoc_tokens(t_tokenlist *tokens);
 int				make_cmds_args(t_cmdline *cmdline);
 int				pathfind_cmds(t_cmdline *cmdline);
+char			*set_heredoc_name(char *filename, long rand);
 int				do_heredocs(t_msh *msh, t_cmdline *cmdline);
 int				do_redirections(t_cmdline *cmdline);
 int				do_redir_input(t_cmd *cmd, t_tokenlist *token);
@@ -200,7 +214,6 @@ int				do_redir_output(t_cmd *cmd, t_tokenlist *token);
 // ---- //
 int				exec_cmdline(t_msh *msh, t_cmdline *cmdline,
 					t_tokenlist **tokens);
-void			close_valid_fds(int	*arr, int size);
 int				has_input_redir(t_cmd *cmd);
 int				has_output_redir(t_cmd *cmd);
 int				redirect_io(t_cmdline *cmdline, t_cmd *cmd);

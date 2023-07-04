@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 06:25:47 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/01 10:20:21 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 16:31:06 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static int	setup_signals(void)
 {
 	struct sigaction	sa;
 
-	sa.sa_handler = &handler_sigint;
+	sa.sa_handler = &handler;
 	sa.sa_flags = SA_RESTART;
 	if (sigemptyset(&sa.sa_mask) != 0)
 		return (-1);

@@ -6,13 +6,13 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 23:37:49 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 13:04:41 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 20:25:35 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern volatile sig_atomic_t g_context;
+extern t_context	g_context;
 
 // Outputs a pseudo-random number from the seeded values in rng
 unsigned int	get_randint(t_rng *rng)
@@ -33,16 +33,26 @@ unsigned int	get_randint(t_rng *rng)
 }
 
 // Signal handling function for sigint (ctrl+c)
-void	handler_sigint(int sig)
+void	handler(int sig)
 {
-	if (sig == SIGINT && (g_context == CONT_PARENT || g_context == CONT_CHILD_WAIT))
+	if (sig != SIGINT)
+		return ;
+	g_context.msh->ret = 130; // not sure i should leave that here,
+							  // probably should be done with stat_lock on
+							  // wait and waitpid but not sure
+	if (g_context.n == CONT_PARENT || g_context.n == CONT_CHILD_WAIT)
 	{
-		printf("\n");
+		printf("\n"); // casse au tt debut de minishell jsp pk
 		rl_on_new_line();
-		if (!g_context)
+		if (g_context.n == CONT_PARENT)
 		{
-		 		rl_replace_line("", 0);
-				rl_redisplay();
+			rl_replace_line("", 0);
+			rl_redisplay();
 		}
+	}
+	else if (g_context.n == CONT_HEREDOC)
+	{
+		msh_terminate(g_context.msh);
+		exit(130);
 	}
 }

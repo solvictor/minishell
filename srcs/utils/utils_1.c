@@ -6,11 +6,13 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 06:26:22 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 09:32:40 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 20:15:51 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+extern t_context	g_context;
 
 // Liberates all resources allocated by minishell
 void	msh_terminate(t_msh *msh)
@@ -18,6 +20,13 @@ void	msh_terminate(t_msh *msh)
 	rl_clear_history();
 	destroy_env_list(&msh->env);
 	close(msh->rng.fd_urandom);
+	if (g_context.n == HEREDOC)
+	{
+		destroy_tokenlist(&msh->tokens);
+		clear_cmdline(&msh->cmdline);
+		if (g_context.heredoc_fd != -1)
+			close(g_context.heredoc_fd);
+	}
 }
 
 // Frees the content of a string array and the array itself
@@ -55,12 +64,11 @@ void	clear_cmdline(t_cmdline *cmdline)
 	free(cmdline->cmds);
 	free(cmdline->pipes);
 	free(cmdline->redirs);
-	// set everything to zero if i end up putting it in msh, same for tokenlist functions
-	//cmdline->cmds_n = 0;
-	//cmdline->cmds = NULL;
-	//cmdline->pipes = NULL;
-	//cmdline->paths = NULL;
-	//cmdline->envp = NULL;
+	cmdline->cmds_n = 0;
+	cmdline->cmds = NULL;
+	cmdline->pipes = NULL;
+	cmdline->paths = NULL;
+	cmdline->envp = NULL;
 }
 
 // Bit rotation function used by the random number generation for random file

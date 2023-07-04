@@ -6,13 +6,13 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 02:35:57 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 14:26:59 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 17:02:39 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-extern volatile sig_atomic_t g_context;
+extern t_context	g_context;
 
 // Executes a single builtin function
 // Needs its own function because of redirections
@@ -36,6 +36,7 @@ static int	exec_cmd(t_msh *msh, t_cmd *cmd, t_cmdline *cmdline,
 t_tokenlist **tokens)
 {
 	pid_t	pid;
+	int		ret;
 
 	if (cmd->empty)
 		return (0);
@@ -51,7 +52,7 @@ t_tokenlist **tokens)
 		return (printf("failed to make child process\n"), -1);
 	else if (pid == 0)
 	{
-		g_context = CONT_CHILD_FORK;
+		g_context.n = CONT_CHILD_FORK;
 		if (redirect_io(cmdline, cmd) == -1)
 		{
 			printf("Failed to redirect io\n");
@@ -71,7 +72,7 @@ t_tokenlist **tokens)
 	}
 	close_valid_fds(cmdline->pipes, cmdline->cmds_n * 2);
 	close_valid_fds(cmdline->redirs, cmdline->cmds_n * 2);
-	if (waitpid(pid, NULL, 0) == -1) // store statlock to return good number
+	if (waitpid(pid, &ret, 0) == -1) // store statlock to return good number
 		return (printf("Failed to waitpid, returned -1\n"), -1);
 	return (0); // NO!! Return stat lock or something
 }
@@ -89,7 +90,7 @@ static	int	exec_pipeline(t_msh *msh, t_cmdline *cmdline, t_tokenlist **tokens)
 			return (printf("Failed to make child process\n"), -1); // kill other children
 		else if (pid == 0)
 		{
-			g_context = CONT_CHILD_FORK;
+			g_context.n = CONT_CHILD_FORK;
 			exec_cmd(msh, &cmdline->cmds[i], cmdline, tokens); // protect, or maybe dont need if exit already in exec_cmd like right now
 			clear_cmdline(cmdline);
 			destroy_tokenlist(tokens);
@@ -117,18 +118,18 @@ int	exec_cmdline(t_msh *msh, t_cmdline *cmdline, t_tokenlist **tokens)
 
 	if (cmdline->cmds_n == 1)
 	{
-		g_context = CONT_CHILD_WAIT;
+		g_context.n = CONT_CHILD_WAIT;
 		ret = exec_cmd(msh, &cmdline->cmds[0], cmdline, tokens); // return what?
-		g_context = CONT_PARENT;
+		g_context.n = CONT_PARENT;
 		if (ret == -1)
 			return (ft_dprintf(2, "Failed exec_cmd with one command, DONT KNOW WHAT TO DO!!\n"), -1);
 		//set msh->ret to something here
 	}
 	else
 	{
-		g_context = CONT_CHILD_WAIT;
+		g_context.n = CONT_CHILD_WAIT;
 		ret = exec_pipeline(msh, cmdline, tokens);
-		g_context = CONT_PARENT;
+		g_context.n = CONT_PARENT;
 		if (ret == -1)
 			return (ft_dprintf(2, "Failed exec_cmd with one command, DONT KNOW WHAT TO DO!!\n"), -1);
 		//set msh->ret to last ret of pipeline here

@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 05:43:54 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 14:01:53 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/04 19:37:35 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,30 @@ int	merge_str_tokens(t_tokenlist *tokens)
 				return (-1);
 			discard_merge_rest(cur);
 			cur->type = MERGED_STR;
+			cur->next->data_opt = 0;
+		}
+		cur = cur->next;
+	}
+	return (0);
+}
+
+// Same as merge_str_tokens but is done before dollar expension for the heredoc
+// delimiter
+int	merge_heredoc_tokens(t_tokenlist *tokens)
+{
+	t_tokenlist	*cur;
+
+	cur = tokens;
+	while (cur)
+	{
+		if (cur->type == HEREDOC && cur->next->data_opt == 1) // cant be -1 check why this is verified
+		{
+			if (merge_token(cur->next) == -1)
+				return (-1);
+			discard_merge_rest(cur->next);
+			cur->next->type = MERGED_STR;
+			cur->next->data_opt = 0;
+			cur = cur->next;
 		}
 		cur = cur->next;
 	}
