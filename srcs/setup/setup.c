@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 06:25:47 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 20:40:12 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 11:20:33 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ static void	msh_init_vars(t_msh *msh)
 	msh->cmdline.envp = NULL;
 	msh->exit = 0;
 	msh->ret = EXIT_SUCCESS;
-	msh->rng.fd_urandom = -1;
 	msh->rng.rand = 0;
 	msh->rng.mult = 0;
 	msh->rng.inc = 0;
@@ -74,19 +73,20 @@ static int	setup_env(t_msh *msh, char **envp)
 // Opens /dev/urandom to generate pseudo-random numbers for the heredoc naming
 static int	setup_rng(t_rng *rng)
 {
-	rng->fd_urandom = open("/dev/urandom", O_RDONLY);
-	if (rng->fd_urandom == -1)
+	int	fd_urandom;
+	fd_urandom = open("/dev/urandom", O_RDONLY);
+	if (fd_urandom == -1)
 		return (-1);
-	rng->rand = get_randint(rng);
+	rng->rand = get_randint(fd_urandom);
 	if (rng->rand == 0)
-		return (-1);
-	rng->mult = get_randint(rng);
+		return (close(fd_urandom), -1);
+	rng->mult = get_randint(fd_urandom);
 	if (rng->mult == 0)
-		return (-1);
-	rng->inc = get_randint(rng);
+		return (close(fd_urandom), -1);
+	rng->inc = get_randint(fd_urandom);
 	if (rng->inc == 0)
-		return (-1);
-	return (0);
+		return (close(fd_urandom), -1);
+	return (close(fd_urandom), 0);
 }
 
 // Gives default values to msh struct variables, sets up the environment and

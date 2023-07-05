@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 16:38:05 by vegret            #+#    #+#             */
-/*   Updated: 2023/07/04 13:43:36 by vegret           ###   ########.fr       */
+/*   Updated: 2023/07/05 16:30:56 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,14 @@ static int	print_env(t_env	*env)
 		if (equal)
 		{
 			*equal = '\0';
-			ret = ft_dprintf(STDOUT_FILENO, "export %s=\"%s\"\n",
-					env->var, equal + 1);
+			ret = printf("export %s=\"%s\"\n", env->var, equal + 1);
 			*equal = '=';
 		}
 		else
-			ret = ft_dprintf(STDOUT_FILENO, "export %s\n", env->var);
+			ret = printf("export %s\n", env->var);
 		if (ret < 0)
 		{
-			ft_dprintf(STDERR_FILENO, "bash: export: write error: %s\n",
+			ft_dprintf(STDERR_FILENO, "minishell: export: write error: %s\n",
 				strerror(errno));
 			return (1);
 		}
@@ -85,7 +84,7 @@ int	builtin_export(t_msh *msh, char **args)
 		if (!is_valid_identifier(*args))
 		{
 			ft_dprintf(STDERR_FILENO,
-				"bash: export: `%s': not a valid identifier\n", *args);
+				"minishell: export: `%s': not a valid identifier\n", *args);
 			ret = 1;
 			continue ;
 		}
@@ -95,7 +94,8 @@ int	builtin_export(t_msh *msh, char **args)
 		else
 			new = get_env(msh->env, *args, -1);
 		if ((!new || equal) && assign_var(msh, new, *args)) // Malloc fail return value?
-			return (-1);
+			return (1); // RETURN -1 AAAAAAAAAAAAAAAAAAAAAAAH
+			//return (-1); // RETURN -1 AAAAAAAAAAAAAAAAAAAAAAAH
 	}
 	return (ret);
 }

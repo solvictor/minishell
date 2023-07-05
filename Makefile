@@ -6,7 +6,7 @@
 #    By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/23 08:28:27 by nlegrand          #+#    #+#              #
-#    Updated: 2023/07/04 18:28:45 by nlegrand         ###   ########.fr        #
+#    Updated: 2023/07/05 13:07:07 by nlegrand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,14 +19,14 @@ OBJDIR	=	objs
 LIBFT	=	libft
 
 # Compiler options
-CC		=	cc
+#CC		=	cc
+CC		=	cc -g3 -gdwarf-4
 CWARNS	=	-Wall -Wextra -MD
 CLIBS	=	-L./$(LIBDIR) -lft -lreadline
 CINCS	=	-I./$(INCDIR) -I./$(LIBFT)
 
 # Other
 RM		=	rm -rf
-DEBUG	=	-g3 -gdwarf-4
 # Colors
 COL_FRONT	=	\033[44;37;1m
 COL_BACK	=	\033[7m
@@ -48,7 +48,8 @@ SRCS	:=	minishell.c \
 			tokenizer/tokenizer_utils_3.c \
 			parser/parser.c \
 			exec/exec.c \
-			exec/exec_utils.c \
+			exec/exec_utils_1.c \
+			exec/exec_utils_2.c \
 			prep/prep.c \
 			prep/prep_pathfind.c \
 			prep/prep_expansion.c \

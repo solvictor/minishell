@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_utils_pathfind.c                              :+:      :+:    :+:   */
+/*   prep_pathfind.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 04:16:08 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/01 10:28:04 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 15:51:50 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,6 @@ int	pathfind_cmds(t_cmdline *cmdline)
 	i = 0;
 	while (i < cmdline->cmds_n)
 	{
-		//printf("coucou\n");
-		//printf("cmdline->cmds[%d].empty -> %d\n", i, cmdline->cmds[i].empty);
-		//printf("cmdline->cmds[%d].args -> %p\n", i, cmdline->cmds[i].args);
 		if (cmdline->cmds[i].empty == 0
 			&& find_cmd(&cmdline->cmds[i], cmdline->paths) == -1)
 			return (-1);

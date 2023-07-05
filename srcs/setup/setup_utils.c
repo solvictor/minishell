@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 23:37:49 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 20:44:36 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 11:17:16 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 extern t_context	g_context;
 
 // Outputs a pseudo-random number from the seeded values in rng
-unsigned int	get_randint(t_rng *rng)
+unsigned int	get_randint(int fd_urandom)
 {
 	static unsigned int	zero_fix = RNG_ZERO_FIX_SEED;
 	unsigned int		randint;
 	int					ret;
 
-	ret = read(rng->fd_urandom, &randint, sizeof(randint));
+	ret = read(fd_urandom, &randint, sizeof(randint));
 	if (ret == -1)
 		return (0);
 	if (randint == 0)
@@ -51,8 +51,5 @@ void	handler(int sig)
 		}
 	}
 	else if (g_context.n == CONT_HEREDOC)
-	{
-		msh_terminate(g_context.msh);
-		exit(130);
-	}
+		msh_terminate(g_context.msh, 130);
 }

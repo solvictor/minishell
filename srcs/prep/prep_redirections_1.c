@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 10:05:50 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 12:59:25 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 16:16:04 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	open_pipes(t_cmdline *cmdline)
 	while (i < cmdline->cmds_n)
 	{
 		if (pipe(fildes) == -1)
-			return (printf("Failed to open pipe #%d\n", i), -1);
+			return (-1);
 		if (cmdline->pipes[i * 2] != -1)
 			close(fildes[0]);
 		else
@@ -62,6 +62,6 @@ int	do_redirections(t_cmdline *cmdline)
 		++i;
 	}
 	if (cmdline->cmds_n > 1 && open_pipes(cmdline) == -1)
-		return (printf("failed to open pipes\n"), -1);
+		return (-1);
 	return (0);
 }

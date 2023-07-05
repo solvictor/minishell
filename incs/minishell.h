@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 21:09:06 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 13:13:19 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,6 @@ struct	s_env
 };
 struct s_rng
 {
-	int				fd_urandom;
 	unsigned int	rand;
 	unsigned int	mult;
 	unsigned int	inc;
@@ -134,22 +133,21 @@ struct s_msh
 };
 
 // minishell.c
-int				msh_loop(t_msh *msh);
-int				process_input(t_msh *msh, t_tokenlist **tokens,
-					t_cmdline *cmdline, char *input);
+void			msh_loop(t_msh *msh);
+int				process_input(t_msh *msh, char *input);
 
 // ----- //
 // SETUP //
 // ----- //
 int				msh_setup(t_msh	*msh, int ac, char **envp);
-unsigned int	get_randint(t_rng *rng);
+unsigned int	get_randint(int fd_urandom);
 unsigned int	randuint_rng(t_rng *rng);
 void			handler(int sig);
 
 // ----- //
 // UTILS //
 // ----- //
-void			msh_terminate(t_msh *msh);
+void			msh_terminate(t_msh *msh, int exit_code);
 void			clear_strarr(char **arr);
 void			clear_cmdline(t_cmdline *cmdline);
 unsigned int	rng_bit_rot(unsigned int num);
@@ -204,7 +202,7 @@ int				merge_heredoc_tokens(t_tokenlist *tokens);
 int				make_cmds_args(t_cmdline *cmdline);
 int				pathfind_cmds(t_cmdline *cmdline);
 char			*set_heredoc_name(char *filename, long rand);
-int				do_heredocs(t_msh *msh, t_cmdline *cmdline);
+int				do_heredocs(t_msh *msh);
 int				do_redirections(t_cmdline *cmdline);
 int				do_redir_input(t_cmd *cmd, t_tokenlist *token);
 int				do_redir_output(t_cmd *cmd, t_tokenlist *token);
@@ -212,14 +210,15 @@ int				do_redir_output(t_cmd *cmd, t_tokenlist *token);
 // ---- //
 // EXEC //
 // ---- //
-int				exec_cmdline(t_msh *msh, t_cmdline *cmdline,
-					t_tokenlist **tokens);
+int				exec_cmdline(t_msh *msh);
 int				has_input_redir(t_cmd *cmd);
 int				has_output_redir(t_cmd *cmd);
 int				redirect_io(t_cmdline *cmdline, t_cmd *cmd);
 int				redirect_builtin_io(t_cmdline *cmdline, t_cmd *cmd,
 				int io_dup[2]);
 int				unredirect_builtin_io(int io_dup[2]);
+void			child_process(t_msh *msh, t_cmd *cmd);
+int				wait_pipeline(pid_t last_pid, int n_children);
 
 // -------- //
 // BUILTINS //

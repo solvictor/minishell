@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 06:26:22 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 21:00:00 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 11:02:52 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,22 @@
 extern t_context	g_context;
 
 // Liberates all resources allocated by minishell
-void	msh_terminate(t_msh *msh)
+void	msh_terminate(t_msh *msh, int exit_code)
 {
 	rl_clear_history();
 	destroy_env_list(&msh->env);
-	close(msh->rng.fd_urandom);
-	if (g_context.n == CONT_HEREDOC)
+	if (g_context.n > CONT_PARENT)
 	{
 		destroy_tokenlist(&msh->tokens);
 		clear_cmdline(&msh->cmdline);
+	}
+	if (g_context.n == CONT_HEREDOC)
+	{
 		if (g_context.heredoc_fd != -1)
 			close(g_context.heredoc_fd);
 	}
+	if (exit_code != -1)
+		exit(exit_code);
 }
 
 // Frees the content of a string array and the array itself

@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:17:20 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 13:59:17 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 15:43:49 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 int	push_metachar_token(t_tokenlist **tokens, const char *input, int *i)
 {
 	if (token_add_front(tokens, NULL) == NULL)
-		return (printf("malloc error token_add_front\n"), -1);
+		return (-1);
 	(*tokens)->type = get_metachar_tokentype(input, i);
 	return (0);
 }
@@ -27,7 +27,7 @@ int	push_metachar_token(t_tokenlist **tokens, const char *input, int *i)
 int	push_str_token(t_tokenlist **tokens, const char *input, int *i)
 {
 	if (token_add_front(tokens, NULL) == NULL)
-		return (printf("malloc error token_add_front\n"), -1);
+		return (-1);
 	if (input[*i] == '"')
 		(*tokens)->type = DOUBLE_QUOTED_STR;
 	else if (input[*i] == '\'')
@@ -57,9 +57,10 @@ char	*get_str_token(const char *input, int *i)
 	else
 		ret = get_str_unquoted(input + *i, &tmp);
 	if (ret == -1)
-		return (printf("malloc error in get_str_token\n"), NULL);
+		return (NULL);
 	else if (ret == -2)
-		return (printf("Unmatch quotation\n"), NULL);
+		return (ft_dprintf(STDERR_FILENO,
+			"minishell: syntax error: unmatch quotation\n"), NULL);
 	*i += ret;
 	return (tmp);
 }

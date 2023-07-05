@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 23:05:14 by vegret            #+#    #+#             */
-/*   Updated: 2023/07/04 15:26:01 by vegret           ###   ########.fr       */
+/*   Updated: 2023/07/05 16:27:05 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	print_args(char **args, bool newline, int i)
 {
 	while (args[i])
 	{
-		if (ft_dprintf(STDOUT_FILENO, "%s", args[i++]) < 0)
+		if (printf("%s", args[i++]) < 0)
 			return (1);
 		if (args[i] != NULL)
 		{
@@ -51,7 +51,7 @@ int	builtin_echo(t_msh *msh, char **args)
 	{
 		ret = write(STDOUT_FILENO, "\n", 1) != 1;
 		if (ret)
-			ft_dprintf(STDERR_FILENO, "bash: echo: write error: %s\n",
+			ft_dprintf(STDERR_FILENO, "minishell: echo: write error: %s\n",
 				strerror(errno));
 		return (ret);
 	}
@@ -60,7 +60,7 @@ int	builtin_echo(t_msh *msh, char **args)
 		i++;
 	ret = print_args(args, i == 1, i);
 	if (ret)
-		ft_dprintf(STDERR_FILENO, "bash: echo: write error: %s\n",
+		ft_dprintf(STDERR_FILENO, "minishell: echo: write error: %s\n",
 			strerror(errno));
 	return (ret);
 }
