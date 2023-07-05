@@ -6,11 +6,11 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 05:43:54 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 18:51:47 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 22:21:52 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h" 
+#include "minishell.h"
 
 static int	merge_token(t_tokenlist *tokens)
 {

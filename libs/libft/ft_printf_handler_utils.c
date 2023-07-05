@@ -6,7 +6,7 @@
 /*   By: nlegrand <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 14:30:18 by nlegrand          #+#    #+#             */
-/*   Updated: 2022/11/19 11:08:47 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 22:23:33 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	get_hex_str(t_print *print, char *x, size_t n, int caps)
 	{
 		x[len++] = SET_HEX[(n / pow) % 16];
 		if (caps && ft_isalpha(x[len - 1]))
-				x[len - 1] -= 32;
+			x[len - 1] -= 32;
 		pow /= 16;
 	}
 	x[len] = '\0';
