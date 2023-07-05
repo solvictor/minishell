@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 19:06:12 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 19:08:53 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,10 +225,5 @@ int				builtin_echo(t_msh *msh, char **args);
 int				builtin_export(t_msh *msh, char **args);
 int				builtin_unset(t_msh *msh, char **args);
 int				builtin_env(t_msh *msh, char **args);
-// -------- //
-//          //
-// -------- //
-
-//int	copy_num(int n, char *dst);
 
 #endif
