@@ -6,7 +6,7 @@
 #    By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/23 08:28:27 by nlegrand          #+#    #+#              #
-#    Updated: 2023/07/05 13:07:07 by nlegrand         ###   ########.fr        #
+#    Updated: 2023/07/05 22:12:29 by nlegrand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,10 +64,7 @@ SRCS	:=	minishell.c \
 			builtins/echo/echo.c \
 			builtins/export/export.c \
 			builtins/unset/unset.c \
-			builtins/env/env.c \
-			test_code_remove_later/display_utils.c
-#			test_code_remove_later/test_expansion.c
-#			test_code_remove_later/test_signals.c
+			builtins/env/env.c 
 OBJS	:=	$(SRCS:.c=.o)
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRCS))
 OBJS	:=	$(addprefix $(OBJDIR)/, $(OBJS))
@@ -102,7 +99,6 @@ $(OBJDIR):
 	mkdir -p $(OBJDIR)/parser
 	mkdir -p $(OBJDIR)/exec
 	mkdir -p $(OBJDIR)/prep
-	mkdir -p $(OBJDIR)/test_code_remove_later
 
 clean:
 	make clean -C $(LIBDIR)/$(LIBFT)
