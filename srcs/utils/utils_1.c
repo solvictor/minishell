@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 06:26:22 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 11:02:52 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 17:32:02 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,8 @@ void	clear_cmdline(t_cmdline *cmdline)
 	free(cmdline->cmds);
 	free(cmdline->pipes);
 	free(cmdline->redirs);
-	cmdline->cmds_n = 0;
-	cmdline->cmds = NULL;
-	cmdline->pipes = NULL;
-	cmdline->paths = NULL;
-	cmdline->envp = NULL;
+	free(cmdline->pids);
+	reset_cmdline(cmdline);
 }
 
 // Bit rotation function used by the random number generation for random file

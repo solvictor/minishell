@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 02:35:57 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 16:18:08 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 18:59:14 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ static int	exec_cmd(t_msh *msh, t_cmd *cmd)
 		return (exec_builtin(msh, cmd));
 	if (cmd->path == NULL)
 		return (ft_dprintf(STDOUT_FILENO, "minishell: %s: command not found\n",
-			cmd->args[0]), 127);
+				cmd->args[0]), 127);
 	pid = fork();
 	if (pid == -1)
-		return (ft_dprintf(2, "failed to make child process\n"), 1); // not sure what to return or print here, errno is probably it but not sure
+		return (1);
 	else if (pid == 0)
 		child_process(msh, cmd);
 	close_valid_fds(msh->cmdline.pipes, msh->cmdline.cmds_n * 2);
@@ -64,20 +64,19 @@ static	int	exec_pipeline(t_msh *msh)
 {
 	int		i;
 	pid_t	pid;
-	int		ret;
 
 	i = 0;
 	while (i < msh->cmdline.cmds_n)
 	{
 		pid = fork();
 		if (pid == -1)
-			return (ft_dprintf(2, "Failed to make child process\n"), 1); // kill other children // not sure if should return errno
+			return (kill_children(&msh->cmdline, i), 1);
 		else if (pid == 0)
 		{
 			g_context.n = CONT_CHILD_FORK;
-			ret = exec_cmd(msh, &msh->cmdline.cmds[i]); // protect, or maybe dont need if exit already in exec_cmd like right now
-			msh_terminate(msh, ret);
+			msh_terminate(msh, exec_cmd(msh, &msh->cmdline.cmds[i]));
 		}
+		msh->cmdline.pids[i] = pid;
 		++i;
 	}
 	close_valid_fds(msh->cmdline.pipes, msh->cmdline.cmds_n * 2);
@@ -93,7 +92,7 @@ int	exec_cmdline(t_msh *msh)
 
 	g_context.n = CONT_CHILD_WAIT;
 	if (msh->cmdline.cmds_n == 1)
-		ret = exec_cmd(msh, &msh->cmdline.cmds[0]); // return what?
+		ret = exec_cmd(msh, &msh->cmdline.cmds[0]);
 	else
 		ret = exec_pipeline(msh);
 	g_context.n = CONT_PARENT;

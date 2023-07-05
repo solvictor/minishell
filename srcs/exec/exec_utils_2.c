@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 08:54:00 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 14:50:06 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 18:40:36 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,17 @@ void	child_process(t_msh *msh, t_cmd *cmd)
 {
 	g_context.n = CONT_CHILD_FORK;
 	if (redirect_io(&msh->cmdline, cmd) == -1)
-	{
-		ft_dprintf(2, "Failed to redirect io\n");
-		// not sure i can remove that
-			//clear_cmdline(cmdline);
-			//destroy_tokenlist(tokens);
-		msh_terminate(msh, 1); // the fuck do i do here?
-	}
+		msh_terminate(msh, 1);
 	if (execve(cmd->path, cmd->args, msh->cmdline.envp) == -1)
 	{
-		ft_dprintf(STDOUT_FILENO, "minishell: %s: %s\n", cmd->path, strerror(errno));
-			//clear_cmdline(cmdline);
-			//destroy_tokenlist(tokens);
+		ft_dprintf(STDOUT_FILENO, "minishell: %s: %s\n", cmd->path,
+			strerror(errno));
 		msh_terminate(msh, 126);
 	}
 }
 
+// Waits for all the processes created by the pipeline and returns the status of
+// the last one
 int	wait_pipeline(pid_t last_pid, int n_children)
 {
 	int	ret;
@@ -51,4 +46,28 @@ int	wait_pipeline(pid_t last_pid, int n_children)
 		}
 	}
 	return (ret);
+}
+
+// Kills previous children (quietly) in case of failure
+void	kill_children(t_cmdline *cmdline, int i)
+{
+	while (i--)
+	{
+		if (cmdline->pids[i] > 0)
+			kill(cmdline->pids[i], SIGINT);
+	}
+}
+
+// Redirects the builtin input and output
+int	redir_dup(t_cmdline *cmdline, t_cmd *cmd, int fd)
+{
+	int	*redir;
+	int	pipe_i;
+
+	redir = &cmd->redirs[fd == STDOUT_FILENO];
+	pipe_i = cmd->num * 2 + (1 - (fd == STDIN_FILENO) * 3);
+	if (redir[0] != -1)
+		return (dup2(redir[0], fd) == -1);
+	else
+		return (dup2(cmdline->pipes[pipe_i], fd) == -1);
 }

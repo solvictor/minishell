@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_utils.c                                       :+:      :+:    :+:   */
+/*   exec_utils_1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 13:23:21 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 13:03:11 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 19:00:14 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 // 0 otherwise
 int	has_input_redir(t_cmd *cmd)
 {
-	t_tokenlist *cur;
+	t_tokenlist	*cur;
 
 	cur = cmd->start_token;
 	while (cur && cur->type < PIPE)
@@ -32,7 +32,7 @@ int	has_input_redir(t_cmd *cmd)
 // 0 otherwise
 int	has_output_redir(t_cmd *cmd)
 {
-	t_tokenlist *cur;
+	t_tokenlist	*cur;
 
 	cur = cmd->start_token;
 	while (cur && cur->type < PIPE)
@@ -75,21 +75,15 @@ int	redirect_builtin_io(t_cmdline *cmdline, t_cmd *cmd, int io_dup[2])
 	{
 		io_dup[0] = dup(STDIN_FILENO);
 		if (io_dup[0] == -1)
-			return (printf("failed to dup STDIN_FILENO\n"), -1);
-		if (cmd->redirs[0] != -1)
-			error += dup2(cmd->redirs[0], STDIN_FILENO) == -1;
-		else
-			error += dup2(cmdline->pipes[cmd->num * 2 - 2], STDIN_FILENO) == -1;
+			return (-1);
+		error += redir_dup(cmdline, cmd, STDIN_FILENO);
 	}
 	if (cmd->redirs[1] != -1 || cmd->num != cmdline->cmds_n - 1)
 	{
 		io_dup[1] = dup(STDOUT_FILENO);
 		if (io_dup[1] == -1)
-			return (printf("failed to dup STDOUT_FILENO\n"), -1);
-		if (cmd->redirs[1] != -1)
-			error += dup2(cmd->redirs[1], STDOUT_FILENO) == -1;
-		else
-			error += dup2(cmdline->pipes[cmd->num * 2 + 1], STDOUT_FILENO) == -1;
+			return (-1);
+		error += redir_dup(cmdline, cmd, STDOUT_FILENO);
 	}
 	close_valid_fds(cmdline->pipes, cmdline->cmds_n * 2);
 	close_valid_fds(cmdline->redirs, cmdline->cmds_n * 2);
@@ -100,7 +94,7 @@ int	redirect_builtin_io(t_cmdline *cmdline, t_cmd *cmd, int io_dup[2])
 int	unredirect_builtin_io(int io_dup[2])
 {
 	int	error;
-	
+
 	error = 0;
 	if (io_dup[0] != -1)
 		error += dup2(STDIN_FILENO, io_dup[0]) == -1;

@@ -6,12 +6,13 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 21:28:23 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 15:20:47 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 17:00:23 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// Prints the token data or if NULL prints newline
 static void	print_token(t_tokenlist *token)
 {
 	if (token == NULL)
@@ -32,7 +33,7 @@ static void	print_token(t_tokenlist *token)
 		ft_dprintf(STDERR_FILENO, "unkown", token->data);
 }
 
-
+// Prints syntax error message in bash style
 static void	print_syntax_error(t_tokenlist *token)
 {
 	ft_dprintf(STDERR_FILENO,
@@ -53,9 +54,9 @@ int	check_syntax_errors(t_tokenlist *tokens)
 		if (is_redir_token(cur) && !is_str_token(cur->next))
 			break ;
 		if (cur->type == PIPE && (cur == tokens || cur->next == NULL
-				|| (cur->next && cur->next->type == PIPE))) // remove `&&` and all other bonus tokens and treat them as normal text
+				|| (cur->next && cur->next->type == PIPE)))
 			break ;
-		if (cur->type == UNKNOWN) // didn't check if it's even possible for UNKNOWN token to appear here
+		if (cur->type == UNKNOWN)
 			break ;
 		cur = cur->next;
 	}

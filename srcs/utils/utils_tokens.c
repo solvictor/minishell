@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:10:34 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 21:10:36 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 17:06:44 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ int	is_str_token(t_tokenlist *token)
 	return (token->type <= MERGED_STR);
 }
 
-// Removes the redirection tokens gives their property to the next string type // token
+// Removes the redirection tokens gives their property to the next string type
+// token
 void	clean_redir_tokens(t_tokenlist *tokens)
 {
 	t_tokenlist	*cur;

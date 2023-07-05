@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 20:10:06 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 15:45:52 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 17:25:09 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,13 @@ int	parse(t_cmdline *cmdline, t_tokenlist *tokens)
 	cmdline->redirs = malloc(sizeof(int) * (cmdline->cmds_n * 2));
 	if (cmdline->redirs == NULL)
 		return (free(cmdline->cmds), free(cmdline->pipes), -1);
+	cmdline->pids = malloc(sizeof(int) * (cmdline->cmds_n));
+	if (cmdline->pids == NULL)
+		return (free(cmdline->cmds), free(cmdline->pipes),
+			free(cmdline->redirs), -1);
 	set_int_array(cmdline->pipes, -1, cmdline->cmds_n * 2);
 	set_int_array(cmdline->redirs, -1, cmdline->cmds_n * 2);
+	set_int_array(cmdline->pids, -1, cmdline->cmds_n);
 	set_cmds_attributes(cmdline, tokens);
 	cmdline->paths = NULL;
 	cmdline->envp = NULL;

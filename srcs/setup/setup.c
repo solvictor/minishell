@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 06:25:47 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 11:20:33 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 19:03:23 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ static int	setup_env(t_msh *msh, char **envp)
 static int	setup_rng(t_rng *rng)
 {
 	int	fd_urandom;
+
 	fd_urandom = open("/dev/urandom", O_RDONLY);
 	if (fd_urandom == -1)
 		return (-1);
@@ -97,10 +98,10 @@ int	msh_setup(t_msh *msh, int ac, char **envp)
 		return (printf(MSH_ERROR ME_AC), -1);
 	msh_init_vars(msh);
 	if (setup_signals() != 0)
-		return (printf(MSH_ERROR ME_ENV), -1);
+		return (printf(MSH_ERROR ME_SIGNALS), -1);
+	if (setup_rng(&msh->rng) == -1)
+		return (printf(MSH_ERROR ME_RNG), -1);
 	if (setup_env(msh, envp) != 0)
 		return (printf(MSH_ERROR ME_ENV), -1);
-	if (setup_rng(&msh->rng) == -1)
-		return (printf(MSH_ERROR ME_RNG), destroy_env_list(&msh->env), -1);
 	return (0);
 }

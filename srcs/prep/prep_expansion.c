@@ -6,14 +6,13 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 06:39:03 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 19:04:00 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 18:50:16 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//static int	copy_num(int n, char *dst)
-int	copy_num(int n, char *dst)
+static int	copy_num(int n, char *dst)
 {
 	int		len;
 	int		i;

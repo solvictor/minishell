@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 13:13:19 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 19:06:12 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,9 @@
 # include <readline/history.h>
 
 // SETTINGS
-# define MSH_PROMPT			"\001\e[38;2;255;0;255m\002minishell>\001\e[0m\002 " // lame... make it better
-//# define MSH_PROMPT			"\001\e[38;2;184;123;79m\0028\001\e[38;2;252;185;114m\002====\001\e[38;2;201;115;158m\002D\001\e[0m\002 "
+# define MSH_PROMPT			"\001\e[38;2;255;0;255m\002minishell>\001\e[0m\002 "
+//# define MSH_PROMPT			"\001\e[38;2;184;123;79m\0028\001\e[38;2;252;185
+//;114m\002====\001\e[38;2;201;115;158m\002D\001\e[0m\002 "
 # define RNG_MAX			INT_MAX
 # define RNG_BIT_ROTATIONS	13
 # define RNG_ZERO_FIX_SEED	694201337
@@ -42,16 +43,8 @@
 # define ME_SIGNALS		"Failed to bind signals\n"
 # define ME_ENV			"Failed to create minishell environment\n"
 # define ME_RNG			"Failed to random number generator\n"
-# define ME_TOKENIZE	"Failed to tokenize\n"
-# define ME_PARSE		"Failed to parse\n"
-# define ME_PREP		"Failed to prep command line\n"
-# define ME_EXEC		"Failed to execute command line\n"
-# define ME_LOOP		"Minishell input loop exited with -1\n"
-//# define ME_SPLIT_ARGS	"Failed to split command arguments\n"
-//# define ME_EXEC_CMD	"Failed to exec command\n"
-//# define ME_BAD_FORMAT	"Bad format command\n"
 
-typedef struct	s_context	t_context;
+typedef struct s_context	t_context;
 typedef enum e_tokentype	t_tokentype;
 typedef enum e_nodetype		t_nodetype;
 typedef struct s_tokenlist	t_tokenlist;
@@ -73,7 +66,6 @@ enum e_tokentype
 	O_FILE_TRUNC,
 	O_FILE_APPEND,
 	PIPE,
-	//NEWLINE, // added this as a comment because of the "\newline" syntax error context
 	UNKNOWN
 };
 
@@ -106,9 +98,9 @@ struct s_cmdline
 	t_cmd	*cmds;
 	int		*pipes;
 	int		*redirs;
+	int		*pids;
 	char	**paths;
 	char	**envp;
-//	int		ret;
 };
 struct	s_env
 {
@@ -155,6 +147,7 @@ void			set_int_array(int *arr, int val, int size);
 void			close_valid_fds(int	*arr, int size);
 void			unlink_heredocs(t_tokenlist *tokens);
 void			set_context(t_msh *msh);
+void			reset_cmdline(t_cmdline *cmdline);
 // Env
 t_env			*env_new(char *var);
 char			**env_to_arr(t_env *env);
@@ -215,10 +208,12 @@ int				has_input_redir(t_cmd *cmd);
 int				has_output_redir(t_cmd *cmd);
 int				redirect_io(t_cmdline *cmdline, t_cmd *cmd);
 int				redirect_builtin_io(t_cmdline *cmdline, t_cmd *cmd,
-				int io_dup[2]);
+					int io_dup[2]);
 int				unredirect_builtin_io(int io_dup[2]);
 void			child_process(t_msh *msh, t_cmd *cmd);
 int				wait_pipeline(pid_t last_pid, int n_children);
+void			kill_children(t_cmdline *cmdline, int i);
+int				redir_dup(t_cmdline *cmdline, t_cmd *cmd, int fd);
 
 // -------- //
 // BUILTINS //
@@ -234,16 +229,6 @@ int				builtin_env(t_msh *msh, char **args);
 //          //
 // -------- //
 
-// TEST FUNCTIONS ONLY // REMOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOVE LATER
-//void	display_token_type(t_tokenlist *token);
-void	display_tokens(t_tokenlist *begin);
-//void	test_tokenizer(t_msh *msh);
-//void	test_command(t_msh *msh);
-void	display_cmdline(t_cmdline *cmdline);
-//char			**get_paths(t_env *env);
-//int				find_cmd(char **paths, t_cmd *cmd);
-//void			test_pathfinding(t_msh *msh);
-int	test_heredoc(t_msh *msh, char *delimiter);
-int	copy_num(int n, char *dst);
+//int	copy_num(int n, char *dst);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 16:38:05 by vegret            #+#    #+#             */
-/*   Updated: 2023/07/05 16:30:56 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 17:02:53 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,8 @@ int	builtin_export(t_msh *msh, char **args)
 			new = get_env(msh->env, *args, equal - *args);
 		else
 			new = get_env(msh->env, *args, -1);
-		if ((!new || equal) && assign_var(msh, new, *args)) // Malloc fail return value?
-			return (1); // RETURN -1 AAAAAAAAAAAAAAAAAAAAAAAH
-			//return (-1); // RETURN -1 AAAAAAAAAAAAAAAAAAAAAAAH
+		if ((!new || equal) && assign_var(msh, new, *args))
+			return (1);
 	}
 	return (ret);
 }

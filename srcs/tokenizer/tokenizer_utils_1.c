@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:52:41 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 13:02:48 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 16:58:24 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_tokentype	get_metachar_tokentype(const char *input, int *i)
 	else if (input[*i] == '>' && input[*i + 1] == '>')
 		return (((*i) += 2), O_FILE_APPEND);
 	else
-		return (++(*i), UNKNOWN); // what the fuck do i do in this case??
+		return (++(*i), UNKNOWN);
 }
 
 // Stores a quoted string portion of the input into dst

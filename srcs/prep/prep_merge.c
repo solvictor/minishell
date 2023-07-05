@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 05:43:54 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 19:37:35 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 18:51:47 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	merge_str_tokens(t_tokenlist *tokens)
 	cur = tokens;
 	while (cur)
 	{
-		if (is_str_token(cur) && cur->data_opt == 1) // cant be -1 check why this is verified
+		if (is_str_token(cur) && cur->data_opt == 1)
 		{
 			if (merge_token(cur) == -1)
 				return (-1);
@@ -91,7 +91,7 @@ int	merge_heredoc_tokens(t_tokenlist *tokens)
 	cur = tokens;
 	while (cur)
 	{
-		if (cur->type == HEREDOC && cur->next->data_opt == 1) // cant be -1 check why this is verified
+		if (cur->type == HEREDOC && cur->next->data_opt == 1)
 		{
 			if (merge_token(cur->next) == -1)
 				return (-1);

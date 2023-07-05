@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 19:17:20 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 15:43:49 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 17:01:47 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	*get_str_token(const char *input, int *i)
 		return (NULL);
 	else if (ret == -2)
 		return (ft_dprintf(STDERR_FILENO,
-			"minishell: syntax error: unmatch quotation\n"), NULL);
+				"minishell: syntax error: unmatch quotation\n"), NULL);
 	*i += ret;
 	return (tmp);
 }

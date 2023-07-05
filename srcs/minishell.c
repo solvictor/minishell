@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:00:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 16:19:51 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 16:46:19 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	main(int ac, char **av, char **envp)
 	errno = 0;
 	set_context(&msh);
 	if (msh_setup(&msh, ac, envp) == -1)
-		return (1); // check if anything is allocated
+		return (1);
 	msh_loop(&msh);
 	msh_terminate(&msh, msh.ret);
 }
@@ -68,5 +68,5 @@ int	process_input(t_msh *msh, char *input)
 			destroy_tokenlist(&msh->tokens), 1);
 	ret = exec_cmdline(msh);
 	return (clear_cmdline(&msh->cmdline), unlink_heredocs(msh->tokens),
-		destroy_tokenlist(&msh->tokens), ret); // free(pip.cmds) replace with destroy_pipeline(&pip) later when necessary
+		destroy_tokenlist(&msh->tokens), ret);
 }

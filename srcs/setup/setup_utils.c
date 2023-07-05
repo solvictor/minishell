@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 23:37:49 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 11:17:16 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 17:05:22 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,10 @@ void	handler(int sig)
 {
 	if (sig != SIGINT)
 		return ;
-	g_context.msh->ret = 130; // not sure i should leave that here,
-							  // probably should be done with stat_lock on
-							  // wait and waitpid but not sure
+	g_context.msh->ret = 130;
 	if (g_context.n == CONT_PARENT || g_context.n == CONT_CHILD_WAIT)
 	{
-		printf("\n"); // casse au tt debut de minishell jsp pk
+		printf("\n");
 		rl_on_new_line();
 		if (g_context.n == CONT_PARENT)
 		{

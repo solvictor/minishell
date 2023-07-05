@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 09:56:54 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 16:40:50 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 18:52:15 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ char	*set_heredoc_name(char *filename, long rand)
 	int				offset;
 	int				i;
 	unsigned int	urand;
-
 
 	urand = rand;
 	offset = 12;
@@ -46,8 +45,8 @@ static	int	heredoc_loop(t_msh *msh, const char *limiter, int fd)
 		line = readline("> ");
 		if (line == NULL)
 			return (ft_dprintf(STDERR_FILENO,
-				"minishell: warning: here-document at line %d delimited \
-by end-of-file (wanted `%s')\n", count, limiter), 0);
+					"minishell: warning: here-document at line %d delimited \
+					by end-of-file (wanted `%s')\n", count, limiter), 0);
 		if (ft_strncmp(line, limiter, size_limiter) == 0)
 			return (free(line), 0);
 		if (expand_str(msh, &line) == -1)
@@ -94,7 +93,7 @@ static int	make_heredoc(t_msh *msh, t_tokenlist *token)
 		}
 		msh_terminate(msh, EXIT_SUCCESS);
 	}
-	wait(&stat_loc); // ret??? need to protect for good error return
+	wait(&stat_loc);
 	if (!WIFEXITED(stat_loc))
 		return (-1);
 	return (0);

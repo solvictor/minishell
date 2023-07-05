@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 04:16:08 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 15:51:50 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 18:45:03 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static int	find_cmd(t_cmd *cmd, char **paths)
 	int		i;
 	char	*tmp;
 
-	if (ft_strchr(cmd->args[0], '/')) // TEST LOCAL EXEC PATH WONT CRASH
+	if (ft_strchr(cmd->args[0], '/'))
 		return ((cmd->path = cmd->args[0]), 0);
 	if (get_builtin(cmd))
 		return (0);

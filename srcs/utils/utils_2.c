@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:28:05 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/04 20:33:21 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/05 18:34:41 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ unsigned int	randuint_rng(t_rng *rng)
 // Loops through the token list to find HEREDOC tokens and unlinks them
 void	unlink_heredocs(t_tokenlist *tokens)
 {
-	t_tokenlist *cur;
+	t_tokenlist	*cur;
 	static char	heredoc_name[] = ".msh_heredoc_0000000000\0";
 
 	cur = tokens;
@@ -55,9 +55,22 @@ void	unlink_heredocs(t_tokenlist *tokens)
 	}
 }
 
+// Init function for global variable
 void	set_context(t_msh *msh)
 {
 	g_context.msh = msh;
 	g_context.n = CONT_PARENT;
 	g_context.heredoc_fd = -1;
+}
+
+// Sets cmdline attributes to their default values
+void	reset_cmdline(t_cmdline *cmdline)
+{
+	cmdline->cmds_n = 0;
+	cmdline->cmds = NULL;
+	cmdline->pipes = NULL;
+	cmdline->redirs = NULL;
+	cmdline->pids = NULL;
+	cmdline->paths = NULL;
+	cmdline->envp = NULL;
 }
