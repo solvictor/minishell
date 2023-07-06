@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 19:05:35 by vegret            #+#    #+#             */
-/*   Updated: 2023/07/03 13:27:20 by vegret           ###   ########.fr       */
+/*   Updated: 2023/07/06 16:32:19 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ static void	unset(t_msh *msh, t_env *target)
 	else
 	{
 		target->prev->next = target->next;
-		target->next->prev = target->prev;
+		if (target->next)
+			target->next->prev = target->prev;
 	}
 	free(target->var);
 	free(target);
