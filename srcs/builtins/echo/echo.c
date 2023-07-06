@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 23:05:14 by vegret            #+#    #+#             */
-/*   Updated: 2023/07/05 16:27:05 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/06 11:18:00 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	print_args(char **args, bool newline, int i)
 {
 	while (args[i])
 	{
-		if (printf("%s", args[i++]) < 0)
+		if (ft_printf("%s", args[i++]) < 0)
 			return (1);
 		if (args[i] != NULL)
 		{
