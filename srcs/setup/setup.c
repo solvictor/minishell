@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 06:25:47 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 19:03:23 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/06 18:06:39 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,7 @@ static void	msh_init_vars(t_msh *msh)
 {
 	msh->env = NULL;
 	msh->tokens = NULL;
-	msh->cmdline.cmds_n = 0;
-	msh->cmdline.cmds = NULL;
-	msh->cmdline.pipes = NULL;
-	msh->cmdline.paths = NULL;
-	msh->cmdline.envp = NULL;
+	reset_cmdline(&msh->cmdline);
 	msh->exit = 0;
 	msh->ret = EXIT_SUCCESS;
 	msh->rng.rand = 0;
@@ -41,7 +37,7 @@ static int	setup_signals(void)
 		return (-1);
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 		return (-1);
-	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR) // modify this so it's ignored
 		return (-1);
 	return (0);
 }

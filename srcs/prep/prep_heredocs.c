@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 09:56:54 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 18:52:15 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/06 17:22:47 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static	int	heredoc_loop(t_msh *msh, const char *limiter, int fd)
 		if (line == NULL)
 			return (ft_dprintf(STDERR_FILENO,
 					"minishell: warning: here-document at line %d delimited \
-					by end-of-file (wanted `%s')\n", count, limiter), 0);
+by end-of-file (wanted `%s')\n", count, limiter), 0);
 		if (ft_strncmp(line, limiter, size_limiter) == 0)
 			return (free(line), 0);
 		if (expand_str(msh, &line) == -1)
