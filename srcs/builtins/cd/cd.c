@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 10:37:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/08 15:24:25 by vegret           ###   ########.fr       */
+/*   Updated: 2023/07/08 15:30:41 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ static int	update_env(t_env *env, char *cwd)
 	}
 	if (pwd)
 	{
-		if (!cwd)
-			return (1);
 		free(pwd->var);
 		pwd->var = ft_strjoin("PWD=", cwd);
 		free(cwd);
