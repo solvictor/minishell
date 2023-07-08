@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setup_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 23:37:49 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 17:05:22 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/08 16:45:27 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void	handler(int sig)
 	if (sig != SIGINT)
 		return ;
 	g_context.msh->ret = 130;
-	if (g_context.n == CONT_PARENT || g_context.n == CONT_CHILD_WAIT)
+	//if (g_context.n == CONT_PARENT || g_context.n == CONT_CHILD_WAIT)
+	if (g_context.n == CONT_PARENT)
 	{
 		printf("\n");
 		rl_on_new_line();
@@ -50,4 +51,22 @@ void	handler(int sig)
 	}
 	else if (g_context.n == CONT_HEREDOC)
 		msh_terminate(g_context.msh, 130);
+}
+
+int	set_pwd(t_msh *msh)
+{
+	char	*cwd;
+	char	*var;
+	int		ret;
+
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+		return (1);
+	var = ft_strjoin("PWD=", cwd);
+	if (!var)
+		return (free(cwd), 1);
+	ret = builtin_export(msh, (char *[]){"export", var, NULL});
+	free(cwd);
+	free(var);
+	return (ret);
 }

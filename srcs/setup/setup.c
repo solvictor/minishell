@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 06:25:47 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/06 18:06:39 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/08 16:28:45 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	setup_signals(void)
 
 // Converts the envp from main to a linked list of t_env structs
 // Returns 0 on success, -1 otherwise
-static int	setup_env(t_msh *msh, char **envp)
+int	setup_env(t_msh *msh, char **envp)
 {
 	int		i;
 	t_env	**curr;
@@ -63,7 +63,7 @@ static int	setup_env(t_msh *msh, char **envp)
 		curr = &(*curr)->next;
 		++i;
 	}
-	return (0);
+	return (set_pwd(msh));
 }
 
 // Opens /dev/urandom to generate pseudo-random numbers for the heredoc naming

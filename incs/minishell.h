@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 19:08:53 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/08 16:30:06 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,7 @@ void			unlink_heredocs(t_tokenlist *tokens);
 void			set_context(t_msh *msh);
 void			reset_cmdline(t_cmdline *cmdline);
 // Env
+int				set_pwd(t_msh *msh);
 t_env			*env_new(char *var);
 char			**env_to_arr(t_env *env);
 void			destroy_env_list(t_env **env);

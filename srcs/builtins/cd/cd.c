@@ -6,38 +6,29 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 10:37:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/08 15:30:41 by vegret           ###   ########.fr       */
+/*   Updated: 2023/07/08 16:51:31 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	update_env(t_env *env, char *cwd)
+static int	set_oldpwd(t_msh *msh)
 {
-	t_env	*pwd;
-	t_env	*oldpwd;
+	int		ret;
+	char	*var;
+	char	*pwd;
 
-	pwd = get_env(env, "PWD", 3);
-	oldpwd = get_env(env, "OLDPWD", 6);
-	if (oldpwd)
-	{
-		free(oldpwd->var);
-		if (pwd)
-			oldpwd->var = ft_strjoin("OLDPWD=", pwd->var + 4);
-		else
-			oldpwd->var = ft_strdup("\0");
-		if (!oldpwd->var)
-			return (1);
-	}
-	if (pwd)
-	{
-		free(pwd->var);
-		pwd->var = ft_strjoin("PWD=", cwd);
-		free(cwd);
-		if (!pwd->var)
-			return (1);
-	}
-	return (0);
+	pwd = get_env_val(msh->env, "PWD");
+	if (pwd && *pwd)
+		var = ft_strjoin("OLDPWD=", pwd);
+	else
+		var = "OLDPWD=";
+	if (!var)
+		return (1);
+	ret = builtin_export(msh, (char *[]){"export", var, NULL});
+	if (pwd && *pwd)
+		free(var);
+	return (ret);
 }
 
 static char	*get_path(t_env *env, char *arg, bool go_oldpwd)
@@ -62,7 +53,6 @@ static char	*get_path(t_env *env, char *arg, bool go_oldpwd)
 	return (arg);
 }
 
-// TODO Test env modif
 int	builtin_cd(t_msh *msh, char **args)
 {
 	char	*path;
@@ -83,7 +73,7 @@ int	builtin_cd(t_msh *msh, char **args)
 			strerror(errno));
 		return (1);
 	}
-	if (update_env(msh->env, getcwd(NULL, 0)))
+	if (set_oldpwd(msh) || set_pwd(msh))
 		return (1);
 	if (go_oldpwd)
 		return (builtin_pwd(msh, args));
