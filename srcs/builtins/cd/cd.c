@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 10:37:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/08 16:51:31 by vegret           ###   ########.fr       */
+/*   Updated: 2023/07/10 00:22:39 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,14 @@ int	builtin_cd(t_msh *msh, char **args)
 	if (!path)
 		return (1);
 	if (chdir(path) != 0)
-	{
-		ft_dprintf(STDERR_FILENO, "minishell: cd %s: %s\n", path,
-			strerror(errno));
-		return (1);
-	}
+		return (ft_dprintf(STDERR_FILENO, "minishell: cd %s: %s\n", path,
+				strerror(errno)), 1);
+	path = get_env_val(msh->env, "OLDPWD");
 	if (set_oldpwd(msh) || set_pwd(msh))
 		return (1);
 	if (go_oldpwd)
-		return (builtin_pwd(msh, args));
+		if (ft_printf("%s\n", path) < 0)
+			return (ft_dprintf(STDERR_FILENO,
+					"minishell: cd: write error: %s\n", strerror(errno)), 1);
 	return (0);
 }

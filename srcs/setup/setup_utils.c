@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/16 23:37:49 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/08 16:45:27 by vegret           ###   ########.fr       */
+/*   Updated: 2023/07/09 14:43:35 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ void	handler(int sig)
 
 int	set_pwd(t_msh *msh)
 {
+	int		ret;
 	char	*cwd;
 	char	*var;
-	int		ret;
 
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
