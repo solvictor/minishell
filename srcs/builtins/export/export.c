@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 16:38:05 by vegret            #+#    #+#             */
-/*   Updated: 2023/07/05 17:02:53 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/10 23:46:55 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ static int	assign_var(t_msh *msh, t_env *new, char *var)
 	if (!new)
 		return (1);
 	new->next = msh->env;
+	msh->env->prev = new;
 	msh->env = new;
 	return (0);
 }
