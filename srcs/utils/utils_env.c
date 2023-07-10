@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 13:39:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/30 21:51:24 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/10 22:45:25 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	destroy_env_list(t_env **env)
 	}
 }
 
+// Converts the environment to a string array
+// Return a pointer to the array or NULL otherwise
 char	**env_to_arr(t_env *env)
 {
 	char	**envarr;
@@ -69,6 +71,8 @@ char	**env_to_arr(t_env *env)
 	return (envarr);
 }
 
+// Returns a pointer to the environment variable or NULL if the variable
+// doesn't exist
 t_env	*get_env(t_env *env, char *key, int len_key)
 {
 	if (!env || !key)
@@ -85,6 +89,8 @@ t_env	*get_env(t_env *env, char *key, int len_key)
 	return (NULL);
 }
 
+// Returns the value of an environment variable without allocating or NULL if
+// the variable doesn't exist
 char	*get_env_val(t_env *env, char *key)
 {
 	int	len_key;
@@ -103,4 +109,23 @@ char	*get_env_val(t_env *env, char *key)
 		env = env->next;
 	}
 	return (NULL);
+}
+
+// Refreshed the PWD environment variable
+int	set_pwd(t_msh *msh)
+{
+	int		ret;
+	char	*cwd;
+	char	*var;
+
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+		return (1);
+	var = ft_strjoin("PWD=", cwd);
+	if (!var)
+		return (free(cwd), 1);
+	ret = builtin_export(msh, (char *[]){"export", var, NULL});
+	free(cwd);
+	free(var);
+	return (ret);
 }
