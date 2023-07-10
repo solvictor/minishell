@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prep_merge.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 05:43:54 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 22:21:52 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/10 20:21:20 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	merge_str_tokens(t_tokenlist *tokens)
 				return (-1);
 			discard_merge_rest(cur);
 			cur->type = MERGED_STR;
-			cur->next->data_opt = 0;
+			cur->data_opt = 0;
 		}
 		cur = cur->next;
 	}

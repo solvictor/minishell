@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 10:37:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/10 00:22:39 by vegret           ###   ########.fr       */
+/*   Updated: 2023/07/10 21:57:12 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,8 @@ int	builtin_cd(t_msh *msh, char **args)
 	bool	go_oldpwd;
 
 	if (args[1] && args[2])
-	{
-		ft_dprintf(STDERR_FILENO, "minishell: cd: too many arguments\n");
-		return (1);
-	}
+		return (ft_dprintf(STDERR_FILENO,
+					"minishell: cd: too many arguments\n"), 1);
 	go_oldpwd = args[1] && ft_strncmp(args[1], "-\0", 2) == 0;
 	path = get_path(msh->env, args[1], go_oldpwd);
 	if (!path)

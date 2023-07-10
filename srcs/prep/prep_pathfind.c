@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prep_pathfind.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 04:16:08 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 18:45:03 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/10 20:16:02 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 // Uses the PATH variable from the env to crate a str array of executable
 // locations for pathfinding
-char	**get_paths(t_env *env)
+char	**get_paths(t_env *env, char *key)
 {
 	char	**tmp;
 	char	*path_value;
 
-	path_value = get_env_val(env, "PATH");
+	path_value = get_env_val(env, key);
 	if (path_value == NULL)
 	{
 		tmp = malloc(sizeof(char *));
@@ -39,7 +39,7 @@ char	**get_paths(t_env *env)
 // Allocates a string to concatenate the command name to the directories of PATH
 // for existence check with access
 // Returns a pointer to the newly allocated string or NULL otherwise
-static char	*concat_cmd_path(char *path, char *name)
+char	*concat_path(char *path, char *name)
 {
 	char	*tmp;
 	int		len_path;
@@ -96,7 +96,7 @@ static int	find_cmd(t_cmd *cmd, char **paths)
 	i = 0;
 	while (paths[i])
 	{
-		tmp = concat_cmd_path(paths[i], cmd->args[0]);
+		tmp = concat_path(paths[i], cmd->args[0]);
 		if (tmp == NULL)
 			return (-1);
 		if (access(tmp, F_OK) == 0)

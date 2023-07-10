@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prep.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/01 12:02:53 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 18:46:44 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/10 19:38:27 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	prep_cmdline(t_msh *msh, t_cmdline *cmdline, t_tokenlist *tokens)
 	cmdline->envp = env_to_arr(msh->env);
 	if (cmdline->envp == NULL)
 		return (-1);
-	cmdline->paths = get_paths(msh->env);
+	cmdline->paths = get_paths(msh->env, "PATH");
 	if (cmdline->paths == NULL)
 		return (-1);
 	if (merge_heredoc_tokens(tokens) == -1)
