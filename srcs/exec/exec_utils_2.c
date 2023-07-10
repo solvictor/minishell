@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 08:54:00 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 18:40:36 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/10 18:30:31 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,10 @@ extern t_context	g_context;
 
 void	child_process(t_msh *msh, t_cmd *cmd)
 {
-	g_context.n = CONT_CHILD_FORK;
+	g_context.cur = CONT_CHILD_FORK;
 	if (redirect_io(&msh->cmdline, cmd) == -1)
 		msh_terminate(msh, 1);
+	reset_signals();
 	if (execve(cmd->path, cmd->args, msh->cmdline.envp) == -1)
 	{
 		ft_dprintf(STDOUT_FILENO, "minishell: %s: %s\n", cmd->path,
@@ -36,15 +37,8 @@ int	wait_pipeline(pid_t last_pid, int n_children)
 
 	ret = 0;
 	while (n_children--)
-	{
 		if (wait(&stat_loc) == last_pid)
-		{
-			if (!WIFEXITED(stat_loc))
-				ret = stat_loc;
-			else
-				ret = WEXITSTATUS(stat_loc);
-		}
-	}
+			ret = get_exit_status(stat_loc);
 	return (ret);
 }
 
@@ -70,4 +64,13 @@ int	redir_dup(t_cmdline *cmdline, t_cmd *cmd, int fd)
 		return (dup2(redir[0], fd) == -1);
 	else
 		return (dup2(cmdline->pipes[pipe_i], fd) == -1);
+}
+
+// Returns the correct exit status of a child
+int	get_exit_status(int stat_loc)
+{
+	if (WIFEXITED(stat_loc))
+		return (WEXITSTATUS(stat_loc));
+	else
+		return (128 + WTERMSIG(stat_loc));
 }

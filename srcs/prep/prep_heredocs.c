@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 09:56:54 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/06 17:22:47 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/10 22:20:39 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,31 +83,34 @@ static int	make_heredoc(t_msh *msh, t_tokenlist *token)
 	set_heredoc_name(name, token->data_opt = randuint_rng(&msh->rng));
 	pid = fork();
 	if (pid == -1)
-		return (-1);
+		return (2);
 	else if (pid == 0)
 	{
-		g_context.n = CONT_HEREDOC;
+		g_context.cur = CONT_HEREDOC;
 		if (read_heredoc(msh, name, token->data) == -1)
-		{
 			msh_terminate(msh, EXIT_FAILURE);
-		}
 		msh_terminate(msh, EXIT_SUCCESS);
 	}
 	wait(&stat_loc);
-	if (!WIFEXITED(stat_loc))
-		return (-1);
-	return (0);
+	return (get_exit_status(stat_loc));
 }
 
 int	do_heredocs(t_msh *msh)
 {
 	t_tokenlist	*cur;
+	int			ret;
 
 	cur = msh->tokens;
 	while (cur)
 	{
-		if (cur->type == HEREDOC && make_heredoc(msh, cur) == -1)
-			return (unlink_heredocs(msh->tokens), -1);
+		if (cur->type == HEREDOC)
+		{
+			g_context.cur = CONT_PARENT_WAIT;
+			ret = make_heredoc(msh, cur);
+			g_context.cur = CONT_PARENT;
+			if (ret != 0)
+				return (unlink_heredocs(msh->tokens), ret);
+		}
 		cur = cur->next;
 	}
 	return (0);

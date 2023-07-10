@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:00:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 16:46:19 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/10 22:03:33 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,11 @@ void	msh_loop(t_msh *msh)
 
 	while (!msh->exit)
 	{
-		if (isatty(0))
-			input = readline(MSH_PROMPT);
-		else
-			input = readline(NULL);
+		//if (isatty(STDIN_FILENO))
+		//	input = readline(MSH_PROMPT);
+		//else
+		//	input = readline(NULL);
+		input = readline(MSH_PROMPT);
 		if (input == NULL)
 			return ((void)builtin_exit(msh, (char *[]){"exit\0", NULL}));
 		if (input[0])
@@ -59,13 +60,13 @@ int	process_input(t_msh *msh, char *input)
 
 	ret = tokenize(input, &msh->tokens);
 	if (ret == -1)
-		return (1);
+		return (2);
 	if (parse(&msh->cmdline, msh->tokens) == -1)
-		return (destroy_tokenlist(&msh->tokens), 1);
+		return (destroy_tokenlist(&msh->tokens), 2);
 	ret = prep_cmdline(msh, &msh->cmdline, msh->tokens);
-	if (ret == -1)
+	if (ret != 0)
 		return (clear_cmdline(&msh->cmdline),
-			destroy_tokenlist(&msh->tokens), 1);
+			destroy_tokenlist(&msh->tokens), ret);
 	ret = exec_cmdline(msh);
 	return (clear_cmdline(&msh->cmdline), unlink_heredocs(msh->tokens),
 		destroy_tokenlist(&msh->tokens), ret);

@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 06:26:22 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 17:32:02 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/08 17:24:20 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ void	msh_terminate(t_msh *msh, int exit_code)
 {
 	rl_clear_history();
 	destroy_env_list(&msh->env);
-	if (g_context.n > CONT_PARENT)
+	if (g_context.cur > CONT_PARENT)
 	{
 		destroy_tokenlist(&msh->tokens);
 		clear_cmdline(&msh->cmdline);
 	}
-	if (g_context.n == CONT_HEREDOC)
+	if (g_context.cur == CONT_HEREDOC)
 	{
 		if (g_context.heredoc_fd != -1)
 			close(g_context.heredoc_fd);

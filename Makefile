@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/06/23 08:28:27 by nlegrand          #+#    #+#              #
-#    Updated: 2023/07/08 16:29:37 by vegret           ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 # Project structure
 NAME	=	minishell
 INCDIR	=	incs
@@ -40,6 +28,7 @@ SRCS	:=	minishell.c \
 			setup/setup_utils.c \
 			utils/utils_1.c \
 			utils/utils_2.c \
+			utils/utils_signals.c \
 			utils/utils_env.c \
 			utils/utils_tokens.c \
 			tokenizer/tokenizer.c \
@@ -64,7 +53,8 @@ SRCS	:=	minishell.c \
 			builtins/echo/echo.c \
 			builtins/export/export.c \
 			builtins/unset/unset.c \
-			builtins/env/env.c 
+			builtins/env/env.c \
+			test_code/display_utils.c
 OBJS	:=	$(SRCS:.c=.o)
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRCS))
 OBJS	:=	$(addprefix $(OBJDIR)/, $(OBJS))
@@ -99,6 +89,7 @@ $(OBJDIR):
 	mkdir -p $(OBJDIR)/parser
 	mkdir -p $(OBJDIR)/exec
 	mkdir -p $(OBJDIR)/prep
+	mkdir -p $(OBJDIR)/test_code
 
 clean:
 	make clean -C $(LIBDIR)/$(LIBFT)

@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 02:35:57 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 18:59:14 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/10 21:47:36 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	exec_cmd(t_msh *msh, t_cmd *cmd)
 		return (0);
 	if ((has_input_redir(cmd) && cmd->redirs[0] == -1)
 		|| (has_output_redir(cmd) && cmd->redirs[1] == -1))
-		return (1);
+		return (2);
 	if (cmd->builtin)
 		return (exec_builtin(msh, cmd));
 	if (cmd->path == NULL)
@@ -49,15 +49,18 @@ static int	exec_cmd(t_msh *msh, t_cmd *cmd)
 				cmd->args[0]), 127);
 	pid = fork();
 	if (pid == -1)
-		return (1);
+		return (2);
 	else if (pid == 0)
 		child_process(msh, cmd);
 	close_valid_fds(msh->cmdline.pipes, msh->cmdline.cmds_n * 2);
 	close_valid_fds(msh->cmdline.redirs, msh->cmdline.cmds_n * 2);
-	wait(&stat_loc);
-	if (!WIFEXITED(stat_loc))
-		return (stat_loc);
-	return (WEXITSTATUS(stat_loc));
+	waitpid(pid, &stat_loc, 0);
+	if (cmd->num == msh->cmdline.cmds_n - 1 && WIFSIGNALED(stat_loc))
+	{
+		printf("\n");
+		rl_on_new_line();
+	}
+	return (get_exit_status(stat_loc));
 }
 
 static	int	exec_pipeline(t_msh *msh)
@@ -73,7 +76,7 @@ static	int	exec_pipeline(t_msh *msh)
 			return (kill_children(&msh->cmdline, i), 1);
 		else if (pid == 0)
 		{
-			g_context.n = CONT_CHILD_FORK;
+			g_context.cur = CONT_CHILD_FORK;
 			msh_terminate(msh, exec_cmd(msh, &msh->cmdline.cmds[i]));
 		}
 		msh->cmdline.pids[i] = pid;
@@ -90,11 +93,11 @@ int	exec_cmdline(t_msh *msh)
 {
 	int	ret;
 
-	g_context.n = CONT_CHILD_WAIT;
+	g_context.cur = CONT_PARENT_WAIT;
 	if (msh->cmdline.cmds_n == 1)
 		ret = exec_cmd(msh, &msh->cmdline.cmds[0]);
 	else
 		ret = exec_pipeline(msh);
-	g_context.n = CONT_PARENT;
+	g_context.cur = CONT_PARENT;
 	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 16:28:05 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 18:34:41 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/08 17:24:20 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	unlink_heredocs(t_tokenlist *tokens)
 	while (cur)
 	{
 		if (cur->type == HEREDOC && cur->data_opt != -1
-			&& g_context.n == CONT_PARENT)
+			&& g_context.cur == CONT_PARENT)
 			unlink(set_heredoc_name(heredoc_name, cur->data_opt));
 		cur = cur->next;
 	}
@@ -59,7 +59,7 @@ void	unlink_heredocs(t_tokenlist *tokens)
 void	set_context(t_msh *msh)
 {
 	g_context.msh = msh;
-	g_context.n = CONT_PARENT;
+	g_context.cur = CONT_PARENT;
 	g_context.heredoc_fd = -1;
 }
 

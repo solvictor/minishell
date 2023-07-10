@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/10 20:15:59 by vegret           ###   ########.fr       */
+/*   Updated: 2023/07/10 22:27:30 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define RNG_ZERO_FIX_SEED	694201337
 # define HEREDOC_LEN		24
 # define CONT_PARENT		0
-# define CONT_CHILD_WAIT	1
+# define CONT_PARENT_WAIT	1
 # define CONT_CHILD_FORK	2
 # define CONT_HEREDOC		3
 
@@ -71,7 +71,7 @@ enum e_tokentype
 
 struct s_context
 {
-	int		n;
+	int		cur;
 	t_msh	*msh;
 	int		heredoc_fd;
 };
@@ -134,7 +134,6 @@ int				process_input(t_msh *msh, char *input);
 int				msh_setup(t_msh	*msh, int ac, char **envp);
 unsigned int	get_randint(int fd_urandom);
 unsigned int	randuint_rng(t_rng *rng);
-void			handler(int sig);
 
 // ----- //
 // UTILS //
@@ -148,6 +147,9 @@ void			close_valid_fds(int	*arr, int size);
 void			unlink_heredocs(t_tokenlist *tokens);
 void			set_context(t_msh *msh);
 void			reset_cmdline(t_cmdline *cmdline);
+// Signals
+void			reset_signals(void);
+void			handler_sigint(int sig);
 // Env
 int				set_pwd(t_msh *msh);
 t_env			*env_new(char *var);
@@ -216,6 +218,7 @@ void			child_process(t_msh *msh, t_cmd *cmd);
 int				wait_pipeline(pid_t last_pid, int n_children);
 void			kill_children(t_cmdline *cmdline, int i);
 int				redir_dup(t_cmdline *cmdline, t_cmd *cmd, int fd);
+int				get_exit_status(int stat_loc);
 
 // -------- //
 // BUILTINS //
@@ -227,5 +230,11 @@ int				builtin_echo(t_msh *msh, char **args);
 int				builtin_export(t_msh *msh, char **args);
 int				builtin_unset(t_msh *msh, char **args);
 int				builtin_env(t_msh *msh, char **args);
+
+
+// TESTS REMOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOVE LATER
+
+void	display_tokens(t_tokenlist *tokens);
+void	display_cmdline(t_cmdline *cmdline);
 
 #endif

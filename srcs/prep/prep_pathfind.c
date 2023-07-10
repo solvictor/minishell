@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 04:16:08 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/10 20:16:02 by vegret           ###   ########.fr       */
+/*   Updated: 2023/07/10 22:30:06 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,9 @@ char	**get_paths(t_env *env, char *key)
 char	*concat_path(char *path, char *name)
 {
 	char	*tmp;
-	int		len_path;
+	const int	len_path = ft_strlen(path);
 	int		len;
 
-	len_path = ft_strlen(path);
 	len = len_path + ft_strlen(name) + 1;
 	tmp = malloc(sizeof(char) * (len + 1));
 	if (tmp == NULL)
