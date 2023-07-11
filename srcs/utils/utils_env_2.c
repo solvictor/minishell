@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 01:34:42 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/11 13:37:25 by vegret           ###   ########.fr       */
+/*   Updated: 2023/07/11 14:45:11 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,15 @@ void	set_pwds(t_msh *msh)
 	free(var);
 }
 
-bool	is_valid_identifier(char *str)
+int	is_valid_identifier(char *str)
 {
 	if (!*str || *str == '=' || ft_isdigit(*str))
-		return (false);
+		return (0);
 	while (*str && *str != '=')
 	{
 		if (*str != '_' && !ft_isalnum(*str))
-			return (false);
+			return (0);
 		str++;
 	}
-	return (true);
+	return (1);
 }

@@ -6,25 +6,25 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 23:05:14 by vegret            #+#    #+#             */
-/*   Updated: 2023/07/06 11:18:00 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/11 14:44:51 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static bool	is_flag_n(char *s)
+static int	is_flag_n(char *s)
 {
 	if (s == NULL || *s++ != '-')
-		return (false);
+		return (0);
 	if (*s == '\0')
-		return (false);
+		return (0);
 	while (*s)
 		if (*s++ != 'n')
-			return (false);
-	return (true);
+			return (0);
+	return (1);
 }
 
-static int	print_args(char **args, bool newline, int i)
+static int	print_args(char **args, int newline, int i)
 {
 	while (args[i])
 	{
