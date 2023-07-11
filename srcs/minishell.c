@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:00:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/11 03:04:41 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/11 19:10:37 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,30 +17,55 @@ t_context	g_context;
 // Redirects the input and output in case for interactive and non-interactive
 // modes
 // Returns 0 on success and -1 otherwise
+//static int	get_input(char **input)
+//{
+//	int	fd;
+//
+//	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
+//		return ((*input = readline(MSH_PROMPT)), 0);
+//	if (!isatty(STDOUT_FILENO))
+//	{
+//		fd = dup(STDOUT_FILENO);
+//		if (fd == -1)
+//			return (-1);
+//		if (dup2(STDERR_FILENO, STDOUT_FILENO) == -1)
+//			return (close(fd), -1);
+//		*input = readline(MSH_PROMPT);
+//		if (dup2(fd, STDOUT_FILENO) == -1)
+//			return (close(fd), -1);
+//		return (close(fd), 0);
+//	}
+//	fd = dup(STDOUT_FILENO);
+//	if (fd == -1)
+//		return (-1);
+//	close(STDOUT_FILENO);
+//	*input = readline(NULL);
+//	if (dup2(fd, STDOUT_FILENO) == -1)
+//		return (close(fd), -1);
+//	return (close(fd), 0);
+//}
 static int	get_input(char **input)
 {
-	int	fd;
+	int	fds[2];
+
+	fds[1] = dup(STDERR_FILENO);
+	if (fds[1] == -1)
+		return (-1);
 
 	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
 		return ((*input = readline(MSH_PROMPT)), 0);
-	if (!isatty(STDOUT_FILENO))
-	{
-		fd = dup(STDOUT_FILENO);
-		if (fd == -1)
-			return (-1);
-		if (dup2(STDERR_FILENO, STDOUT_FILENO) == -1)
-			return (close(fd), -1);
+	if (isatty(STDIN_FILENO))
 		*input = readline(MSH_PROMPT);
-		if (dup2(fd, STDOUT_FILENO) == -1)
-			return (close(fd), -1);
-		return (close(fd), 0);
+	else
+	{
+		fd = dup(STDOUT_FILENO); // protect 
+		close(STDOUT_FILENO); // protect 
+		*input = readline(NULL);
+		dup2(fd, STDOUT_FILENO); // protect
+		close(fd);
 	}
-	fd = dup(STDOUT_FILENO);
-	if (fd == -1)
-		return (-1);
-	close(STDOUT_FILENO);
-	*input = readline(NULL);
-	if (dup2(fd, STDOUT_FILENO) == -1)
+	
+	if (dup2(fd, STDERR_FILENO) == -1)
 		return (close(fd), -1);
 	return (close(fd), 0);
 }
