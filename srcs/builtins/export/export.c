@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 16:38:05 by vegret            #+#    #+#             */
-/*   Updated: 2023/07/11 13:37:16 by vegret           ###   ########.fr       */
+/*   Updated: 2023/07/11 20:27:04 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,11 @@ static int	print_env(t_env	*env)
 		if (equal)
 		{
 			*equal = '\0';
-			ret = printf("export %s=\"%s\"\n", env->var, equal + 1);
+			ret = ft_printf("export %s=\"%s\"\n", env->var, equal + 1);
 			*equal = '=';
 		}
 		else
-			ret = printf("export %s\n", env->var);
+			ret = ft_printf("export %s\n", env->var);
 		if (ret < 0)
 		{
 			ft_dprintf(STDERR_FILENO, "minishell: export: write error: %s\n",

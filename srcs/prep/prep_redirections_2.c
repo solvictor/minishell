@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 11:31:12 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 18:52:39 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/11 21:58:05 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,9 @@ int	do_redir_output(t_cmd *cmd, t_tokenlist *token)
 {
 	close_valid_fds(&cmd->redirs[1], 1);
 	if (token->type == O_FILE_TRUNC)
-		cmd->redirs[1] = open(token->data, O_CREAT | O_TRUNC | O_WRONLY,
-				0644);
+		cmd->redirs[1] = open(token->data, O_CREAT | O_TRUNC | O_WRONLY, 0644);
 	else
-		cmd->redirs[1] = open(token->data, O_CREAT | O_APPEND | O_WRONLY,
-				0644);
+		cmd->redirs[1] = open(token->data, O_CREAT | O_APPEND | O_WRONLY, 0644);
 	if (cmd->redirs[1] == -1)
 		return (ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n",
 				token->data, strerror(errno)), -1);

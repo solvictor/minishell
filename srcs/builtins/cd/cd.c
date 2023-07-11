@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 10:37:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/11 01:41:35 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/11 20:29:55 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	chdir_cdpath(t_msh *msh, char *arg)
 			free(tmp);
 			tmp = getcwd(NULL, 0);
 			if (tmp != NULL)
-				printf("%s\n", tmp);
+				ft_printf("%s\n", tmp);
 			return (clear_strarr(paths), free(tmp), 0);
 		}
 		free(tmp);
@@ -58,19 +58,12 @@ static int	chdir_cdpath(t_msh *msh, char *arg)
 
 static int	cd_normal(t_msh *msh, char *arg)
 {
-	char	*cwd;
-	char	*path;
-
-	cwd = getcwd(NULL, 0);
-	path = concat_path(cwd, arg);
-	if (path == NULL)
-		return (free(cwd), -1);
-	if (chdir(path) == 0)
-		return (set_pwds(msh), free(cwd), free(path), 0);
-	else if (chdir_cdpath(msh, arg) == 0)
-		return (set_pwds(msh), free(cwd), free(path), 0);
+	if (chdir(arg) == 0)
+		return (set_pwds(msh), 0);
+	if (chdir_cdpath(msh, arg) == 0)
+		return (set_pwds(msh), 0);
 	ft_dprintf(STDERR_FILENO, "minishell: cd: %s: %s\n", arg, strerror(errno));
-	return (free(cwd), free(path), 1);
+	return (1);
 }
 
 // Changes the direction of the process

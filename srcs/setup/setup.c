@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 06:25:47 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/11 01:42:12 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/11 20:28:18 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,13 +93,13 @@ static int	setup_rng(t_rng *rng)
 int	msh_setup(t_msh *msh, int ac, char **envp)
 {
 	if (ac != 1)
-		return (printf(MSH_ERROR ME_AC), -1);
+		return (ft_printf(MSH_ERROR ME_AC), -1);
 	msh_init_vars(msh);
 	if (setup_signals() != 0)
-		return (printf(MSH_ERROR ME_SIGNALS), -1);
+		return (ft_printf(MSH_ERROR ME_SIGNALS), -1);
 	if (setup_rng(&msh->rng) == -1)
-		return (printf(MSH_ERROR ME_RNG), -1);
+		return (ft_printf(MSH_ERROR ME_RNG), -1);
 	if (setup_env(msh, envp) != 0)
-		return (printf(MSH_ERROR ME_ENV), -1);
+		return (ft_printf(MSH_ERROR ME_ENV), -1);
 	return (0);
 }

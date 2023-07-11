@@ -7,8 +7,8 @@ OBJDIR	=	objs
 LIBFT	=	libft
 
 # Compiler options
-CC		=	cc
-#CC		=	cc -g3 -gdwarf-4
+#CC		=	cc
+CC		=	cc -g3 -gdwarf-4
 CWARNS	=	-Wall -Wextra -MD
 CLIBS	=	-L./$(LIBDIR) -lft -lreadline
 CINCS	=	-I./$(INCDIR) -I./$(LIBFT)

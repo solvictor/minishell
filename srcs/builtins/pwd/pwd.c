@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 09:46:30 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/07 15:10:31 by vegret           ###   ########.fr       */
+/*   Updated: 2023/07/11 20:25:26 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	builtin_pwd(t_msh *msh, char **args)
 			args[0], strerror(errno));
 		return (1);
 	}
-	if (printf("%s\n", cwd) < 0)
+	if (ft_printf("%s\n", cwd) < 0)
 	{
 		ft_dprintf(STDERR_FILENO, "minishell: %s: write error: %s\n",
 			args[0], strerror(errno));

@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 16:38:09 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/10 22:20:39 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/11 20:28:52 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ void	handler_sigint(int sig)
 	if (g_context.cur == CONT_PARENT)
 	{
 		g_context.msh->ret = 130;
-		printf("\n");
+		ft_printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 	else if (g_context.cur == CONT_HEREDOC)
 	{
-		printf("\n");
+		ft_printf("\n");
 		rl_on_new_line();
 		msh_terminate(g_context.msh, 130);
 	}

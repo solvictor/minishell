@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 02:35:57 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/11 03:14:15 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/11 20:29:09 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	newline_ifsignaled_last(t_msh *msh, t_cmd *cmd, int stat_loc)
 {
 	if (cmd->num == msh->cmdline.cmds_n - 1 && WIFSIGNALED(stat_loc))
 	{
-		printf("\n");
+		ft_printf("\n");
 		rl_on_new_line();
 	}
 }
@@ -54,7 +54,7 @@ static int	exec_cmd(t_msh *msh, t_cmd *cmd)
 	if (cmd->builtin)
 		return (exec_builtin(msh, cmd));
 	if (cmd->path == NULL)
-		return (ft_dprintf(STDOUT_FILENO, "minishell: %s: command not found\n",
+		return (ft_dprintf(STDERR_FILENO, "minishell: %s: command not found\n",
 				cmd->args[0]), 127);
 	pid = fork();
 	if (pid == -1)

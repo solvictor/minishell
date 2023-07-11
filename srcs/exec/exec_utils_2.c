@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 08:54:00 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/10 18:30:31 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/11 19:46:26 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	child_process(t_msh *msh, t_cmd *cmd)
 	reset_signals();
 	if (execve(cmd->path, cmd->args, msh->cmdline.envp) == -1)
 	{
-		ft_dprintf(STDOUT_FILENO, "minishell: %s: %s\n", cmd->path,
+		ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n", cmd->path,
 			strerror(errno));
 		msh_terminate(msh, 126);
 	}
