@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 19:05:35 by vegret            #+#    #+#             */
-/*   Updated: 2023/07/06 16:32:19 by vegret           ###   ########.fr       */
+/*   Updated: 2023/07/11 13:46:56 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,22 @@ static void	unset(t_msh *msh, t_env *target)
 int	builtin_unset(t_msh *msh, char **args)
 {
 	int	i;
+	int	ret;
 
 	i = 1;
+	ret = 0;
 	while (args[i])
 	{
+		if (!is_valid_identifier(args[i]) || ft_strchr(args[i], '='))
+		{
+			ft_dprintf(STDERR_FILENO,
+				"minishell: unset: `%s': not a valid identifier\n", args[i]);
+			ret = 1;
+			i++;
+			continue ;
+		}
 		unset(msh, get_env(msh->env, args[i], -1));
 		i++;
 	}
-	return (0);
+	return (ret);
 }

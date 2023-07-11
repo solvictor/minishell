@@ -6,24 +6,11 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 16:38:05 by vegret            #+#    #+#             */
-/*   Updated: 2023/07/10 23:46:55 by vegret           ###   ########.fr       */
+/*   Updated: 2023/07/11 13:37:16 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static bool	is_valid_identifier(char *str)
-{
-	if (!*str || *str == '=' || ft_isdigit(*str))
-		return (false);
-	while (*str && *str != '=')
-	{
-		if (*str != '_' && !ft_isalnum(*str))
-			return (false);
-		str++;
-	}
-	return (true);
-}
 
 static int	assign_var(t_msh *msh, t_env *new, char *var)
 {
