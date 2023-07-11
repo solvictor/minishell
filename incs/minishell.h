@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/10 22:27:30 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/11 03:05:40 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,10 +124,6 @@ struct s_msh
 	t_rng		rng;
 };
 
-// minishell.c
-void			msh_loop(t_msh *msh);
-int				process_input(t_msh *msh, char *input);
-
 // ----- //
 // SETUP //
 // ----- //
@@ -151,12 +147,12 @@ void			reset_cmdline(t_cmdline *cmdline);
 void			reset_signals(void);
 void			handler_sigint(int sig);
 // Env
-int				set_pwd(t_msh *msh);
 t_env			*env_new(char *var);
 char			**env_to_arr(t_env *env);
 void			destroy_env_list(t_env **env);
 char			*get_env_val(t_env *env, char *key);
 t_env			*get_env(t_env *env, char *key, int len_key);
+void			set_pwds(t_msh *msh);
 // Tokens
 t_tokenlist		*token_add_front(t_tokenlist **begin, char *data);
 void			destroy_tokenlist(t_tokenlist **begin);
@@ -230,11 +226,5 @@ int				builtin_echo(t_msh *msh, char **args);
 int				builtin_export(t_msh *msh, char **args);
 int				builtin_unset(t_msh *msh, char **args);
 int				builtin_env(t_msh *msh, char **args);
-
-
-// TESTS REMOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOVE LATER
-
-void	display_tokens(t_tokenlist *tokens);
-void	display_cmdline(t_cmdline *cmdline);
 
 #endif

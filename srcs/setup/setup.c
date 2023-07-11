@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 06:25:47 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/10 22:30:26 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/11 01:42:12 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	setup_env(t_msh *msh, char **envp)
 		curr = &(*curr)->next;
 		++i;
 	}
-	return (set_pwd(msh));
+	return (set_pwds(msh), 0);
 }
 
 // Opens /dev/urandom to generate pseudo-random numbers for the heredoc naming

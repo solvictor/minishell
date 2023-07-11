@@ -29,7 +29,8 @@ SRCS	:=	minishell.c \
 			utils/utils_1.c \
 			utils/utils_2.c \
 			utils/utils_signals.c \
-			utils/utils_env.c \
+			utils/utils_env_1.c \
+			utils/utils_env_2.c \
 			utils/utils_tokens.c \
 			tokenizer/tokenizer.c \
 			tokenizer/tokenizer_utils_1.c \
@@ -53,8 +54,7 @@ SRCS	:=	minishell.c \
 			builtins/echo/echo.c \
 			builtins/export/export.c \
 			builtins/unset/unset.c \
-			builtins/env/env.c \
-			test_code/display_utils.c
+			builtins/env/env.c
 OBJS	:=	$(SRCS:.c=.o)
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRCS))
 OBJS	:=	$(addprefix $(OBJDIR)/, $(OBJS))
@@ -89,7 +89,6 @@ $(OBJDIR):
 	mkdir -p $(OBJDIR)/parser
 	mkdir -p $(OBJDIR)/exec
 	mkdir -p $(OBJDIR)/prep
-	mkdir -p $(OBJDIR)/test_code
 
 clean:
 	make clean -C $(LIBDIR)/$(LIBFT)

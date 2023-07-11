@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 02:35:57 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/10 21:47:36 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/11 03:14:15 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,15 @@ static int	exec_builtin(t_msh *msh, t_cmd *cmd)
 	if (unredirect_builtin_io(io_dup) == -1)
 		return (1);
 	return (ret);
+}
+
+static void	newline_ifsignaled_last(t_msh *msh, t_cmd *cmd, int stat_loc)
+{
+	if (cmd->num == msh->cmdline.cmds_n - 1 && WIFSIGNALED(stat_loc))
+	{
+		printf("\n");
+		rl_on_new_line();
+	}
 }
 
 // Executes a single command
@@ -55,11 +64,7 @@ static int	exec_cmd(t_msh *msh, t_cmd *cmd)
 	close_valid_fds(msh->cmdline.pipes, msh->cmdline.cmds_n * 2);
 	close_valid_fds(msh->cmdline.redirs, msh->cmdline.cmds_n * 2);
 	waitpid(pid, &stat_loc, 0);
-	if (cmd->num == msh->cmdline.cmds_n - 1 && WIFSIGNALED(stat_loc))
-	{
-		printf("\n");
-		rl_on_new_line();
-	}
+	newline_ifsignaled_last(msh, cmd, stat_loc);
 	return (get_exit_status(stat_loc));
 }
 
@@ -73,7 +78,7 @@ static	int	exec_pipeline(t_msh *msh)
 	{
 		pid = fork();
 		if (pid == -1)
-			return (kill_children(&msh->cmdline, i), 1);
+			return (kill_children(&msh->cmdline, i), 2);
 		else if (pid == 0)
 		{
 			g_context.cur = CONT_CHILD_FORK;

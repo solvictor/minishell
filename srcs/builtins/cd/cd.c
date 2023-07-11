@@ -6,91 +6,71 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 10:37:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/10 23:47:43 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/11 01:41:35 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Gives OLDPWD the value of PWD
-static int	set_oldpwd(t_msh *msh)
+// Uses an environment variable's value as path
+// Returns 0 on success and -1 otherwise
+static int	cd_env(t_msh *msh, char *var)
 {
-	int		ret;
-	char	*var;
-	char	*pwd;
+	const char	*dest = get_env_val(msh->env, var);
 
-	pwd = get_env_val(msh->env, "PWD");
-	if (pwd == NULL)
-		return (-1);
-	if (pwd )
-		var = ft_strjoin("OLDPWD=", pwd);
-	else
-		var = "OLDPWD=";
-	if (!var)
-		return (1);
-	ret = builtin_export(msh, (char *[]){"export", var, NULL});
-	if (pwd && *pwd)
-		free(var);
-	return (ret);
+	if (dest == NULL)
+		return (ft_dprintf(STDERR_FILENO,
+				"minishell: cd: %s not set\n", var), -1);
+	if (chdir(dest) != 0)
+		return (ft_dprintf(STDERR_FILENO, "minishell: cd: %s: %s\n", dest,
+				strerror(errno)), -1);
+	return (set_pwds(msh), 0);
 }
 
-//static char	*get_path(t_env *env, char *arg, bool go_oldpwd)
-//{
-//	const bool	go_home = arg == NULL;
-//	char		*var;
-//
-//	if (go_home || go_oldpwd)
-//	{
-//		var = "HOME";
-//		if (go_oldpwd)
-//			var = "OLDPWD";
-//		arg = get_env_val(env, var);
-//		if (!arg)
-//		{
-//			ft_dprintf(STDERR_FILENO, "minishell: cd: %s not set\n", var);
-//			return (NULL);
-//		}
-//	}
-//	if (*arg == '\0')
-//		return (".");
-//	return (arg);
-//}
-//
-//int	builtin_cd(t_msh *msh, char **args)
-//{
-//	char	*path;
-//	bool	go_oldpwd;
-//
-//	if (args[1] && args[2])
-//		return (ft_dprintf(STDERR_FILENO,
-//					"minishell: cd: too many arguments\n"), 1);
-//	go_oldpwd = args[1] && ft_strncmp(args[1], "-\0", 2) == 0;
-//	path = get_path(msh->env, args[1], go_oldpwd);
-//	if (!path)
-//		return (1);
-//	if (chdir(path) != 0)
-//		return (ft_dprintf(STDERR_FILENO, "minishell: cd %s: %s\n", path,
-//				strerror(errno)), 1);
-//	path = get_env_val(msh->env, "OLDPWD");
-//	if (set_oldpwd(msh) || set_pwd(msh))
-//		return (1);
-//	if (go_oldpwd)
-//		if (ft_printf("%s\n", path) < 0)
-//			return (ft_dprintf(STDERR_FILENO,
-//					"minishell: cd: write error: %s\n", strerror(errno)), 1);
-//	return (0);
-//}
-
-static int	go_home(t_msh *msh)
+static int	chdir_cdpath(t_msh *msh, char *arg)
 {
-	const char *home = get_env_val;
+	char	**paths;
+	int		i;
+	char	*tmp;
 
-	if (home == NULL)
-		return (ft_dprintf(STDERR_FILENO, "minishell: cd: HOME not set\n"), -1);
-	if (chdir(home) != 0)
-		return (ft_dprintf(STDERR_FILENO, "minishell: cd %s: %s\n", path,
-				strerror(errno)), -1);
-	return (0);
+	paths = get_paths(msh->env, "CDPATH");
+	if (paths == NULL)
+		return (-1);
+	i = 0;
+	while (paths[i])
+	{
+		tmp = concat_path(paths[i], arg);
+		if (tmp == NULL)
+			return (clear_strarr(paths), -1);
+		if (chdir(tmp) == 0)
+		{
+			free(tmp);
+			tmp = getcwd(NULL, 0);
+			if (tmp != NULL)
+				printf("%s\n", tmp);
+			return (clear_strarr(paths), free(tmp), 0);
+		}
+		free(tmp);
+		++i;
+	}
+	return (clear_strarr(paths), -1);
+}
+
+static int	cd_normal(t_msh *msh, char *arg)
+{
+	char	*cwd;
+	char	*path;
+
+	cwd = getcwd(NULL, 0);
+	path = concat_path(cwd, arg);
+	if (path == NULL)
+		return (free(cwd), -1);
+	if (chdir(path) == 0)
+		return (set_pwds(msh), free(cwd), free(path), 0);
+	else if (chdir_cdpath(msh, arg) == 0)
+		return (set_pwds(msh), free(cwd), free(path), 0);
+	ft_dprintf(STDERR_FILENO, "minishell: cd: %s: %s\n", arg, strerror(errno));
+	return (free(cwd), free(path), 1);
 }
 
 // Changes the direction of the process
@@ -98,13 +78,12 @@ int	builtin_cd(t_msh *msh, char **args)
 {
 	if (args[1] && args[2])
 		return (ft_dprintf(STDERR_FILENO,
-			"minishell: cd: too many arguments\n"), 1);
-	if (args[1] == NULL && go_home(msh) == -1)
-		return (1);
-	//else if (ft_strncmp(args[1], "-\0", 2) == 0)
-	//	// go to OLDPWD
-	//else
-	//	// do chdir and s
-	//
+				"minishell: cd: too many arguments\n"), 1);
+	if (args[1] == NULL)
+		return (cd_env(msh, "HOME") == -1);
+	else if (ft_strncmp(args[1], "-\0", 2) == 0)
+		return (cd_env(msh, "OLDPWD") == -1);
+	else
+		return (cd_normal(msh, args[1]) == -1);
 	return (0);
 }

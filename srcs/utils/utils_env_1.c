@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_env.c                                        :+:      :+:    :+:   */
+/*   utils_env_1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 13:39:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/10 22:45:25 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/11 01:34:55 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,23 +109,4 @@ char	*get_env_val(t_env *env, char *key)
 		env = env->next;
 	}
 	return (NULL);
-}
-
-// Refreshed the PWD environment variable
-int	set_pwd(t_msh *msh)
-{
-	int		ret;
-	char	*cwd;
-	char	*var;
-
-	cwd = getcwd(NULL, 0);
-	if (!cwd)
-		return (1);
-	var = ft_strjoin("PWD=", cwd);
-	if (!var)
-		return (free(cwd), 1);
-	ret = builtin_export(msh, (char *[]){"export", var, NULL});
-	free(cwd);
-	free(var);
-	return (ret);
 }

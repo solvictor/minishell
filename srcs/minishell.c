@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:00:33 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/10 22:03:33 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/11 03:04:41 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,47 +14,40 @@
 
 t_context	g_context;
 
-// Cool function :]
-int	main(int ac, char **av, char **envp)
+// Redirects the input and output in case for interactive and non-interactive
+// modes
+// Returns 0 on success and -1 otherwise
+static int	get_input(char **input)
 {
-	t_msh	msh;
+	int	fd;
 
-	(void)av;
-	errno = 0;
-	set_context(&msh);
-	if (msh_setup(&msh, ac, envp) == -1)
-		return (1);
-	msh_loop(&msh);
-	msh_terminate(&msh, msh.ret);
-}
-
-// Input loop
-// Parses inputs, executes commands and updates history
-void	msh_loop(t_msh *msh)
-{
-	char	*input;
-
-	while (!msh->exit)
+	if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
+		return ((*input = readline(MSH_PROMPT)), 0);
+	if (!isatty(STDOUT_FILENO))
 	{
-		//if (isatty(STDIN_FILENO))
-		//	input = readline(MSH_PROMPT);
-		//else
-		//	input = readline(NULL);
-		input = readline(MSH_PROMPT);
-		if (input == NULL)
-			return ((void)builtin_exit(msh, (char *[]){"exit\0", NULL}));
-		if (input[0])
-		{
-			add_history(input);
-			msh->ret = process_input(msh, input);
-		}
-		free(input);
+		fd = dup(STDOUT_FILENO);
+		if (fd == -1)
+			return (-1);
+		if (dup2(STDERR_FILENO, STDOUT_FILENO) == -1)
+			return (close(fd), -1);
+		*input = readline(MSH_PROMPT);
+		if (dup2(fd, STDOUT_FILENO) == -1)
+			return (close(fd), -1);
+		return (close(fd), 0);
 	}
+	fd = dup(STDOUT_FILENO);
+	if (fd == -1)
+		return (-1);
+	close(STDOUT_FILENO);
+	*input = readline(NULL);
+	if (dup2(fd, STDOUT_FILENO) == -1)
+		return (close(fd), -1);
+	return (close(fd), 0);
 }
 
 // Used the input and figures out the structure of commands and executes them
 // Returns the output of the last command on success, -1 otherwise
-int	process_input(t_msh *msh, char *input)
+static int	process_input(t_msh *msh, char *input)
 {
 	int	ret;
 
@@ -70,4 +63,40 @@ int	process_input(t_msh *msh, char *input)
 	ret = exec_cmdline(msh);
 	return (clear_cmdline(&msh->cmdline), unlink_heredocs(msh->tokens),
 		destroy_tokenlist(&msh->tokens), ret);
+}
+
+// Input loop
+// Parses inputs, executes commands and updates history
+static void	msh_loop(t_msh *msh)
+{
+	char	*input;
+
+	while (!msh->exit)
+	{
+		if (get_input(&input) == -1)
+			return (perror("minishell: get_input:"),
+				(void)builtin_exit(msh, (char *[]){"exit\0", NULL}));
+		if (input == NULL)
+			return ((void)builtin_exit(msh, (char *[]){"exit\0", NULL}));
+		if (input[0])
+		{
+			add_history(input);
+			msh->ret = process_input(msh, input);
+		}
+		free(input);
+	}
+}
+
+// Cool function :]
+int	main(int ac, char **av, char **envp)
+{
+	t_msh	msh;
+
+	(void)av;
+	errno = 0;
+	set_context(&msh);
+	if (msh_setup(&msh, ac, envp) == -1)
+		return (1);
+	msh_loop(&msh);
+	msh_terminate(&msh, msh.ret);
 }
