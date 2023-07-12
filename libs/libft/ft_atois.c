@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 17:41:27 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/01/10 17:43:42 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/12 18:53:24 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // Modified version of atoi that parses one int from argv and returns an error
 // if a formatting error is met
 // Return -1 on int overflow/underflow
-int	ft_atois(int *n, char *nptr)
+int	ft_atois(char *nptr, int *n)
 {
 	long	nb;
 	int		sign;

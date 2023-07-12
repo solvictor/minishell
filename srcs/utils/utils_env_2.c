@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 01:34:42 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/12 18:32:02 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/12 19:23:41 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,27 @@ int	is_numeric(char *str, int *dst)
 		++str;
 	if (*str != '\0')
 		return (0);
-	*dst = (sign * num) & 0xFF;
+	*dst = (sign * num);
 	return (1);
+}
+
+int	set_shlvl(t_msh *msh)
+{
+	char		*var;
+	int			shlvl;
+	static char	var_str[10] = "SHLVL=\0\0\0\0";
+
+
+	var = get_env_val(msh->env, "SHLVL");
+	if (!var || !*var || !is_numeric(var, &shlvl))
+		return (builtin_export(msh, (char *[]){"export", "SHLVL=1", NULL}));
+	if (shlvl < 0)
+		return (builtin_export(msh, (char *[]){"export", "SHLVL=0", NULL}));
+	if (shlvl > 998)
+	{
+		ft_dprintf(STDERR_FILENO, "minishell: warning: shell level (%d) too high, resetting to 1\n", shlvl);
+		return (builtin_export(msh, (char *[]){"export", "SHLVL=1", NULL}));
+	}
+	ft_itoa2(shlvl + 1, var_str + 6);
+	return (builtin_export(msh, (char *[]){"export", var_str, NULL}));
 }

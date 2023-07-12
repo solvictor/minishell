@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/24 17:48:35 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/06/30 18:13:47 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/12 18:56:22 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,8 @@ void	set_field_bad(t_print *print, char *field, int *len);
 // -----------------------//
 //      CUSTOM LIBFT      //
 // -----------------------//
-int		ft_atois(int *n, char *nptr);
+int		ft_atois(char *nptr, int *n);
+char	*ft_itoa2(int n, char *dst);
 int		ft_abs(int n);
 int		ft_min(int a, int b);
 int		ft_max(int a, int b);

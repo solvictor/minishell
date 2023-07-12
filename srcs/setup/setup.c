@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 06:25:47 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/11 20:28:18 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/12 19:10:12 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ int	setup_env(t_msh *msh, char **envp)
 		curr = &(*curr)->next;
 		++i;
 	}
+	if (set_shlvl(msh))
+		return (1);
 	return (set_pwds(msh), 0);
 }
 

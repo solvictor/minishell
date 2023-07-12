@@ -63,6 +63,7 @@ SRCS	=	ft_isalpha.c \
 			ft_printf_handler_chars.c \
 			ft_printf_field_utils.c \
 			ft_atois.c \
+			ft_itoa2.c \
 			ft_abs.c \
 			ft_min.c \
 			ft_max.c \
