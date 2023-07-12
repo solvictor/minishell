@@ -6,14 +6,14 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 01:34:42 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/12 18:32:02 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/12 18:37:07 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // Updates the PWD and OLDPWD environment variables after changing directory
-void	set_pwds(t_msh *msh)
+int	set_pwds(t_msh *msh)
 {
 	char	*pwd;
 	char	*var;
@@ -24,17 +24,18 @@ void	set_pwds(t_msh *msh)
 		var = ft_strjoin("OLDPWD=", pwd);
 		if (var != NULL)
 		{
-			builtin_export(msh, (char *[]){"export", var, NULL});
+			if (builtin_export(msh, (char *[]){"export", var, NULL}) != 0)
+				return (free(var), -1);
 			free(var);
 		}
 	}
 	pwd = getcwd(NULL, 0);
 	var = ft_strjoin("PWD=", pwd);
 	if (var == NULL)
-		return (free(pwd));
-	builtin_export(msh, (char *[]){"export", var, NULL});
-	free(pwd);
-	free(var);
+		return (free(pwd), -1);
+	if (builtin_export(msh, (char *[]){"export", var, NULL}) != 0)
+		return (free(pwd), free(var), -1);
+	return (free(pwd), free(var), 0);
 }
 
 int	is_valid_identifier(char *str)
