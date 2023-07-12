@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 01:34:42 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/12 19:31:46 by vegret           ###   ########.fr       */
+/*   Updated: 2023/07/12 20:11:42 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ int	set_shlvl(t_msh *msh)
 	int			shlvl;
 	static char	var_str[10] = "SHLVL=\0\0\0\0";
 
-
 	var = get_env_val(msh->env, "SHLVL");
 	if (!var || !*var || !is_numeric(var, &shlvl))
 		return (builtin_export(msh, (char *[]){"export", "SHLVL=1", NULL}));
@@ -94,7 +93,8 @@ int	set_shlvl(t_msh *msh)
 		return (builtin_export(msh, (char *[]){"export", "SHLVL=0", NULL}));
 	if (shlvl > 998)
 	{
-		ft_dprintf(STDERR_FILENO, "minishell: warning: shell level (%d) too high, resetting to 1\n", shlvl);
+		ft_dprintf(STDERR_FILENO, "minishell: warning: shell level (%d) too \
+high, resetting to 1\n", shlvl);
 		return (builtin_export(msh, (char *[]){"export", "SHLVL=1", NULL}));
 	}
 	ft_itoa2(shlvl + 1, var_str + 6);
