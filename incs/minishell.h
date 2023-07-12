@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/11 14:43:48 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/12 18:31:04 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,7 @@ char			*get_env_val(t_env *env, char *key);
 t_env			*get_env(t_env *env, char *key, int len_key);
 void			set_pwds(t_msh *msh);
 int				is_valid_identifier(char *str);
+int				is_numeric(char *str, int *dst);
 // Tokens
 t_tokenlist		*token_add_front(t_tokenlist **begin, char *data);
 void			destroy_tokenlist(t_tokenlist **begin);

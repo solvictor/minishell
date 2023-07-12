@@ -9,7 +9,7 @@ LIBFT	=	libft
 # Compiler options
 CC		=	cc
 #CC		=	cc -g3 -gdwarf-4
-CWARNS	=	-Wall -Wextra -MD
+CWARNS	=	-Wall -Wextra -Werror -MD
 CLIBS	=	-L./$(LIBDIR) -lft -lreadline
 CINCS	=	-I./$(INCDIR) -I./$(LIBFT)
 
@@ -59,34 +59,20 @@ OBJS	:=	$(SRCS:.c=.o)
 SRCS	:=	$(addprefix $(SRCDIR)/, $(SRCS))
 OBJS	:=	$(addprefix $(OBJDIR)/, $(OBJS))
 
-all: $(OBJDIR) $(NAME)
+all: $(NAME)
 
 $(NAME): $(LIBDIR)/libft.a $(OBJS)
 	$(CC) $(CWARNS) $(OBJS) $(CLIBS) -o $(NAME)
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
+	@if [ ! -d $(dir $@) ]; then \
+		mkdir -p $(dir $@); \
+	fi
 	$(CC) $(CWARNS) $(CINCS) -c $< -o $@
 
 $(LIBDIR)/libft.a:
 	make -C $(LIBDIR)/$(LIBFT)
 	cp $(LIBDIR)/$(LIBFT)/libft.a $(LIBDIR)/
-
-$(OBJDIR):
-	mkdir -p $(OBJDIR)
-	mkdir -p $(OBJDIR)/builtins
-	mkdir -p $(OBJDIR)/builtins/pwd
-	mkdir -p $(OBJDIR)/builtins/cd
-	mkdir -p $(OBJDIR)/builtins/exit
-	mkdir -p $(OBJDIR)/builtins/echo
-	mkdir -p $(OBJDIR)/builtins/export
-	mkdir -p $(OBJDIR)/builtins/unset
-	mkdir -p $(OBJDIR)/builtins/env
-	mkdir -p $(OBJDIR)/setup
-	mkdir -p $(OBJDIR)/utils
-	mkdir -p $(OBJDIR)/tokenizer
-	mkdir -p $(OBJDIR)/parser
-	mkdir -p $(OBJDIR)/exec
-	mkdir -p $(OBJDIR)/prep
 
 clean:
 	make clean -C $(LIBDIR)/$(LIBFT)

@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 01:34:42 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/11 14:45:11 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/12 18:32:02 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,34 @@ int	is_valid_identifier(char *str)
 			return (0);
 		str++;
 	}
+	return (1);
+}
+
+// Weird atoi needed by SHLVL and exit
+int	is_numeric(char *str, int *dst)
+{
+	unsigned long	num;
+	int				sign;
+
+	sign = 1;
+	num = 0;
+	while (*str && (((*str >= 9) && (*str <= 13)) || (*str == ' ')))
+		++str;
+	if (*str == '+' || *str == '-')
+		if (*str++ == '-')
+			sign = -1;
+	while (*str >= '0' && *str <= '9')
+	{
+		num = num * 10 + *str - '0';
+		if ((num > LONG_MAX && sign == 1)
+			|| (num - 1 > LONG_MAX && sign == -1))
+			return (0);
+		str++;
+	}
+	while (*str && (((*str >= 9) && (*str <= 13)) || (*str == ' ')))
+		++str;
+	if (*str != '\0')
+		return (0);
+	*dst = (sign * num) & 0xFF;
 	return (1);
 }
