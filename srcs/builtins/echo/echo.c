@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 23:05:14 by vegret            #+#    #+#             */
-/*   Updated: 2023/07/11 14:44:51 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/12 17:26:55 by vegret           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,6 @@ int	builtin_echo(t_msh *msh, char **args)
 	int	ret;
 
 	(void) msh;
-	if (!args || !args[0])
-	{
-		ret = write(STDOUT_FILENO, "\n", 1) != 1;
-		if (ret)
-			ft_dprintf(STDERR_FILENO, "minishell: echo: write error: %s\n",
-				strerror(errno));
-		return (ret);
-	}
 	i = 1;
 	while (is_flag_n(args[i]))
 		i++;
