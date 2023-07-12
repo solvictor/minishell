@@ -7,8 +7,8 @@ OBJDIR	=	objs
 LIBFT	=	libft
 
 # Compiler options
-#CC		=	cc
-CC		=	cc -g3 -gdwarf-4
+CC		=	cc
+#CC		=	cc -g3 -gdwarf-4
 CWARNS	=	-Wall -Wextra -MD
 CLIBS	=	-L./$(LIBDIR) -lft -lreadline
 CINCS	=	-I./$(INCDIR) -I./$(LIBFT)
@@ -61,8 +61,6 @@ OBJS	:=	$(addprefix $(OBJDIR)/, $(OBJS))
 
 all: $(OBJDIR) $(NAME)
 
-bonus: all
-
 $(NAME): $(LIBDIR)/libft.a $(OBJS)
 	$(CC) $(CWARNS) $(OBJS) $(CLIBS) -o $(NAME)
 
@@ -101,8 +99,6 @@ fclean: clean
 
 re: fclean all
 
-rebonus: fclean bonus
-
 -include $(OBJS:.o=.d)
 
 norm:
@@ -124,4 +120,4 @@ norm:
 	@echo -e " $(COL_BACK)               $(COL_RESET)"
 	@norminette $(INCDIR) | awk '{if ($$NF == "OK!") { print "$(COL_OK)"$$0"$(COL_RESET)" } else if ($$NF == "Error!") { print "$(COL_ERR)"$$0"$(COL_RESET)" } else { print }}'
 
-.PHONY: all bonus clean fclean re rebonus norm
+.PHONY: all clean fclean re norm
