@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prep_expansion.c                                   :+:      :+:    :+:   */
+/*   prep_expansion_1.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 06:39:03 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 18:50:16 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/13 20:27:44 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	get_expanded_len(t_msh *msh, char *str)
 		{
 			val = get_env_val(msh->env, str);
 			if (val != NULL)
-				len += ft_strlen(val);
+				len += trimmed_len(val);
 			while (ft_isalnum(*str) || *str == '_')
 				++str;
 		}
@@ -65,6 +65,7 @@ static int	get_expanded_len(t_msh *msh, char *str)
 static void	expand(t_msh *msh, char *str, char *dst)
 {
 	char	*val;
+	char	*start;
 
 	while (*str)
 	{
@@ -74,7 +75,13 @@ static void	expand(t_msh *msh, char *str, char *dst)
 		{
 			val = get_env_val(msh->env, str);
 			if (val)
-				dst += ft_strlcpy(dst, val, ft_strlen(val) + 1);
+			{
+				start = val;
+				while (*start && is_whitespace(*start))
+					++start;
+				ft_strlcpy(dst, start, trimmed_len(start) + 1);
+				dst += trimmed_len(start);
+			}
 			while (*str == '_' || ft_isalnum(*str))
 				++str;
 		}

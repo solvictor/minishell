@@ -42,7 +42,8 @@ SRCS	:=	minishell.c \
 			exec/exec_utils_2.c \
 			prep/prep.c \
 			prep/prep_pathfind.c \
-			prep/prep_expansion.c \
+			prep/prep_expansion_1.c \
+			prep/prep_expansion_2.c \
 			prep/prep_merge.c \
 			prep/prep_args.c \
 			prep/prep_redirections_1.c \
