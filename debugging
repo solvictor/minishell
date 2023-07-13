@@ -1,3 +1,31 @@
-* export "a=       alskdfjfl" -> should trim the spaces
+[FIXED] * export "a=       alskdfjfl" -> should trim the spaces
 
 [FIXED] * redirections for builtins don't work
+
+[FIXED] * ctrl+c in man 3 printf -> add variable in g_context and set it in exec_cmdline
+
+[FIXED] * ctrl+c in "grep caca" return -2 instead of 130
+
+[FIXED] * ctrl+\ in cat (no arguments) doesn't quit and return 131
+
+[FIXED] * unset last variable crashes minishell
+
+[FIXED] * pwd doesn't update the PWD variable and doesn't create OLDPWD
+
+[?????] *? heredoc in pipe makes conditional jump (command: ls lkasdjflasdjfklasdfj <<eof | <<eof grep bla | more >tamaman.txt)
+
+[FIXED] * set PWD at the start of start of minishell
+
+[FIXED] * make cd search for CDPATH
+
+[FIXED] * heredoc ctrl+c not printing properly and not returning good error
+
+[FIXED] * segfault with normal merges
+
+[FIXED] * starting minishell with redirections doesn't work properly
+
+[FIXED] * exit doesn't exit with previous exit status
+
+TODO:
+- changed signal handlers so that parent doesn't output \n in man 3 printf, for
+that add a property to g_content
