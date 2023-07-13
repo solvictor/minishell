@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 13:23:21 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 19:00:14 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/13 16:37:56 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,9 @@ int	unredirect_builtin_io(int io_dup[2])
 
 	error = 0;
 	if (io_dup[0] != -1)
-		error += dup2(STDIN_FILENO, io_dup[0]) == -1;
+		error += dup2(io_dup[0], STDIN_FILENO) == -1;
 	if (io_dup[1] != -1)
-		error += dup2(STDOUT_FILENO, io_dup[1]) == -1;
+		error += dup2(io_dup[1], STDOUT_FILENO) == -1;
 	close_valid_fds(io_dup, 2);
 	return ((error != 0) * -1);
 }
