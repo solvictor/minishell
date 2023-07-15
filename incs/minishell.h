@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 12:01:59 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/13 20:12:38 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/15 23:13:04 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@
 # include <readline/history.h>
 
 // SETTINGS
-//# define MSH_PROMPT			"\001\e[38;2;255;0;255m\002minishell>\001\e[0m\002 "
-# define MSH_PROMPT			"\001\e[38;2;184;123;79m\0028\001\e[38;2;252;185\
-;114m\002====\001\e[38;2;201;115;158m\002D\001\e[0m\002 "
+# define MSH_PROMPT			"\001\e[38;2;255;0;255m\002minishell>\001\e[0m\002 "
+//# define MSH_PROMPT		"\001\e[38;2;184;123;79m\0028\001\e[38;2;252;185
+//;114m\002====\001\e[38;2;201;115;158m\002D\001\e[0m\002 "
 # define RNG_MAX			INT_MAX
 # define RNG_BIT_ROTATIONS	13
 # define RNG_ZERO_FIX_SEED	694201337
@@ -192,7 +192,6 @@ char			**get_paths(t_env *env, char *key);
 char			*concat_path(char *path, char *name);
 int				expand_str(t_msh *msh, char **str);
 int				do_dollar_expansions(t_msh *msh, t_tokenlist *tokens);
-size_t			trimmed_len(char *str);
 int				merge_str_tokens(t_tokenlist *tokens);
 int				merge_heredoc_tokens(t_tokenlist *tokens);
 int				make_cmds_args(t_cmdline *cmdline);
