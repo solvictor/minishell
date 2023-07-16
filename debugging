@@ -1,4 +1,4 @@
-[FIXED] * export "a=       alskdfjfl" -> should trim the spaces
+[CANCEL] * export "a=       alskdfjfl" -> should trim the spaces
 
 [FIXED] * redirections for builtins don't work
 

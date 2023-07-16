@@ -6,12 +6,13 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 18:52:25 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/05 15:21:15 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/16 03:53:44 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// Transforms the input string into a chained list of tokens
 int	tokenize(const char *input, t_tokenlist **tokens)
 {
 	int	i;

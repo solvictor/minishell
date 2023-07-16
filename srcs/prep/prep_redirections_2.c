@@ -6,7 +6,7 @@
 /*   By: nlegrand <nlegrand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 11:31:12 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/11 21:58:05 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/16 03:49:54 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,14 @@ int	do_redir_input(t_cmd *cmd, t_tokenlist *token)
 	else
 		cmd->redirs[0] = open(token->data, O_RDONLY, 0644);
 	if (cmd->redirs[0] == -1)
-		return (ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n",
-				token->data, strerror(errno)), -1);
+	{
+		if (token->type == HEREDOC)
+			return (ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n",
+					heredoc_name, strerror(errno)), -1);
+		else
+			return (ft_dprintf(STDERR_FILENO, "minishell: %s: %s\n",
+					token->data, strerror(errno)), -1);
+	}
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: vegret <victor.egret.pro@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 02:35:57 by nlegrand          #+#    #+#             */
-/*   Updated: 2023/07/11 20:29:09 by nlegrand         ###   ########.fr       */
+/*   Updated: 2023/07/16 03:51:53 by nlegrand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ static int	exec_builtin(t_msh *msh, t_cmd *cmd)
 
 static void	newline_ifsignaled_last(t_msh *msh, t_cmd *cmd, int stat_loc)
 {
-	if (cmd->num == msh->cmdline.cmds_n - 1 && WIFSIGNALED(stat_loc))
+	if (cmd->num == msh->cmdline.cmds_n - 1
+		&& get_exit_status(stat_loc) == 130 && WIFSIGNALED(stat_loc))
 	{
 		ft_printf("\n");
 		rl_on_new_line();
@@ -40,7 +41,7 @@ static void	newline_ifsignaled_last(t_msh *msh, t_cmd *cmd, int stat_loc)
 }
 
 // Executes a single command
-// Returns 0 for success or -1 in case of error
+// Returns 0 for success or a positive integer in case of error
 static int	exec_cmd(t_msh *msh, t_cmd *cmd)
 {
 	pid_t	pid;
@@ -68,6 +69,8 @@ static int	exec_cmd(t_msh *msh, t_cmd *cmd)
 	return (get_exit_status(stat_loc));
 }
 
+// Executes all commands of a pipeline at the same time
+// Returns 0 for success or a positive integer in case of error
 static	int	exec_pipeline(t_msh *msh)
 {
 	int		i;
